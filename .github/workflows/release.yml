@@ -3,10 +3,7 @@ name: release
 # Only a pushed v*.*.* tag (or a manual dispatch) builds: pushing to main builds nothing.
 # Tag a release (v1.2.3) and this publishes ghcr.io/openpak/<repo>:1.2.3, :1.2 and :latest for
 # amd64 and arm64. Deployed hosts run podman-auto-update against :latest, so pushing a tag is
-# the deploy. This repository is PUBLIC, so GitHub-hosted minutes are free and there is no
-# reason to use the self-hosted runner -- and a good reason not to: the org's Default runner
-# group sets allows_public_repositories=false, so a self-hosted job here queues forever
-# instead of failing.
+# the deploy.
 on:
   push:
     tags: ['v*.*.*']
@@ -23,11 +20,11 @@ permissions:
 
 jobs:
   image:
-    runs-on: ubuntu-latest
+    # The OpenPak self-hosted runner with podman: private repositories get no GitHub-hosted
+    # minutes. arm64 goes through the host's QEMU binfmt handlers.
+    runs-on: [self-hosted, linux, podman]
     steps:
       - uses: actions/checkout@v4
-      # podman uses the host's binfmt_misc handlers; the hosted image has none registered.
-      - uses: docker/setup-qemu-action@v3
       # REGISTRY_AUTH_FILE is set per STEP, not on the job: the `runner` context
       # is not available in a job-level `env:`, and a job that references it
       # fails as a "workflow file issue" -- no jobs, no logs, 0s, which is
