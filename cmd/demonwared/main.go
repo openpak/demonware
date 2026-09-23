@@ -99,6 +99,16 @@ func run(log *slog.Logger) error {
 
 	// Lobby and the shared services.
 	lob := &lobby.Server{Sessions: sessions, Log: log.With("part", "lobby")}
+	var signer *auth.Signer
+	if path := os.Getenv("DEMONWARE_CTR_SIGNING_KEY"); path != "" {
+		if signer, err = auth.LoadSigner(path); err != nil {
+			return fmt.Errorf("DEMONWARE_CTR_SIGNING_KEY: %w", err)
+		}
+		// The CTR key patch swaps the game's embedded key, which the lobby also uses when it
+		// wraps the lobby key, so the handshake must try OpenPak's key too.
+		lob.PatchedKeys = [][]byte{signer.PublicKeyDER()}
+		log.Info("ctr auth replies are signed")
+	}
 	relay := relayFromEnv(publicIP, log)
 	shared := play.New(lob, relay, log.With("part", "play"))
 	lob.Handle = func(c *lobby.Conn, r *lobby.Request) lobby.Response {
@@ -170,12 +180,7 @@ func run(log *slog.Logger) error {
 	// auth3.
 	authSvc := &auth.Service{Accounts: accounts, Sessions: sessions, Titles: served, Open: !requireAccount,
 		Log: log.With("part", "auth")}
-	if path := os.Getenv("DEMONWARE_CTR_SIGNING_KEY"); path != "" {
-		if authSvc.Signer, err = auth.LoadSigner(path); err != nil {
-			return fmt.Errorf("DEMONWARE_CTR_SIGNING_KEY: %w", err)
-		}
-		log.Info("ctr auth replies are signed")
-	}
+	authSvc.Signer = signer
 	cert, err := tls.LoadX509KeyPair(env("CERT_FILE", "demonware.pem"), env("KEY_FILE", "demonware.key"))
 	if err != nil {
 		return fmt.Errorf("auth certificate: %w", err)

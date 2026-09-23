@@ -304,3 +304,21 @@ func TestHandshakeRefusals(t *testing.T) {
 		t.Fatal("wrapped key refused")
 	}
 }
+
+// A client carrying the CTR key patch wraps the lobby key with OpenPak's public key; the
+// handshake accepts that only when the server was given the key.
+func TestHandshakePatchedKey(t *testing.T) {
+	srv, addr, store := startServer(t, func(*Conn, *Request) Response { return Response{} })
+	sess, _ := store.Issue(&account.Player{PID: 8, BaasUserID: "def"}, 5775)
+	der := bytes.Repeat([]byte{0x42}, 294)
+
+	cl := dial(t, addr)
+	if reply := cl.handshake(sess.Ticket, wrappedWith(sess.LobbyKey(), der)); reply[5] != msgAuthFail {
+		t.Fatal("patched key accepted without being configured")
+	}
+	srv.PatchedKeys = [][]byte{der}
+	cl = dial(t, addr)
+	if cl.handshake(sess.Ticket, wrappedWith(sess.LobbyKey(), der)); cl.ch == nil {
+		t.Fatal("patched key refused")
+	}
+}

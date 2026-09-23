@@ -7,7 +7,7 @@ one process for every title.
 | Title | `DEMONWARE_TITLES` | Demonware id | Status |
 | --- | --- | --- | --- |
 | Diablo III: Eternal Collection | `diablo-3` | 5745 ("crimson") | implemented, not yet run against a console on OpenPak |
-| Crash Team Racing Nitro-Fueled | `crash-team-racing` | 5775 ("lavender") | implemented, not yet run against a console on OpenPak; login needs a client mod (below) |
+| Crash Team Racing Nitro-Fueled | `crash-team-racing` | 5775 ("lavender") | implemented, not yet run against a console on OpenPak; login needs the CTR key patch (below) |
 
 Built clean-room from the facts in [`docs/protocol.md`](docs/protocol.md); where every fact came
 from is in [`docs/provenance.md`](docs/provenance.md). This repository supersedes the
@@ -150,10 +150,11 @@ Without the `stun.*` names the game probes Activision and only offers local game
   `.env` for `NX_INTERNAL_KEY`.
 - **Firewall**: ACCEPT 3074/tcp and 3074/udp (and 22612-22619/udp if the relay is on) before the
   host's final REJECT.
-- **CTR login needs a client mod.** CTR checks the auth reply's `X-Signature` against
-  Activision's key, so it only logs in to a server whose key the client trusts: a mod that
-  installs our public key. None exists in OpenPak yet; without it CTR stops at login whatever
-  the server does.
+- **CTR login needs the CTR key patch.** CTR checks the auth reply's `X-Signature` against the
+  key embedded in its `main`. [`tools/ctr-key-patch`](tools/ctr-key-patch) swaps that key for
+  OpenPak's (a data-only IPS for the final update); `openpak.nro` installs it on consoles and
+  Ryujinx, Citron and Eden apply it built in. Deploy the matching private key as
+  `DEMONWARE_CTR_SIGNING_KEY`; the lobby then also accepts a key wrapped with it.
 
 ## Run locally
 

@@ -76,7 +76,11 @@ func derive(transcript, lobbyKey []byte) (*channel, error) {
 }
 
 // wrapped is the lobby key after the optional transformation with the game's embedded public key.
-func wrapped(lobbyKey []byte) []byte { return expand(lobbyKey, gamePublicKey, 24) }
+func wrapped(lobbyKey []byte) []byte { return wrappedWith(lobbyKey, gamePublicKey) }
+
+// wrappedWith is the same transformation with another embedded key: a client carrying the
+// OpenPak CTR key patch (tools/ctr-key-patch) derives it from OpenPak's public key instead.
+func wrappedWith(lobbyKey, publicKeyDER []byte) []byte { return expand(lobbyKey, publicKeyDER, 24) }
 
 func mac8(key, data []byte) []byte {
 	m := hmac.New(sha1.New, key)

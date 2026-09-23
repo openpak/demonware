@@ -79,9 +79,10 @@ lobby key equal.
 
 - **Signed replies.** CTR checks an `X-Signature` header on the auth reply before reading the
   ticket: base64 of an RSA-PSS / SHA-256 signature with a **zero-length salt** over the exact
-  response body, RSA-2048, exponent 65537. The retail client trusts only Activision's key, so
-  signed replies work only with a client mod that installs our public key. No such mod is
-  part of OpenPak today.
+  response body, RSA-2048, exponent 65537. The client verifies with the key embedded in its `main`
+  (Demonware's, the same one `lobby/crypto.go` names), so signed replies need
+  [`tools/ctr-key-patch`](../tools/ctr-key-patch), which swaps it for OpenPak's. The lobby
+  key wrap uses the same embedded key, so a patched client wraps with OpenPak's.
 - **Umbrella token.** `POST /v1.0/tokens/lsg/` on the same auth host, JSON
   `{"ticket": "<base64 128 bytes>", "titleID": 5775 or "5775"}`. Reply JSON
   `{"umbrellaID": <u64>, "accessToken": "<string>", "expires": <unix s>, "accounts": []}`.

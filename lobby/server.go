@@ -38,6 +38,9 @@ type Server struct {
 	Handle   Handler
 	Log      *slog.Logger
 	Idle     time.Duration // read timeout between frames; 0 is 30 minutes
+	// PatchedKeys are public keys (DER SubjectPublicKeyInfo) a patched client carries in place
+	// of the game's own; each is one more wrapped-key candidate in the handshake.
+	PatchedKeys [][]byte
 
 	ids     atomic.Uint64
 	mu      sync.Mutex

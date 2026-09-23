@@ -215,7 +215,7 @@ func (c *Conn) handshake() error {
 }
 
 // authenticate finds the ticket in the 0x82, requires it to be one we issued, and checks the
-// client's tag with that ticket's key (plain, then the wrapped variant).
+// client's tag with that ticket's key (plain, then the wrapped variants).
 func (c *Conn) authenticate(f []byte) (*channel, *session.Session, error) {
 	ticket := locateTicket(f[6 : len(f)-8])
 	if ticket == nil {
@@ -236,7 +236,11 @@ func (c *Conn) authenticate(f []byte) (*channel, *session.Session, error) {
 	t.Write(c.hello)
 	t.Write(f[:len(f)-8])
 	tag := f[len(f)-8:]
-	for _, key := range [][]byte{sess.LobbyKey(), wrapped(sess.LobbyKey())} {
+	keys := [][]byte{sess.LobbyKey(), wrapped(sess.LobbyKey())}
+	for _, der := range c.srv.PatchedKeys {
+		keys = append(keys, wrappedWith(sess.LobbyKey(), der))
+	}
+	for _, key := range keys {
 		ch, err := derive(t.Bytes(), key)
 		if err != nil {
 			return nil, nil, err

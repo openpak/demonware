@@ -57,6 +57,12 @@ func NewSigner(key *rsa.PrivateKey) (*Signer, error) {
 	return s, nil
 }
 
+// PublicKeyDER is the signer's public key as the game embeds it (DER SubjectPublicKeyInfo).
+func (s *Signer) PublicKeyDER() []byte {
+	der, _ := x509.MarshalPKIXPublicKey(&s.key.PublicKey) // cannot fail for an RSA key
+	return der
+}
+
 // Sign returns the base64 signature of body.
 func (s *Signer) Sign(body []byte) (string, error) {
 	digest := sha256.Sum256(body)

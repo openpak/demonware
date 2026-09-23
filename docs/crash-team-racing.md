@@ -22,7 +22,7 @@ applies.
 | Unknown | Answer (source in `provenance.md`) |
 | --- | --- |
 | U1 what is inside the TLS | auth3 is HTTPS with a JSON body; the lobby is *not* TLS: a raw TCP stream (hello, then length-prefixed frames, then an AES/HMAC channel keyed by the ticket). `docs/protocol.md` §2-3. |
-| U2 what auth3 wants | The NSA id_token inside `extra_data`; the reply is a 128-byte ticket readable in the clear (magic `DE AD BD EF`). No key baked into the client is needed for the lobby. CTR additionally checks an `X-Signature` on the reply, which only a client mod that trusts our key can pass. |
+| U2 what auth3 wants | The NSA id_token inside `extra_data`; the reply is a 128-byte ticket readable in the clear (magic `DE AD BD EF`). No key baked into the client is needed for the lobby. CTR additionally checks an `X-Signature` on the reply, which passes once the client carries OpenPak's key (`tools/ctr-key-patch`). |
 | U3 the matchmaking protocol | Async matchmaking, service 145, with JSON search/host/backend documents and pushes 2001/2005/2006/2008; friend sessions on service 138/14. `docs/protocol.md` §8. |
 | U4 does the client hard-fail before the network | No, but it hard-fails on an unsigned auth reply (the `X-Signature` check). That is a client-side gate: a server cannot pass it alone. |
 | U5 hardware parity | Still open. A console needs the Demonware names in DNS (nn-sssl-dns), the OpenPak CA trusted for the auth3 certificate, and the signature mod. |
@@ -32,7 +32,7 @@ applies.
 - **E1 (does real Demonware accept an OpenPak console?)** was never run and no longer gates
   anything: the server exists. It still matters for one decision: if the real service accepts
   OpenPak consoles, redirecting `lavender-*` to this server is optional for CTR.
-- **E6 (hardware)** is the next real test, and it needs the client mod first.
+- **E6 (hardware)** is the next real test, and it needs the CTR key patch (shipped by `openpak.nro` and built into the emulators).
 - **Non-goals of the study** (leaderboard parity, Grand Prix live content, anti-cheat,
   telemetry) stand. The Pit Stop economy, listed there as a non-goal, is implemented because
   the game's own data made it cheap and the shop is unusable without balances.
@@ -41,5 +41,6 @@ applies.
 
 - The lobby port: the citron hook rewrites port 443 for the lobby host as well as auth3, but
   the lobby is plain TCP and the fact source serves it on 3074. See `provenance.md`.
-- The client mod that installs our `X-Signature` key: not part of OpenPak, and nothing about
-  its shape is known here beyond "RSA-2048, PSS, SHA-256, zero salt".
+- The `X-Signature` key: solved by [`tools/ctr-key-patch`](../tools/ctr-key-patch), a
+  data-only swap of the embedded modulus, found and verified in OpenPak's own dump of the final
+  update. Not yet run.

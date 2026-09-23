@@ -26,6 +26,7 @@ nx-mod and the Crash Team Racing work to CollectingW.
 | Ticket layout and magic 0xEFBDADDE, clear-read when magic present | NX:NOTES.md §2, NX:auth.go |
 | CTR online id at ticket +25, must be stable | NX:auth.go, NX:README.md §Crash Team Racing |
 | CTR `X-Signature`, RSA-PSS SHA-256 zero salt, client mod needed | NX:README.md, NX:ctr_signing.go |
+| CTR's verify key is the embedded Demonware SPKI at NSO `0x40B4E40`; the X-Signature handler (mapped `0xd4e0`..`0xd5a0`) and the lobby key wrap (`0x14584`, flag-gated) both load it | OpenPak's own dump of the v983040 update, disassembled (`tools/ctr-key-patch/README.md`) |
 | Umbrella `/v1.0/tokens/lsg/` request and reply fields | NX:ctr_umbrella.go |
 | Hello layout, frame layout, 0x81..0x85, keepalive echo | NX:NOTES.md §3, NX:handshake.go |
 | Transcript, HMAC/HKDF-style expand, CLIENTCHAL/BDDATA split | NX:NOTES.md §3, NX:bdcrypto.go |

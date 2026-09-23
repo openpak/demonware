@@ -6,6 +6,10 @@
 
 First version. Not tagged, not deployed.
 
+- CTR key patch (`tools/ctr-key-patch`): a data-only IPS for the final update swapping the
+  embedded RSA modulus for OpenPak's, the one game patch OpenPak ships; the lobby accepts a
+  lobby key wrapped with the configured signing key's public half.
+
 - auth3 for Diablo III (5745) and Crash Team Racing Nitro-Fueled (5775): identity through
   nx-baas `/internal/switch/identity`, banned and unknown accounts refused, fail-closed;
   optional PROXY protocol v1; CTR umbrella token and signed replies.
