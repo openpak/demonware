@@ -51,3 +51,4 @@ shared-docs
 
 # Runtime state
 /data/
+__pycache__/
