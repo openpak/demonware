@@ -1,0 +1,1525 @@
+# Crash Team Racing Nitro-Fueled Pit Stop catalog (Switch 1.0.15).
+# sku	price	items granted (comma list)	bundle parts (comma list of skus, - if none)	name
+200000	1500	133	-	Character_BigNorm
+200001	1500	134	-	Character_Crunch
+200002	1500	135	-	Character_Geary
+200003	1500	136	-	Character_Krunk
+200004	1500	137	-	Character_Nash
+200005	1500	138	-	Character_Ntrance
+200006	1500	139	-	Character_RealVelo
+200007	1500	140	-	Character_SmallNorm
+200008	1500	141	-	Character_Zam
+200009	1500	142	-	Character_Zem
+200010	2500	143	-	Skin_Coco_Beach
+200011	2500	144	-	Skin_Coco_Princess
+200012	2500	145	-	Skin_Cortex_Ninja
+200013	2500	146	-	Skin_Cortex_Robot
+200014	2500	147	-	Skin_Crash_Scuba
+200015	2500	148	-	Skin_Crunch_DirtBike
+200016	2500	150	-	Skin_Dingodile_Beach
+200017	2500	149	-	Skin_Dingodile_Hazmat
+200018	2500	151	-	Skin_FakeCrash_Cowboy
+200019	2500	152	-	Skin_KomodoJoe_Khan
+200020	2500	153	-	Skin_NGin_Ballerina
+200021	2500	154	-	Skin_NGin_Cook
+200022	2500	155	-	Skin_Ntrance_LifeSaver
+200023	2500	156	-	Skin_Oxide_ShowerCap
+200024	2500	157	-	Skin_Penta_Ninja
+200025	2500	158	-	Skin_Pinstripe_Gangster
+200026	2500	159	-	Skin_Polar_Fisherman
+200027	2500	160	-	Skin_Pura_Musketeer
+200028	2500	161	-	Skin_RipperRoo_Gentleman
+200029	2500	162	-	Skin_TinyTiger_General
+200030	2500	163	-	Skin_TinyTiger_Football
+200031	2500	164	-	Skin_Zam_Bulldog
+200032	2500	165	-	Skin_Zem_Punk
+200033	1500	167	-	Paint_NitroBlue
+200034	1500	170	-	Paint_NitroPurple
+200035	1500	169	-	Paint_NitroPink
+200036	1500	171	-	Paint_NitroRed
+200037	1500	168	-	Paint_NitroOrange
+200038	1500	172	-	Paint_NitroYellow
+200039	1500	173	-	Paint_NitroGreen
+200040	1500	166	-	Paint_NitroAqua
+200041	1500	174	-	Paint_IridescentAqua
+200042	1500	175	-	Paint_IridescentPurple
+200043	1500	176	-	Paint_IridescentRed
+200044	1500	177	-	Paint_IridescentOrange
+200045	500	178	-	Decal_Classic_RainingHearts
+200046	250	179	-	Decal_Cabrio_RoadTrip
+200047	500	180	-	Decal_Cabrio_FlyingRibbons
+200048	500	181	-	Decal_Cabrio_PaintSplashes
+200049	1000	182	-	Decal_Cabrio_TheDragon
+200050	1000	183	-	Decal_Cabrio_WildStyle
+200051	250	119	-	Decal_Crikey_Expedition
+200052	250	185	-	Decal_Crikey_MarkOfTheHunter
+200053	500	186	-	Decal_Crikey_GiraffeSpot
+200054	1000	187	-	Decal_Crikey_Camouflage
+200055	250	123	-	Decal_Deadinator_Taxi
+200056	500	189	-	Decal_Deadinator_RoyalFlush
+200057	500	190	-	Decal_Deadinator_SharkAttack
+200058	1000	191	-	Decal_Deadinator_TheLuckyOne
+200059	500	192	-	Decal_DoomBuggy_SeaReef
+200060	500	193	-	Decal_DoomBuggy_GalacticVoyager
+200061	1000	194	-	Decal_DoomBuggy_Submerged
+200062	1000	195	-	Decal_DoomBuggy_TheKraken
+200063	500	196	-	Decal_Hovercraft_InterGalacticFlames
+200064	500	197	-	Decal_Hovercraft_Sunrays
+200065	500	198	-	Decal_Hovercraft_GasmoxianStyle
+200066	1000	199	-	Decal_Hovercraft_SeaOfFury
+200067	500	200	-	Decal_Imperium_FieryFlash
+200068	500	201	-	Decal_Imperium_FullOfMud
+200069	1000	202	-	Decal_Imperium_ComicsArt
+200070	1000	203	-	Decal_Imperium_StarsAndStripes
+200071	250	204	-	Decal_Roadster_TwoTones
+200072	500	205	-	Decal_Roadster_PureNature
+200073	500	206	-	Decal_Roadster_DotsAndSpots
+200074	1000	207	-	Decal_Roadster_TheFish
+200075	1000	208	-	Decal_Roadster_TropicalSunset
+200076	250	115	-	Decal_SixPipes_BottomLine
+200077	500	210	-	Decal_SixPipes_BlingBling
+200078	1000	211	-	Decal_SixPipes_SkullsAndBones
+200079	500	212	-	Decal_SixPipes_RippinRaptor
+200080	1000	213	-	Decal_TeamBandicoot_DigitalFire
+200081	1000	214	-	Decal_TeamBandicoot_AncientPattern
+200082	500	215	-	Decal_TeamCortex_DeepScratches
+200083	500	216	-	Decal_TeamOxide_WebOfOxide
+200084	1000	217	-	Decal_TeamOxide_CosmicSky
+200085	500	218	-	Decal_TeamOxide_Motherboard
+200086	500	219	-	Decal_TeamTrance_EveningShade
+200087	1000	220	-	Decal_TeamTrance_HighTechTwo
+200088	500	221	-	Decal_Trikee_Boom
+200089	500	222	-	Decal_Trikee_LightSpeed
+200090	250	127	-	Decal_Trikee_CheckeredLine
+200091	2500	270	-	Wheel_NitroDoomBuggy
+200092	2500	271	-	Wheel_NitroTeamBandicoot
+200093	2500	272	-	Wheel_NitroDeadinator
+200094	2500	273	-	Wheel_NitroRoadster
+200095	2500	274	-	Wheel_NitroTeamCortex
+200096	2500	275	-	Wheel_NitroTrikee
+200097	2500	276	-	Wheel_NitroTeamTrance
+200098	2500	277	-	Wheel_NitroTeamOxide
+200099	7200	138,150,155,174	200102,200101,200100,200103	Bundle_Characters_SummerTime_materials
+200100	1350	138	-	Character_Ntrance
+200101	2250	155	-	Skin_Ntrance_LifeSaver
+200102	2250	150	-	Skin_Dingodile_Beach
+200103	1350	174	-	Paint_IridescentAqua
+200104	3600	144,244,245,246	200105,200195,200196,200197	Bundle_Characters_FairyTale_materials
+200105	2250	144	-	Skin_Coco_Princess
+200106	4275	101,102,103,104	200107,200109,200108,200110	Bundle_Karts_DoomBuggy_materials
+200107	2250	101	-	Body_DoomBuggy
+200108	675	104	-	Paint_DoomBuggyGrey
+200109	1125	102	-	Wheel_DoomBuggy
+200110	225	103	-	Decal_DoomBuggy_CurvedStripes
+200111	3825	105,106,107,108	200112,200114,200113,200115	Bundle_Karts_Imperium_materials
+200112	2250	105	-	Body_Imperium
+200113	675	108	-	Paint_ImperiumRed
+200114	675	106	-	Wheel_Imperium
+200115	225	107	-	Decal_Imperium_Racer
+200116	4275	109,110,111,112	200117,200118,200119,200120	Bundle_karts_Roadster_materials
+200117	2250	109	-	Body_Roadster
+200118	1125	110	-	Wheel_Roadster
+200119	675	112	-	Paint_RoadsterPink
+200120	225	111	-	Decal_Roadster_LoneStar
+200121	4500	113,114,116,209	200122,200123,200124,200125	Bundle_Karts_SixPipes_materials
+200122	2250	113	-	Body_SixPipes
+200123	1125	114	-	Wheel_SixPipes
+200124	675	116	-	Paint_SixPipesRed
+200125	450	209	-	Decal_SixPipes_HotRod
+200126	4500	125,126,128,223	200127,200128,200129,200130	Bundle_Karts_Trikee_materials
+200127	2250	125	-	Body_Trikee
+200128	1125	126	-	Wheel_Trikee
+200129	675	128	-	Paint_TrikeeOrange
+200130	450	223	-	Decal_Trikee_TheEqualizer
+200131	4275	129,130,131,132	200132,200133,200134,200135	Bundle_Karts_Cabrio_materials
+200132	2250	129	-	Body_Cabrio
+200133	1125	130	-	Wheel_Cabrio
+200134	675	132	-	Paint_CabrioYellow
+200135	225	131	-	Decal_Cabrio_SingleStripe
+200136	3825	117,118,120,184	200137,200138,200139,200140	Bundle_Karts_Crikey_materials
+200137	2250	117	-	Body_Crikey
+200138	675	118	-	Wheel_Crikey
+200139	675	120	-	Paint_CrikeyYellow
+200140	225	184	-	Decal_Crikey_TigerStripes
+200141	4500	121,122,124,188	200142,200143,200144,200145	Bundle_Karts_Deadinator_materials
+200142	2250	121	-	Body_Deadinator
+200143	1125	122	-	Wheel_Deadinator
+200144	675	124	-	Paint_DeadinatorPurple
+200145	450	188	-	Decal_Deadinator_LowRider
+200146	2000	248,249,250,251	200147,200148,200149,200150	Sticker_Pack1_materials
+200147	500	248	-	Sticker_10
+200148	500	249	-	Sticker_12
+200149	500	250	-	Sticker_13
+200150	500	251	-	Sticker_14
+200151	2000	252,253,254,255	200152,200153,200154,200155	Sticker_Pack2_materials
+200152	500	252	-	Sticker_75
+200153	500	253	-	Sticker_76
+200154	500	254	-	Sticker_78
+200155	500	255	-	Sticker_79
+200156	2000	256,257,258,259	200157,200158,200159,200160	Sticker_Pack3_materials
+200157	500	256	-	Sticker_95
+200158	500	257	-	Sticker_96
+200159	500	258	-	Sticker_97
+200160	500	259	-	Sticker_98
+200161	3000	260,262,263	200162,200163,200164	Sticker_Pack4_materials
+200162	1000	260	-	Sticker_00
+200163	1000	262	-	Sticker_22
+200164	1000	263	-	Sticker_33
+200165	3000	264,265,267	200166,200167,200168	Sticker_Pack5_materials
+200166	1000	264	-	Sticker_44
+200167	1000	265	-	Sticker_55
+200168	1000	267	-	Sticker_77
+200169	3000	226,229,230	200170,200171,200172	Sticker_CNK_Racers_materials
+200170	1000	229	-	Sticker_Zam
+200171	1000	230	-	Sticker_Zem
+200172	1000	226	-	Sticker_NTrance
+200173	3000	225,227,228	200174,200175,200176	Sticker_Velos_Henchmen_materials
+200174	1000	227	-	Sticker_RealVelo
+200175	1000	225	-	Sticker_BigNorm
+200176	1000	228	-	Sticker_SmallNorm
+200177	3000	239,240,241	200178,200179,200180	Sticker_Monster_Theme_materials
+200178	1000	239	-	Sticker_Dragon
+200179	1000	240	-	Sticker_Gargoyle
+200180	1000	241	-	Sticker_Spider
+200181	3000	242,243,247	200182,200183,200184	Sticker_Little_Critter_Theme_materials
+200182	1000	247	-	Sticker_Bat
+200183	1000	242	-	Sticker_Butterfly
+200184	1000	243	-	Sticker_Chicken
+200185	1000	235,236,237,238	200186,200187,200188,200189	Sticker_Hazard_Pack2_materials
+200186	250	235	-	Sticker_Shock
+200187	250	236	-	Sticker_Poison
+200188	250	237	-	Sticker_Flammable
+200189	250	238	-	Sticker_Radioactive
+200190	1000	231,232,233,234	200191,200192,200193,200194	Sticker_Hazard_Pack1_materials
+200191	250	231	-	Sticker_Exclamation
+200192	250	232	-	Sticker_Question
+200193	250	233	-	Sticker_NitroCrate
+200194	250	234	-	Sticker_TnTCrate
+200195	450	244	-	Sticker_Flower
+200196	450	245	-	Sticker_Heart
+200197	450	246	-	Sticker_Star
+200198	1500	300,301,302	200199,200200,200201	Sticker_GemstonePack
+200199	500	300	-	Sticker_Crystal
+200200	500	301	-	Sticker_Gem
+200201	500	302	-	Sticker_OxideShip
+200202	1000	224	-	Decal_Trikee_FishScales
+200203	5175	261,312,317,328	200205,200204,200207,200206	Bundle_RacerGirls_Ami
+200204	1350	312	-	Character_Ami
+200205	2250	317	-	Skin_Ami_Motorsport
+200206	900	261	-	Sticker_11
+200207	675	328	-	Paint_Ami
+200208	5175	269,313,318,326	200210,200209,200211,200212	Bundle_RacerGirls_Megumi
+200209	1350	313	-	Character_Megumi
+200210	2250	318	-	Skin_Megumi_Motorsport
+200211	900	269	-	Sticker_99
+200212	675	326	-	Paint_Megumi
+200213	5175	266,314,319,327	200215,200214,200217,200216	Bundle_RacerGirls_Liz
+200214	1350	314	-	Character_Liz
+200215	2250	319	-	Skin_Liz_Motorsport
+200216	900	266	-	Sticker_66
+200217	675	327	-	Paint_Liz
+200218	5175	268,315,320,329	200219,200220,200221,200222	Bundle_RacerGirls_Isabella
+200219	2250	320	-	Skin_Isabella_Motorsport
+200220	1350	315	-	Character_Isabella
+200221	675	329	-	Paint_Isabella
+200222	900	268	-	Sticker_88
+200223	2500	317	-	Skin_Ami_Motorsport
+200224	2500	318	-	Skin_Megumi_Motorsport
+200225	2500	319	-	Skin_Liz_Motorsport
+200226	2500	320	-	Skin_Isabella_Motorsport
+200227	2500	322	-	Skin_TinyTiger_Biker
+200228	2500	323	-	Skin_NGin_CrashTestDummy
+200229	2500	409	-	Skin_Crash_Biker
+200230	2500	366	-	Wheel_MagicGreen
+200231	2500	365	-	Wheel_MagicAqua
+200232	2500	369	-	Wheel_MagicPurple
+200233	2500	364	-	Wheel_MagicBlue
+200234	2500	371	-	Wheel_MagicYellow
+200235	2500	368	-	Wheel_MagicPink
+200236	2500	370	-	Wheel_MagicRed
+200237	2500	367	-	Wheel_MagicOrange
+200238	1	332,373,382,399	200242,200239,200241,200240	Sticker_Nitro_Tour_Pack1_materials
+200239	334	399	-	Sticker_USA
+200240	333	373	-	Sticker_Australia
+200241	333	382	-	Sticker_France
+200242	750	332	-	Paint_BlueWhite
+200243	1	330,375,383,395	200247,200245,200244,200246	Sticker_Nitro_Tour_Pack2_materials
+200244	334	375	-	Sticker_Belgium
+200245	333	383	-	Sticker_Germany
+200246	333	395	-	Sticker_Spain
+200247	750	330	-	Paint_BlackYellow
+200248	1	342,379,390,398	200252,200250,200251,200249	Sticker_Nitro_Tour_Pack3_materials
+200249	333	379	-	Sticker_CzechRep
+200250	334	398	-	Sticker_UK
+200251	333	390	-	Sticker_NewZealand
+200252	750	342	-	Paint_WhiteRed01
+200253	1	338,389,391,393	200257,200256,200255,200254	Sticker_Nitro_Tour_Pack4_materials
+200254	334	393	-	Sticker_Russia
+200255	333	391	-	Sticker_Norway
+200256	333	389	-	Sticker_Netherlands
+200257	750	338	-	Paint_RedWhite01
+200258	1650	347,376	200260,200259	Sticker_Nitro_Tour_Pack5_materials
+200259	900	376	-	Sticker_Brazil
+200260	750	347	-	Paint_YellowGreen
+200261	1650	333,396	200263,200262	Sticker_Nitro_Tour_Pack6_materials
+200262	900	396	-	Sticker_Sweden
+200263	750	333	-	Paint_BlueYellow
+200264	750	346	-	Paint_YellowBlue
+200265	750	344	-	Paint_WhiteRed03
+200266	1500	314	-	Character_Liz
+200267	1500	312	-	Character_Ami
+200268	1500	315	-	Character_Isabella
+200269	1500	313	-	Character_Megumi
+200270	1	341,372,381,384	200274,200272,200273,200271	Sticker_Nitro_Tour_Pack7_materials
+200271	333	372	-	Sticker_Argentina
+200272	334	381	-	Sticker_Finland
+200273	333	384	-	Sticker_Greece
+200274	750	341	-	Paint_WhiteBlue
+200275	1	343,378,387,392	200279,200277,200276,200278	Sticker_Nitro_Tour_Pack8_materials
+200276	334	392	-	Sticker_Poland
+200277	333	387	-	Sticker_Japan
+200278	333	378	-	Sticker_Chile
+200279	750	343	-	Paint_WhiteRed02
+200280	1750	339,374,377,380	200284,200281,200282,200283	Sticker_Nitro_Tour_Pack9_materials
+200281	334	377	-	Sticker_Canada
+200282	333	374	-	Sticker_Austria
+200283	333	380	-	Sticker_Denmark
+200284	750	339	-	Paint_RedWhite02
+200285	1	334,386,388,397	200289,200287,200286,200288	Sticker_Nitro_Tour_Pack10_materials
+200286	334	388	-	Sticker_Mexico
+200287	333	386	-	Sticker_Italy
+200288	333	397	-	Sticker_UAE
+200289	750	334	-	Paint_GreenWhite01
+200290	1650	336,394	200292,200291	Sticker_Nitro_Tour_Pack11_materials
+200291	900	394	-	Sticker_SouthAfrica
+200292	750	336	-	Paint_GreenYellow
+200293	1650	335,385	200295,200294	Sticker_Nitro_Tour_Pack12_materials
+200294	900	385	-	Sticker_Ireland
+200295	750	335	-	Paint_GreenWhite02
+200296	3600	405,406,407,408	200297,200298,200299,200300	Sticker_Nitro_Tour_Pack_Nitro_Team
+200297	900	405	-	Sticker_Ami_materials
+200298	900	407	-	Sticker_Megumi_materials
+200299	900	406	-	Sticker_Liz_materials
+200300	900	408	-	Sticker_Isabella_materials
+200301	750	345	-	Paint_YellowBlack
+200302	4500	303,304,305,306	200303,200304,200305,200306	Bundle_Karts_LeChaux
+200303	2250	303	-	Body_LeChaux
+200304	1125	304	-	Wheel_LeChaux
+200305	675	305	-	Paint_LeChaux
+200306	450	306	-	Decal_LeChaux_Contour_materials
+200307	2500	321	-	Skin_Dingodile_Painter
+200308	2500	324	-	Skin_Cortex_Pharaoh
+200309	500	307	-	Decal_LeChaux_Pinnacle_materials
+200310	500	308	-	Decal_LeChaux_Splitwave_materials
+200311	500	309	-	Decal_LeChaux_FlowingArrows_materials
+200312	1000	310	-	Decal_LeChaux_FieryEagle_materials
+200313	250	351	-	Decal_BandiBuggy_Spots_materials
+200314	250	353	-	Decal_BandiBuggy_TwinBands
+200315	1000	355	-	Decal_BandiBuggy_Rattlesnake
+200316	250	359	-	Decal_Rocket_CheckerBoard
+200317	250	360	-	Decal_Rocket_ClassicStripes
+200318	500	362	-	Decal_Rocket_Squared
+200319	750	331	-	Paint_BlueRed
+200320	750	337	-	Paint_RedBlue
+200321	750	340	-	Paint_RedYellow
+200322	1500	244,245,246	200323,200324,200325	Sticker_Feel_Good_Pack
+200323	500	244	-	Sticker_Flower
+200324	500	245	-	Sticker_Heart
+200325	500	246	-	Sticker_Star
+200326	3375	415,451,463,477	200327,200328,200330,200329	Bundle_Characters_BabyCoco
+200327	1350	415	-	Character_BabyCoco
+200328	900	477	-	Sticker_BabyCoco
+200329	675	463	-	Paint_Pastel
+200330	450	451	-	Decal_Nostalginator_FloatingFlowers
+200331	3375	416,452,463,476	200332,200333,200329,200334	Bundle_Characters_BabyCrash
+200332	1350	416	-	Character_BabyCrash
+200333	900	476	-	Sticker_BabyCrash
+200334	450	452	-	Decal_Nostalginator_BedTime
+200335	9900	426,440,441,442	200336,200337,200338,200339	Bundle_Karts_Probulot
+200336	6750	440	-	Body_Probulot
+200337	675	441	-	Paint_ProbulotTeal
+200338	225	442	-	Decal_Probulot_SideStripes
+200339	2250	426	-	Skin_Crash_MadScientist
+200340	1500	415	-	Character_BabyCoco
+200341	1500	416	-	Character_BabyCrash
+200342	2500	422	-	Skin_Pura_Sabertooth
+200343	2500	423	-	Skin_Ntropy_StoneAge
+200344	2500	424	-	Skin_Zem_Caveman
+200345	2500	425	-	Skin_Krunk_Jurassic
+200346	2500	427	-	Skin_RipperRoo_MadScientist
+200347	2500	426	-	Skin_Crash_MadScientist
+200348	2500	428	-	Skin_Ntrance_WoodToy
+200349	2500	429	-	Skin_TinyTiger_Gladiator
+200350	1500	464	-	Paint_Obsidian
+200351	1500	465	-	Paint_Quartz
+200352	250	435	-	Decal_Mammoth_PrimalSplash
+200353	250	436	-	Decal_Mammoth_JungleStripes
+200354	500	437	-	Decal_Mammoth_CrudeKraken
+200355	1000	438	-	Decal_Mammoth_WarPaint
+200356	500	439	-	Decal_Mammoth_TribalPatterns
+200357	250	442	-	Decal_Probulot_SideStripes
+200358	250	443	-	Decal_Probulot_FutureHighway
+200359	500	444	-	Decal_Probulot_CoolZebra
+200360	500	445	-	Decal_Probulot_80sFashion
+200361	1000	446	-	Decal_Probulot_Pitfall
+200362	250	450	-	Decal_Nostalginator_TwoTones
+200363	500	451	-	Decal_Nostalginator_FloatingFlowers
+200364	500	452	-	Decal_Nostalginator_BedTime
+200365	250	453	-	Decal_Nostalginator_FunnyBubbles
+200366	1000	454	-	Decal_Nostalginator_BathTime
+200367	2500	459	-	Wheel_LavaPink
+200368	2500	457	-	Wheel_LavaGreen
+200369	2500	456	-	Wheel_LavaAqua
+200370	2500	458	-	Wheel_LavaOrange
+200371	2500	460	-	Wheel_LavaPurple
+200372	2500	461	-	Wheel_LavaRed
+200373	2500	462	-	Wheel_LavaYellow
+200374	1000	471,472,473	200375,200376,200377	Sticker_Pack_RockArt
+200375	250	471	-	Sticker_CavePaint_Trex
+200376	250	472	-	Sticker_CavePaint_Caveman
+200377	500	473	-	Sticker_Dino_Trex
+200378	1000	474,475	200379,200380	Sticker_Pack_Fake
+200379	500	474	-	Sticker_Dino_Ptero
+200380	500	475	-	Sticker_Dino_Triceratops
+200381	2500	455	-	Wheel_LavaBlue
+200382	750	345	-	Paint_YellowBlack
+200383	250	527,528	200384,200385	Sticker_gp3_01
+200384	125	527	-	Sticker_GemRed
+200385	125	528	-	Sticker_GemBlue
+200386	1000	535,536	200387,200388	Sticker_gp3_03
+200387	500	535	-	Sticker_GnastyGnorc
+200388	500	536	-	Sticker_Hunter
+200389	750	530,531,532	200390,200391,200392	Sticker_gp3_02
+200390	250	530	-	Sticker_LightningBow
+200391	250	531	-	Sticker_VikingHelmet
+200392	250	532	-	Sticker_Potion
+200393	5850	479,486,487	200394,200395,200396	Bundle_Characters_HRD
+200394	1350	479	-	Character_GnastyGnorc
+200395	2250	486	-	Skin_SmallNorm_Goblin
+200396	2250	487	-	Skin_BigNorm_Orc
+200397	5400	480,517,530,537	200398,200399,200400,200401	Bundle_Characters_HTR
+200398	1350	480	-	Character_Hunter
+200399	2250	517	-	Wheel_Element_Lightning
+200400	1350	537	-	Paint_GemAqua
+200401	450	530	-	Sticker_LightningBow
+200402	6300	483,515,523,531	200403,200404,200405,200406	Bundle_Characters_Viking
+200403	2250	483	-	Skin_Polar_Viking
+200404	2250	515	-	Wheel_Element_Ice
+200405	1350	523	-	Paint_GemBlue
+200406	450	531	-	Sticker_VikingHelmet
+200407	6300	484,516,524,532	200408,200409,200410,200411	Bundle_Characters_Magic
+200408	2250	484	-	Skin_KomodoJoe_Wizard
+200409	2250	516	-	Wheel_Element_Magic
+200410	1350	524	-	Paint_GemPink
+200411	450	532	-	Sticker_Potion
+200412	6075	485,514,522,527	200413,200414,200415,200416	Bundle_Characters_Hell
+200413	2250	485	-	Skin_Zam_Devil
+200414	2250	514	-	Wheel_Element_Fire
+200415	1350	522	-	Paint_GemRed
+200416	225	527	-	Sticker_GemRed
+200417	4275	498,499,504,505	200418,200419,200420,200421	Bundle_Karts_SRO
+200418	2250	498	-	Body_Spyromobile
+200419	1125	504	-	Wheel_sromobil
+200420	675	505	-	Paint_SpyroPurple
+200421	225	499	-	Decal_Spyromobile_DragonStripes
+200422	1500	480	-	Character_Hunter
+200423	1500	479	-	Character_GnastyGnorc
+200424	2500	487	-	Skin_BigNorm_Orc
+200425	2500	482	-	Skin_RealVelo_Gnome
+200426	2500	483	-	Skin_Polar_Viking
+200427	2500	484	-	Skin_KomodoJoe_Wizard
+200428	2500	485	-	Skin_Zam_Devil
+200429	2500	486	-	Skin_SmallNorm_Goblin
+200430	2500	519	-	Wheel_element_darkness
+200431	2500	517	-	Wheel_Element_Lightning
+200432	2500	520	-	Wheel_Element_Wind
+200433	2500	518	-	Wheel_Element_Light
+200434	2500	515	-	Wheel_Element_Ice
+200435	2500	521	-	Wheel_Element_Nature
+200436	2500	516	-	Wheel_Element_Magic
+200437	2500	514	-	Wheel_Element_Fire
+200438	1500	539	-	Paint_GemPurple
+200439	1500	537	-	Paint_GemAqua
+200440	1500	540	-	Paint_GemWhite
+200441	1500	538	-	Paint_GemYellow
+200442	1500	523	-	Paint_GemBlue
+200443	1500	541	-	Paint_GemGreen
+200444	1500	524	-	Paint_GemPink
+200445	1500	522	-	Paint_GemRed
+200446	250	500	-	Decal_Spyromobile_Nuggets
+200447	500	501	-	Decal_Spyromobile_DragonScales
+200448	500	502	-	Decal_Spyromobile_DragonHorns
+200449	1000	503	-	Decal_Spyromobile_FireBreath
+200450	250	491	-	decal_gnastyride_stripes
+200451	250	492	-	Decal_GnastyRide_Spots
+200452	1000	495	-	Decal_GnastyRide_Lightning
+200453	250	507	-	Decal_Dragonfly_TwoTones
+200454	250	508	-	Decal_Dragonfly_PaintSplash
+200455	500	509	-	Decal_Dragonfly_Salamander
+200456	4275	490,491,496,497	200457,200458,200459,200460	Bundle_Karts_GnastyRide
+200457	2250	490	-	Body_GnastyRide
+200458	1125	496	-	Wheel_gnride
+200459	675	497	-	Paint_GnastyYellow
+200460	225	491	-	decal_gnastyride_stripes
+200461	750	497	-	Paint_GnastyYellow
+200462	1250	496	-	Wheel_gnride
+200463	500	493	-	Decal_GnastyRide_Spikes
+200464	500	494	-	Decal_GnastyRide_Swirls
+200465	500	525,526,529	200468,200467,200466	Sticker_gp3_05
+200466	125	526	-	Sticker_GemGreen
+200467	125	525	-	Sticker_CrystalDragon
+200468	250	529	-	Sticker_Sheep
+200469	4275	506,507,512,513	200470,200471,200472,200473	Bundle_Karts_Dragonfly
+200470	2250	506	-	Body_Dragonfly
+200471	1125	512	-	Wheel_dragonfly
+200472	675	513	-	Paint_DragonflyBlue
+200473	225	507	-	Decal_Dragonfly_TwoTones
+200474	1250	512	-	Wheel_dragonfly
+200475	750	513	-	Paint_DragonflyBlue
+200476	500	510	-	Decal_Dragonfly_WavesNSwirls
+200477	1000	511	-	Decal_Dragonfly_GlitteringSparks
+200478	1500	481	-	Character_Spyro
+200479	2500	488	-	Skin_Coco_Evil
+200480	2500	489	-	Skin_Crunch_Evil
+200481	1000	533,534	200483,200482	Sticker_gp3_04
+200482	500	533	-	Sticker_Sparx
+200483	500	534	-	Sticker_Spyro
+200484	1500	584	-	Paint_GhostBlue
+200485	1500	585	-	Paint_GhostAqua
+200486	1500	586	-	Paint_GhostGreen
+200487	1500	587	-	Paint_GhostOrange
+200488	1500	588	-	Paint_GhostPink
+200489	1500	589	-	Paint_GhostPurple
+200490	1500	590	-	Paint_GhostRed
+200491	1500	591	-	Paint_GhostYellow
+200492	750	566	-	Paint_Nautilus
+200493	750	574	-	Paint_SkullRiderBeige
+200494	750	582	-	Paint_Phantom
+200495	2500	592	-	Wheel_GhostBlue
+200496	2500	593	-	Wheel_GhostAqua
+200497	2500	594	-	Wheel_GhostGreen
+200498	2500	596	-	Wheel_GhostPink
+200499	2500	597	-	Wheel_GhostPurple
+200500	2500	598	-	Wheel_GhostRed
+200501	2500	599	-	Wheel_GhostYellow
+200502	1250	567	-	Wheel_NCT
+200503	1250	575	-	Wheel_BEM
+200504	1250	583	-	Wheel_OGR
+200505	2500	551	-	Skin_FakeCrash_Monster
+200506	2500	550	-	Skin_Coco_Dark
+200507	2500	553	-	Skin_Ntrance_Humpty
+200508	2500	556	-	Skin_Tawna_Witch
+200509	2500	552	-	Skin_Oxide_MetalHead
+200510	2500	554	-	Skin_Papu_Pirate
+200511	2500	555	-	Skin_Pura_Lion
+200512	2500	559	-	Skin_Dingodile_Firefighter
+200513	2500	316	-	Skin_Tawna_Motorsport
+200514	2500	558	-	Skin_Nina_Ragdoll
+200515	2500	557	-	Skin_TinyTiger_Werewolf
+200516	1500	548	-	Character_NBrio
+200517	1500	547	-	Character_KomodoMoe
+200518	1500	311	-	Character_Tawna
+200519	1500	549	-	Character_Nina
+200520	750	325	-	Paint_Tawna
+200521	250	561	-	Decal_Nautilus_SeaSerpentsStripes
+200522	250	562	-	Decal_Nautilus_Undertow
+200523	500	563	-	Decal_Nautilus_PlaidFisherman
+200524	500	564	-	Decal_Nautilus_AbyssalShimmer
+200525	1000	565	-	Decal_Nautilus_DeepseaTentacles
+200526	250	569	-	Decal_SkullRider_SkullSplitter
+200527	250	570	-	Decal_SkullRider_SharpJaw
+200528	500	571	-	Decal_SkullRider_DarkSymbiote
+200529	500	572	-	Decal_SkullRider_HeavyMetal
+200530	1000	573	-	Decal_SkullRider_CrocScales
+200531	250	577	-	Decal_Phantom_HorrorSymphony
+200532	500	579	-	Decal_Phantom_AcousticalForest
+200533	500	580	-	Decal_Phantom_DancingBats
+200534	1000	581	-	Decal_Phantom_SpookyChoral
+200535	1500	604,605,606	200536,200537,200538	Sticker_Bundle_Creatures
+200536	500	604	-	Sticker_Scarecrow
+200537	500	605	-	Sticker_Rat
+200538	500	606	-	Sticker_Crow
+200539	500	600,601	200540,200541	Sticker_Bundle_Cemetery
+200540	250	600	-	Sticker_Moon
+200541	250	601	-	Sticker_Ghost
+200542	2000	610,611	200543,200544	Sticker_Bundle_GP4_Portraits
+200543	1000	611	-	Sticker_NBrio
+200544	1000	610	-	Sticker_KomodoMoe
+200545	2000	400,401,402,403	200546,200547,200548,200549	Sticker_Bundle_TwilightTour
+200546	1000	400	-	Sticker_PharoahCortex_materials
+200547	500	401	-	Sticker_Wings_materials
+200548	250	402	-	Sticker_Hieroglyph_01_materials
+200549	250	403	-	Sticker_Hieroglyph_02_materials
+200550	4275	568,569,574,575	200551,200552,200554,200553	Bundle_Karts_BEM
+200551	2250	568	-	Body_SkullRider
+200552	1125	575	-	Wheel_BEM
+200553	675	574	-	Paint_SkullRiderBeige
+200554	225	569	-	Decal_SkullRider_SkullSplitter
+200555	4275	560,561,566,567	200556,200557,200558,200559	Bundle_Karts_Nautilus
+200556	2250	560	-	
+200557	1125	567	-	Wheel_NCT
+200558	675	566	-	
+200559	225	561	-	
+200560	4275	576,577,582,583	200561,200562,200563,200564	Bundle_Karts_Phantom
+200561	2250	576	-	
+200562	1125	583	-	Wheel_OGR
+200563	675	582	-	
+200564	225	577	-	
+200565	4275	348,349,350,351	200566,200567,200568,200569	Bundle_Karts_BandiBuggy
+200566	2250	348	-	Body_Bandibuggy
+200567	1125	349	-	Wheel_BandiBuggy
+200568	675	350	-	Paint_Bandibuggy
+200569	225	351	-	
+200570	4275	356,357,358,359	200571,200572,200573,200574	Bundle_Karts_Rocket
+200571	2250	356	-	
+200572	1125	357	-	
+200573	675	358	-	
+200574	225	359	-	
+200575	5850	548,586,594,611	200576,200579,200577,200578	Bundle_Characters_NBO
+200576	1350	548	-	
+200577	2250	594	-	
+200578	1350	586	-	
+200579	900	611	-	
+200580	5850	547,589,597,610	200581,200582,200583,200584	Bundle_Characters_KME
+200581	1350	547	-	
+200582	900	610	-	
+200583	2250	597	-	
+200584	1350	589	-	
+200585	6075	553,591,593,601	200586,200587,200588,200589	Bundle_Characters_Humpty
+200586	2250	553	-	
+200587	225	601	-	
+200588	2250	593	-	
+200589	1350	591	-	
+200590	7200	311,556,595,616	200591,200592,200593,200594	Bundle_Characters_Witch
+200591	2250	556	-	
+200592	1350	311	-	
+200593	2250	595	-	
+200594	1350	616	-	
+200595	1000	404	200596	
+200596	1000	404	-	Sticker_Tawna_materials
+200597	2500	614	-	Wheel_GhostBlack
+200598	2500	613	-	Wheel_GhostWhite
+200599	1500	616	-	Paint_GhostBlack
+200600	1500	615	-	Paint_GhostWhite
+200601	500	361	-	Decal_Rocket_FireStorm
+200602	1000	363	-	Decal_Rocket_WingedCrown
+200603	500	352	-	Decal_BandiBuggy_Splinters
+200604	500	354	-	Decal_BandiBuggy_Avalanche
+200605	750	328	-	Paint_Ami
+200606	750	326	-	Paint_Megumi
+200607	750	327	-	Paint_Liz
+200608	750	329	-	Paint_Isabella
+200609	14004	481,488,489,490,493,494,496,497,506,510,511,512,513,525,529,533,534,541	200610,200611,200612,200613,200614,200615,200616,200617,200618,200619,200620,200621,200622,200623,200624,200625,200626,200627	LastChance_Bundle_GP3_Icon
+200610	279	490	-	
+200611	279	541	-	Sticker_GemGreen
+200612	279	497	-	
+200613	279	525	-	
+200614	279	496	-	
+200615	279	481	-	
+200616	666	493	-	
+200617	666	529	-	
+200618	666	513	-	
+200619	666	494	-	
+200620	666	533	-	
+200621	666	488	-	
+200622	1389	506	-	
+200623	1389	512	-	
+200624	1389	510	-	
+200625	1389	511	-	
+200626	1389	534	-	
+200627	1389	489	-	
+200628	2500	410	-	Skin_Crunch_Racer
+200629	1125	451,452,453,454	200630,200631,200632,200633	Bundle_Decal_Nostalginator
+200630	125	453	-	
+200631	250	451	-	
+200632	250	452	-	
+200633	500	454	-	
+200634	1125	443,444,445,446	200635,200636,200637,200638	Bundle_Decal_Probulot
+200635	125	443	-	
+200636	250	444	-	
+200637	250	445	-	
+200638	500	446	-	
+200639	1125	436,437,438,439	200640,200641,200642,200643	Bundle_Decal_Mammoth
+200640	125	436	-	
+200641	250	437	-	
+200642	250	439	-	
+200643	500	438	-	
+200644	1125	204,205,206,207	200645,200646,200647,200648	Bundle_Decal_Roadster
+200645	125	204	-	
+200646	250	205	-	
+200647	250	206	-	
+200648	500	207	-	
+200649	1125	179,180,181,183	200650,200651,200652,200653	Bundle_Decal_Cabrio
+200650	125	179	-	
+200651	250	180	-	
+200652	250	181	-	
+200653	500	183	-	
+200654	1500	200,201,202,203	200655,200656,200657,200658	Bundle_Decal_Imperium
+200655	250	200	-	
+200656	250	201	-	
+200657	500	202	-	
+200658	500	203	-	
+200659	1125	127,221,222,224	200660,200661,200662,200663	Bundle_Decal_Trikee
+200660	125	127	-	
+200661	250	221	-	
+200662	250	222	-	
+200663	500	224	-	
+200664	1125	123,189,190,191	200665,200666,200667,200668	Bundle_Decal_Deadinator
+200665	125	123	-	
+200666	250	189	-	
+200667	250	190	-	
+200668	500	191	-	
+200669	1125	119,185,186,187	200670,200671,200672,200673	Bundle_Decal_Crikey
+200670	125	119	-	
+200671	250	185	-	
+200672	250	186	-	
+200673	500	187	-	
+200674	1125	192,193,194,195	200675,200676,200677,200678	Bundle_Decal_Doombuggy
+200675	125	192	-	
+200676	250	193	-	
+200677	250	195	-	
+200678	500	194	-	
+200679	1125	115,210,211,212	200680,200681,200682,200683	Bundle_Decal_SixPipes
+200680	125	115	-	
+200681	250	210	-	
+200682	250	212	-	
+200683	500	211	-	
+200684	1125	307,308,309,310	200685,200686,200687,200688	Bundle_Decal_LeChaux
+200685	125	307	-	
+200686	250	308	-	
+200687	250	309	-	
+200688	500	310	-	
+200689	1125	352,353,354,355	200690,200691,200692,200693	Bundle_Decal_Bandibuggy
+200690	125	353	-	
+200691	250	352	-	
+200692	250	354	-	
+200693	500	355	-	
+200694	1125	360,361,362,363	200695,200696,200697,200698	Bundle_Decal_Rocket
+200695	125	360	-	
+200696	250	361	-	
+200697	250	362	-	
+200698	500	363	-	
+200699	2000	469,470,476,477	200700,200701,200702,200703	Sticker_Bundle_BackInTimePortraits
+200700	500	469	-	
+200701	500	470	-	
+200702	500	477	-	
+200703	500	476	-	
+200704	1000	468,473,474,475	200705,200706,200707,200708	Sticker_Bundle_Dino
+200705	250	468	-	
+200706	250	474	-	
+200707	250	475	-	
+200708	250	473	-	
+200709	500	466,467,471,472	200710,200711,200712,200713	Sticker_Bundle_CavePaintings
+200710	125	466	-	
+200711	125	467	-	
+200712	125	471	-	
+200713	125	472	-	
+200714	750	463	-	Paint_Pastel
+200715	2500	430	-	Skin_FakeCrash_Dashing
+200716	2500	431	-	Skin_BabyT_Fake
+200717	1500	417	-	Character_BabyT
+200718	4275	447,448,449,450	200719,200720,200721,200722	Bundle_Karts_Nostalginator
+200719	2250	447	-	
+200720	1125	448	-	
+200721	675	449	-	
+200722	225	450	-	
+200723	3150	440,441,442	200724,200725,200726	Bundle_Karts_Probulot_02
+200724	2250	440	-	
+200725	675	441	-	
+200726	225	442	-	
+200727	4175	432,433,434,435	200728,200729,200730,200731	Bundle_Karts_Mammoth
+200728	2250	432	-	
+200729	1125	433	-	
+200730	675	434	-	
+200731	125	435	-	
+200732	4050	415,416,417	200733,200734,200735	Bundle_Characters_Babies
+200733	1350	417	-	
+200734	1350	415	-	
+200735	1350	416	-	
+200736	5175	311,316,325,404	200738,200737,200739,200740	Bundle_Characters_TawnaMotorsport
+200737	1350	311	-	
+200738	2250	316	-	
+200739	675	325	-	
+200740	900	404	-	
+200741	7500	143,147,150,155	200744,200742,200743,200745	Bundle_Characters_BeachTime
+200742	1875	143	-	
+200743	1875	150	-	
+200744	1875	147	-	
+200745	1875	155	-	
+200746	7500	317,318,319,320	200747,200750,200748,200749	Bundle_Characters_MotorsportGirls
+200747	1875	317	-	
+200748	1875	319	-	
+200749	1875	320	-	
+200750	1875	318	-	
+200751	4775	620,656,662,681	200752,200753,200754,200755	Bundle_Characters_VonClutch
+200752	1350	620	-	
+200753	2250	656	-	
+200754	675	662	-	
+200755	500	681	-	
+200756	4775	619,657,664,680	200757,200758,200759,200760	Bundle_Characters_Pasadena
+200757	1350	619	-	
+200758	2250	657	-	
+200759	675	664	-	
+200760	500	680	-	
+200761	6100	622,653,668,674	200762,200763,200764,200765	Bundle_Characters_Circus_Ami
+200762	2250	622	-	
+200763	2250	653	-	
+200764	1350	668	-	
+200765	250	674	-	
+200766	6100	624,654,666,677	200767,200768,200769,200770	Bundle_Characters_Circus_Megumi
+200767	2250	624	-	
+200768	2250	654	-	
+200769	1350	666	-	
+200770	250	677	-	
+200771	6100	623,652,669,673	200772,200773,200774,200775	Bundle_Characters_Circus_Isabella
+200772	2250	623	-	
+200773	2250	652	-	
+200774	1350	669	-	
+200775	250	673	-	
+200776	6100	625,658,667,676	200777,200778,200779,200780	Bundle_Characters_Circus_Liz
+200777	2250	625	-	
+200778	2250	658	-	
+200779	1350	667	-	
+200780	250	676	-	
+200781	5300	626,651,663,672	200782,200783,200784,200785	Bundle_Characters_Cannonball
+200782	2250	626	-	
+200783	2250	651	-	
+200784	675	663	-	
+200785	125	672	-	
+200786	5975	627,655,665,670	200787,200788,200789,200790	Bundle_Characters_Clown
+200787	2250	627	-	
+200788	2250	655	-	
+200789	1350	665	-	
+200790	125	670	-	
+200791	5175	629,630,682	200792,200793,200794	Bundle_Characters_AgriculturalShow
+200792	2250	629	-	
+200793	2250	630	-	
+200794	675	682	-	
+200795	3375	631,634,635,659	200796,200797,200798,200799	Bundle_Karts_NitroBumper
+200796	2250	631	-	
+200797	675	659	-	
+200798	225	634	-	
+200799	225	635	-	
+200800	1500	618	-	Character_KoalaKong
+200801	1500	619	-	Character_Pasadena
+200802	1500	620	-	Character_VonClutch
+200803	2500	622	-	Skin_Ami_Circus
+200804	2500	624	-	Skin_Megumi_Circus
+200805	2500	623	-	Skin_Isabella_Circus
+200806	2500	625	-	Skin_liz_Circus
+200807	2500	627	-	Skin_Cortex_Clown
+200808	2500	628	-	Skin_Penta_Clown
+200809	2500	621	-	Skin_KoalaKong_Circus
+200810	2500	626	-	Skin_Nash_Cannonball
+200811	2500	629	-	Skin_FakeCrash_Rustic
+200812	2500	630	-	Skin_NGin_Farmer
+200813	3825	632,640,649,660	200814,200815,200816,200817	Bundle_Karts_Daredevil
+200814	2250	632	-	
+200815	675	649	-	
+200816	675	660	-	
+200817	225	640	-	
+200818	4275	633,644,650,661	200819,200820,200821,200822	Bundle_Karts_Pressurizer
+200819	2250	633	-	
+200820	1125	650	-	
+200821	675	661	-	
+200822	225	644	-	
+200823	250	640	-	Decal_Daredevil_CircusStripes
+200824	500	641	-	Decal_Daredevil_TechRacer
+200825	500	642	-	Decal_Daredevil_Daredevil
+200826	100	643	-	Decal_Daredevil_EagleFlight
+200827	250	645	-	Decal_Pressurizer_Splat
+200828	500	646	-	Decal_Pressurizer_ElectricGenerator
+200829	500	647	-	Decal_Pressurizer_LiquidNitro
+200830	1000	648	-	Decal_Pressurizer_TankDemon
+200831	500	636	-	Decal_NitroBumper_MallRide
+200832	500	637	-	Decal_NitroBumper_SpeedThreads
+200833	1000	638	-	Decal_NitroBumper_NeonDragon
+200834	2500	651	-	Wheel_NeonBlue
+200835	2500	652	-	Wheel_NeonAqua
+200836	2500	653	-	Wheel_NeonGreen
+200837	2500	654	-	Wheel_NeonRainbow
+200838	2500	655	-	Wheel_NeonOrange
+200839	2500	656	-	Wheel_NeonRed
+200840	2500	657	-	Wheel_NeonPink
+200841	2500	658	-	Wheel_NeonPurple
+200842	750	682	-	Paint_Wood
+200843	750	662	-	Paint_SparklingGreen
+200844	750	663	-	Paint_BlueWhiteStars
+200845	750	664	-	Paint_SparklingBlue
+200846	1500	665	-	Paint_NeonRedYellow
+200847	1500	666	-	Paint_NeonBlueYellow
+200848	1500	667	-	Paint_NeonPurpleYellow
+200849	1500	668	-	Paint_NeonGreenYellow
+200850	1500	669	-	Paint_NeonVioletBlue
+200851	1250	673,676,677,680	200852,200853,200854,200855	Sticker_Bundle_RisingStar
+200852	250	673	-	
+200853	250	676	-	
+200854	250	677	-	
+200855	500	680	-	
+200856	1000	670,672,674,681	200857,200858,200859,200860	Sticker_Bundle_GoingFlying
+200857	250	674	-	
+200858	125	672	-	
+200859	125	670	-	
+200860	500	681	-	
+200861	14004	549,557,558,560,563,564,566,567,576,580,581,582,583,602,603,607,608,609	200862,200863,200864,200865,200866,200867,200868,200869,200870,200871,200872,200873,200874,200875,200876,200877,200878,200879	LastChance_Bundle_GP4
+200862	279	560	-	
+200863	279	602	-	
+200864	279	566	-	
+200865	279	603	-	
+200866	279	567	-	
+200867	279	549	-	
+200868	666	563	-	
+200869	666	607	-	
+200870	666	582	-	
+200871	666	564	-	
+200872	666	608	-	
+200873	666	557	-	
+200874	1389	576	-	
+200875	1389	583	-	
+200876	1389	580	-	
+200877	1389	581	-	
+200878	1389	609	-	
+200879	1389	558	-	
+200880	250	639	-	Decal_Daredevil_SpeedWaves
+200881	1125	500,501,502,503	200882,200883,200884,200885	Bundle_Decal_Spyromobile
+200882	125	500	-	
+200883	250	501	-	
+200884	250	502	-	
+200885	500	503	-	
+200886	1125	492,493,494,495	200887,200888,200889,200890	Bundle_Decal_GnastyRide
+200887	125	492	-	
+200888	250	493	-	
+200889	250	494	-	
+200890	500	495	-	
+200891	2000	261,266,268,269	200892,200893,200894,200895	Sticker_bundle_MotorsportNumbers
+200892	500	261	-	
+200893	500	266	-	
+200894	500	268	-	
+200895	500	269	-	
+200896	5625	153,163,321	200899,200898,200897	Bundle_Characters_VillainHobbies
+200897	1875	153	-	
+200898	1875	163	-	
+200899	1875	321	-	
+200900	7500	422,423,424,425	200902,200901,200903,200904	Bundle_Characters_StoneAge
+200901	1875	423	-	
+200902	1875	422	-	
+200903	1875	424	-	
+200904	1875	425	-	
+200905	5625	148,322,409	200906,200907,200908	Bundle_Characters_BickingTime
+200906	1875	409	-	
+200907	1875	322	-	
+200908	1875	148	-	
+200909	1125	508,509,510,511	200910,200911,200912,200913	Bundle_Decal_Dragonfly
+200910	125	508	-	
+200911	250	509	-	
+200912	250	510	-	
+200913	500	511	-	
+200914	250	701	-	Decal_NitroSleigh_SkyLines
+200915	250	702	-	Decal_NitroSleigh_PolarAirway
+200916	500	703	-	Decal_NitroSleigh_FlyingRibbons
+200917	500	704	-	Decal_NitroSleigh_ThunderStorm
+200918	1000	705	-	Decal_NitroSleigh_SundaeBlast
+200919	250	706	-	Decal_Unicone_CandyCane
+200920	250	707	-	Decal_Unicone_CakeIcing
+200921	500	708	-	Decal_Unicone_SweetZebra
+200922	500	709	-	Decal_Unicone_CookieDough
+200923	1000	710	-	Decal_Unicone_SugarBomb
+200924	250	711	-	Decal_Snowplower_HardEdges
+200925	250	712	-	Decal_Snowplower_WinterStripes
+200926	500	713	-	Decal_Snowplower_IceBreaker
+200927	500	714	-	Decal_Snowplower_SnowStorm
+200928	1000	715	-	Decal_Snowplower_Avalanche
+200929	2500	695	-	Skin_Coco_Elf
+200930	2500	689	-	Skin_Crash_Reindeer
+200931	2500	693	-	Skin_BabyCoco__PJ
+200932	2500	694	-	Skin_BabyCrash_PJ
+200933	2500	697	-	Skin_Spyro_Winter
+200934	2500	690	-	Skin_Tawna_Winter
+200935	2500	692	-	Skin_Nash_Arctic
+200936	1500	687	-	Character_Chick
+200937	1500	688	-	Character_Stew
+200938	1500	685	-	Character_Yaya
+200939	1500	686	-	Character_Hasty
+200940	1500	684	-	Character_RillaRoo
+200941	375	740,741,742	200942,200943,200946	Sticker_Bundle_Sugar
+200942	125	740	-	
+200943	125	741	-	
+200944	500	744,745	200945,200947	Sticker_Bundle_Jelly
+200945	250	744	-	
+200946	125	742	-	
+200947	250	745	-	
+200948	1000	748,749	200949,200950	Sticker_Bundle_WinterFestivalPortraits
+200949	500	749	-	
+200950	500	748	-	
+200951	4275	700,711,719,730	200952,200953,200954,200955	Bundle_Karts_SnowPlower
+200952	2250	700	-	
+200953	1125	719	-	
+200954	675	730	-	
+200955	225	711	-	
+200956	5400	699,706,718,729	200957,200958,200959,200960	Bundle_Karts_CandyCone
+200957	2250	699	-	
+200958	2250	718	-	
+200959	675	729	-	
+200960	225	706	-	
+200961	3150	698,701,728	200962,200963,200964	Bundle_Karts_NitroSleigh
+200962	2250	698	-	
+200963	675	728	-	
+200964	225	701	-	
+200965	5400	689,698,701,728	200966,200967,200968,200969	Bundle_Karts_NitroWinter
+200966	2250	689	-	
+200967	2250	698	-	
+200968	675	728	-	
+200969	225	701	-	
+200970	2500	720	-	Wheel_DonutsCaramel
+200971	2500	721	-	Wheel_DonutsChocolate
+200972	2500	722	-	Wheel_DonutsBlueberry
+200973	2500	723	-	Wheel_DonutsLemon
+200974	2500	724	-	Wheel_DonutsStrawberry
+200975	2500	725	-	Wheel_DonutsPistachio
+200976	2500	726	-	Wheel_DonutsCappucino
+200977	2500	727	-	Wheel_DonutsLavender
+200978	1500	731	-	Paint_DonutsCaramel
+200979	1500	732	-	Paint_DonutsChocolate
+200980	1500	733	-	Paint_DonutsBlueberry
+200981	1500	734	-	Paint_DonutsLemon
+200982	1500	735	-	Paint_DonutsStrawberry
+200983	1500	736	-	Paint_DonutsPistachio
+200984	1500	737	-	Paint_DonutsCappucino
+200985	1500	738	-	Paint_DonutsLavender
+200986	5075	684,720,731,741	200987,200989,200988,200990	Bundle_Characters_RillaRoo
+200987	1350	684	-	
+200988	1350	731	-	
+200989	2250	720	-	
+200990	125	741	-	
+200991	6300	687,688,723,734	200993,200992,200994,200995	Bundle_Characters_ChickenPresenters
+200992	1350	687	-	
+200993	1350	688	-	
+200994	1350	734	-	
+200995	2250	723	-	
+200996	5200	685,725,736,745	200997,200998,200999,201000	Bundle_Characters_YayaPanda
+200997	1350	685	-	
+200998	2250	725	-	
+200999	1350	736	-	
+201000	250	745	-	
+201001	5975	695,724,735,740	201002,201003,201004,201005	Bundle_Characters_ElfOnTheShelf
+201002	2250	695	-	
+201003	2250	724	-	
+201004	1350	735	-	
+201005	125	740	-	
+201006	7200	481,697,722,733	201007,201008,201009,201010	Bundle_Characters_WinterBreath
+201007	2250	697	-	
+201008	1350	481	-	
+201009	2250	722	-	
+201010	1350	733	-	
+201011	8100	693,694,727,738	201012,201013,201014,201015	Bundle_Characters_PajamaTwins
+201012	2250	693	-	
+201013	2250	694	-	
+201014	2250	727	-	
+201015	1350	738	-	
+201016	5975	690,721,732,742	201017,201018,201019,201020	Bundle_Characters_Sweet
+201017	2250	690	-	
+201018	2250	721	-	
+201019	1350	732	-	
+201020	125	742	-	
+201021	7200	137,692,726,737	201022,201023,201024,201025	Bundle_Characters_Arctic
+201022	2250	692	-	
+201023	1350	137	-	
+201024	2250	726	-	
+201025	1350	737	-	
+201026	625	739,743,746	201027,201028,201029	Sticker_Bundle_WinterFestival
+201027	125	739	-	
+201028	250	743	-	
+201029	250	746	-	
+201030	1000	747,750	201031,201032	Sticker_Bundle_WinterFestival_02
+201031	500	747	-	
+201032	500	750	-	
+201033	14004	618,621,628,632,633,642,643,644,646,647,649,650,660,661,671,675,678,679	201034,201035,201036,201037,201038,201039,201040,201041,201042,201043,201044,201045,201046,201047,201048,201049,201050,201051	LastChance_Bundle_GP5
+201034	279	633	-	
+201035	279	671	-	
+201036	279	661	-	
+201037	279	675	-	
+201038	279	650	-	
+201039	279	618	-	
+201040	666	644	-	
+201041	666	646	-	
+201042	666	660	-	
+201043	666	647	-	
+201044	666	678	-	
+201045	666	628	-	
+201046	1389	632	-	
+201047	1389	649	-	
+201048	1389	642	-	
+201049	1389	643	-	
+201050	1389	679	-	
+201051	1389	621	-	
+201052	500	578	-	Decal_Phantom_TunedWebs
+201053	1125	562,563,564,565	201054,201055,201056,201057	Bundle_Decal_Nautilus
+201054	125	562	-	
+201055	250	563	-	
+201056	250	564	-	
+201057	500	565	-	
+201058	1000	578,579,580,581	201059,201060,201061,201062	Bundle_Decal_Phantom
+201059	125	578	-	
+201060	125	579	-	
+201061	250	580	-	
+201062	500	581	-	
+201063	1125	570,571,572,573	201064,201065,201066,201067	Bundle_Decal_SkullRider
+201064	125	570	-	
+201065	250	571	-	
+201066	250	572	-	
+201067	500	573	-	
+201068	500	602,603,607	201069,201070,201071	Sticker_Bundle_Spooky
+201069	125	602	-	
+201070	125	603	-	
+201071	250	607	-	
+201072	1000	608,609	201073,201074	Sticker_Bundle_SpookyPortraits
+201073	500	608	-	
+201074	500	609	-	
+201075	14004	686,691,696,699,700,709,710,713,714,718,719,729,730,739,743,746,747,750	201076,201077,201078,201079,201080,201081,201082,201083,201084,201085,201086,201087,201088,201089,201090,201091,201092,201093	LastChance_Bundle_GP6
+201076	279	700	-	
+201077	279	739	-	
+201078	279	730	-	
+201079	279	743	-	
+201080	279	719	-	
+201081	279	686	-	
+201082	666	746	-	
+201083	666	713	-	
+201084	666	729	-	
+201085	666	714	-	
+201086	666	750	-	
+201087	666	691	-	
+201088	1389	699	-	
+201089	1389	718	-	
+201090	1389	709	-	
+201091	1389	710	-	
+201092	1389	747	-	
+201093	1389	696	-	
+201094	2500	595	-	Wheel_GhostOrange
+201095	1500	751	-	Character_Megamix
+201096	2500	752	-	Skin_Crash_Rustland
+201097	2500	753	-	Skin_Coco_Rustland
+201098	2500	754	-	Skin_Polar_Rustland
+201099	2500	755	-	Skin_Pura_Rustland
+201100	2500	756	-	Skin_NGin_Rustland
+201101	2500	757	-	Skin_Cortex_Rustland
+201102	2500	758	-	Skin_Dingodile_Rustland
+201103	2500	759	-	Skin_TinyTiger_Rustland
+201104	2500	760	-	Skin_Nina_Rustland
+201105	2500	761	-	Skin_Megamix_Rustland
+201106	4500	762,765,781,791	201107,201110,201108,201109	Bundle_Karts_DustyRider
+201107	2250	762	-	
+201108	675	791	-	
+201109	450	765	-	
+201110	1125	781	-	
+201111	4500	764,775,782,793	201112,201113,201114,201115	Bundle_Karts_TheNuke
+201112	2250	764	-	
+201113	1125	782	-	
+201114	675	793	-	
+201115	450	775	-	
+201116	3150	763,770,792	201117,201118,201119	Bundle_Karts_DesertDuster
+201117	2250	763	-	
+201118	675	792	-	
+201119	225	770	-	
+201120	2250	752	-	Skin_Crash_Rustland
+201121	500	766	-	Decal_DustyRider_SplatteredHues
+201122	500	767	-	Decal_DustyRider_SprayedPigments
+201123	1000	768	-	Decal_DustyRider_DirectionalValues
+201124	1000	769	-	Decal_DustyRider_GraffedTones
+201125	1500	766,767,768,769	201126,201127,201128,201129	Bundle_Decal_DustyRider
+201126	250	766	-	
+201127	250	767	-	
+201128	500	768	-	
+201129	500	769	-	
+201130	250	771	-	Decal_DesertDuster_BarrenRunner
+201131	500	772	-	Decal_DesertDuster_MonsterTag
+201132	500	773	-	Decal_DesertDuster_SprayedArrows
+201133	1000	774	-	Decal_DesertDuster_SpeedGraffs
+201134	1075	771,772,773,774	201135,201136,201137,201138	Bundle_Decal_DesertDuster
+201135	125	771	-	
+201136	225	772	-	
+201137	225	773	-	
+201138	500	774	-	
+201139	500	776	-	Decal_TheNuke_HappySpray
+201140	500	777	-	Decal_TheNuke_MineSplat
+201141	1000	778	-	Decal_TheNuke_CortexTag
+201142	1000	779	-	Decal_TheNuke_MetalChicken
+201143	1500	776,777,778,779	201144,201145,201146,201147	Bundle_Decal_TheNuke
+201144	250	776	-	
+201145	250	777	-	
+201146	500	778	-	
+201147	500	779	-	
+201148	2500	783	-	Wheel_TagBlue
+201149	2500	784	-	Wheel_TagAqua
+201150	2500	785	-	Wheel_TagGreen
+201151	2500	786	-	Wheel_TagYellow
+201152	2500	787	-	Wheel_TagOrange
+201153	2500	788	-	Wheel_TagRed
+201154	2500	789	-	Wheel_TagPink
+201155	2500	790	-	Wheel_TagPurple
+201156	1500	794	-	Paint_TagBlue
+201157	1500	795	-	Paint_TagAqua
+201158	1500	796	-	Paint_TagGreen
+201159	1500	797	-	Paint_TagYellow
+201160	1500	798	-	Paint_TagOrange
+201161	1500	799	-	Paint_TagRed
+201162	1500	800	-	Paint_TagPink
+201163	1500	801	-	Paint_TagPurple
+201164	2000	802,806,807,810	201165,201166,201167,201254	Sticker_Bundle_Apocalyptic_01
+201165	500	802	-	
+201166	500	806	-	
+201167	500	807	-	
+201168	2000	803,804,805,808	201169,201170,201172,201171	Sticker_Bundle_Apocalyptic_02
+201169	500	803	-	
+201170	500	805	-	
+201171	500	804	-	
+201172	500	808	-	
+201173	1000	809,813	201175,201176	Sticker_Bundle_RustlandPortraits
+201174	500	810	-	
+201175	500	809	-	
+201176	500	813	-	
+201177	1500	811,812,814	201178,201179,201255	Sticker_Bundle_RustlandGrafitis
+201178	500	811	-	
+201179	500	812	-	
+201180	1000	636,637,638	201181,201182,201183	Bundle_Decal_NitroBumper
+201181	250	636	-	
+201182	250	637	-	
+201183	500	638	-	
+201184	1125	645,646,647,648	201185,201186,201187,201188	Bundle_Decal_Pressurizer
+201185	125	645	-	
+201186	250	646	-	
+201187	250	647	-	
+201188	500	648	-	
+201189	1125	639,641,642,643	201190,201191,201192,201193	Bundle_Decal_Daredevil
+201190	125	639	-	
+201191	250	641	-	
+201192	250	642	-	
+201193	500	643	-	
+201194	1375	671,675,678,679	201195,201196,201197,201198	Sticker_Bundle_NeonCircus
+201195	125	671	-	
+201196	250	675	-	
+201197	500	678	-	
+201198	500	679	-	
+201199	1125	702,703,704,705	201200,201201,201202,201203	Bundle_Decal_NitroSleigh
+201200	125	702	-	
+201201	250	703	-	
+201202	250	704	-	
+201203	500	705	-	
+201204	1125	712,713,714,715	201205,201206,201207,201208	Bundle_Decal_Snowplower
+201205	125	712	-	
+201206	250	713	-	
+201207	250	714	-	
+201208	500	715	-	
+201209	1125	707,708,709,710	201210,201211,201212,201213	Bundle_Decal_CandyCone
+201210	125	707	-	
+201211	250	708	-	
+201212	250	709	-	
+201213	500	710	-	
+201214	6350	757,785,796,803	201215,201216,201217,201218	Bundle_Characters_WastelandCortex
+201215	2250	757	-	
+201216	2250	785	-	
+201217	1350	796	-	
+201218	500	803	-	
+201219	6350	753,784,795,802	201220,201221,201222,201223	Bundle_Characters_WastelandCoco
+201220	2250	753	-	
+201221	2250	784	-	
+201222	1350	795	-	
+201223	500	802	-	
+201224	6350	756,786,797,805	201225,201226,201227,201228	Bundle_Characters_WastelandNGin
+201225	2250	756	-	
+201226	2250	786	-	
+201227	1350	797	-	
+201228	500	805	-	
+201229	6350	755,783,794,807	201230,201231,201232,201233	Bundle_Characters_WastelandPura
+201230	2250	755	-	
+201231	2250	783	-	
+201232	1350	794	-	
+201233	500	807	-	
+201234	6350	759,790,801,808	201235,201236,201237,201238	Bundle_Characters_WastelandTiny
+201235	2250	759	-	
+201236	2250	790	-	
+201237	1350	801	-	
+201238	500	808	-	
+201239	6350	754,789,800,806	201240,201241,201242,201243	Bundle_Characters_WastelandPolar
+201240	2250	754	-	
+201241	2250	789	-	
+201242	1350	800	-	
+201243	500	806	-	
+201244	6350	758,787,798,804	201245,201246,201247,201248	Bundle_Characters_WastelandDingodile
+201245	2250	758	-	
+201246	2250	787	-	
+201247	1350	798	-	
+201248	500	804	-	
+201249	6350	752,788,799,810	201250,201251,201252,201253	Bundle_Characters_WastelandCrash
+201250	2250	752	-	
+201251	2250	788	-	
+201252	1350	799	-	
+201253	500	810	-	
+201254	500	810	-	
+201255	500	814	-	Sticker_Bundle_RustlandGrafitis
+201256	500	765	-	Decal_DustyRider_CharredPigments
+201257	250	775	-	Decal_TheNuke_GriffGraff
+201258	14004	751,760,761,762,764,767,768,778,779,781,782,791,793,809,811,812,813,814	201259,201260,201261,201262,201263,201264,201265,201266,201267,201268,201269,201270,201271,201272,201273,201274,201275,201276	LastChance_Bundle_GP7
+201259	279	762	-	
+201260	279	811	-	
+201261	279	791	-	
+201262	279	814	-	
+201263	279	781	-	
+201264	279	751	-	
+201265	666	812	-	
+201266	666	767	-	
+201267	666	793	-	
+201268	666	768	-	
+201269	666	809	-	
+201270	666	760	-	
+201271	1389	764	-	
+201272	1389	782	-	
+201273	1389	778	-	
+201274	1389	779	-	
+201275	1389	813	-	
+201276	1389	761	-	
+201277	375	864,868	201278,201279	Sticker_Bundle_TeamBurger
+201278	125	864	-	
+201279	250	868	-	
+201280	375	865,869	201281,201282	Sticker_Bundle_TeamPizza
+201281	125	865	-	
+201282	250	869	-	
+201283	1250	870,872,873	201285,201286,201284	Sticker_Bundle_Space
+201284	250	870	-	
+201285	500	872	-	
+201286	500	873	-	
+201287	250	836	-	Decal_VeloChopper_SpeedWay
+201288	500	835	-	Decal_VeloChopper_ShootingStar
+201289	500	837	-	Decal_VeloChopper_LaserBeam
+201290	1000	838	-	Decal_VeloChopper_WarpEngine
+201291	250	829	-	Decal_VoidManta_HyperDrive
+201292	250	830	-	Decal_VoidManta_VoidRunner
+201293	500	831	-	Decal_VoidManta_JollyRoger
+201294	250	839	-	Decal_GalacticCruiser_LineBender
+201295	250	840	-	Decal_GalacticCruiser_InterstellarLane
+201296	1000	843	-	Decal_GalacticCruiser_ToxyMobile
+201297	1000	834,836,837,838	201298,201299,201300,201301	Bundle_Decal_VeloChopper
+201298	125	834	-	
+201299	125	836	-	
+201300	250	837	-	
+201301	500	838	-	
+201302	1125	830,831,832,833	201303,201304,201305,201306	Bundle_Decal_VoidManta
+201303	125	830	-	
+201304	250	831	-	
+201305	250	832	-	
+201306	500	833	-	
+201307	1125	840,841,842,843	201308,201309,201310,201311	Bundle_Decal_GalacticCruiser
+201308	125	840	-	
+201309	250	841	-	
+201310	250	842	-	
+201311	500	843	-	
+201312	2500	845	-	Wheel_ToxicBlue
+201313	2500	846	-	Wheel_ToxicAqua
+201314	2500	847	-	Wheel_ToxicGreen
+201315	2500	848	-	Wheel_ToxicYellow
+201316	2500	849	-	Wheel_ToxicOrange
+201317	2500	850	-	Wheel_ToxicRed
+201318	2500	851	-	Wheel_ToxicPink
+201319	2500	852	-	Wheel_ToxicPurple
+201320	1500	856	-	Paint_ToxicBlue
+201321	1500	857	-	Paint_ToxicAqua
+201322	1500	858	-	Paint_ToxicGreen
+201323	1500	859	-	Paint_ToxicYellow
+201324	1500	860	-	Paint_ToxicOrange
+201325	1500	861	-	Paint_ToxicRed
+201326	1500	862	-	Paint_ToxicPink
+201327	1500	863	-	Paint_ToxicPurple
+201328	2500	816	-	Skin_KoalaKong_Space
+201329	2500	817	-	Skin_NBrio_Space
+201330	2500	818	-	Skin_Ami_Space
+201331	2500	819	-	Skin_Liz_Space
+201332	2500	820	-	Skin_Megumi_Space
+201333	2500	821	-	Skin_Isabella_Space
+201334	2500	822	-	Skin_Tawna_Space
+201335	2500	823	-	Skin_Spyro_Space
+201336	2500	824	-	Skin_Velo_Space
+201337	2500	825	-	Skin_KingChicken_Space
+201338	1500	815	-	Character_Velo
+201339	3050	827,834,854	201340,201341,201342	Bundle_Karts_VeloChopper
+201340	2250	827	-	
+201341	675	854	-	
+201342	125	834	-	
+201343	3050	826,829,853	201344,201345,201346	Bundle_Karts_VoidManta
+201344	2250	826	-	
+201345	675	853	-	
+201346	125	829	-	
+201347	3050	828,839,855	201348,201349,201350	Bundle_Karts_GalacticCruiser
+201348	2250	828	-	
+201349	675	855	-	
+201350	125	839	-	
+201351	7200	314,819,852,863	201353,201352,201354,201355	Bundle_Characters_SpaceLiz
+201352	1350	314	-	
+201353	2250	819	-	
+201354	1350	863	-	
+201355	2250	852	-	
+201356	7200	481,823,849,860	201358,201357,201359,201360	Bundle_Characters_SpaceSpyro
+201357	1350	481	-	
+201358	2250	823	-	
+201359	1350	860	-	
+201360	2250	849	-	
+201361	7200	311,822,851,862	201363,201362,201364,201365	Bundle_Characters_SpaceTawna
+201362	1350	311	-	
+201363	2250	822	-	
+201364	1350	862	-	
+201365	2250	851	-	
+201366	7200	312,818,847,858	201368,201367,201369,201370	Bundle_Characters_SpaceAmi
+201367	1350	312	-	
+201368	2250	818	-	
+201369	1350	858	-	
+201370	2250	847	-	
+201371	7200	548,817,848,859	201373,201372,201374,201375	Bundle_Characters_SpaceNBrio
+201372	1350	548	-	
+201373	2250	817	-	
+201374	1350	859	-	
+201375	2250	848	-	
+201376	7200	313,820,846,857	201378,201377,201379,201380	Bundle_Characters_SpaceMegumi
+201377	1350	313	-	
+201378	2250	820	-	
+201379	1350	857	-	
+201380	2250	846	-	
+201381	7200	315,821,845,856	201382,201383,201384,201385	Bundle_Characters_SpaceIsabella
+201382	2250	821	-	
+201383	1350	315	-	
+201384	1350	856	-	
+201385	2250	845	-	
+201386	7200	618,816,849,860	201388,201387,201389,201390	Bundle_Characters_SpaceKoalaKong
+201387	1350	618	-	
+201388	2250	816	-	
+201389	1350	860	-	
+201390	2250	849	-	
+201391	14004	815,824,825,826,828,832,833,841,842,850,853,855,861,866,867,871,874,875	201392,201393,201394,201395,201396,201397,201398,201399,201400,201401,201402,201403,201404,201405,201406,201407,201408,201409	LastChance_Bundle_GP8
+201392	279	828	-	
+201393	279	866	-	
+201394	279	855	-	
+201395	279	867	-	
+201396	279	861	-	
+201397	279	815	-	
+201398	666	871	-	
+201399	666	841	-	
+201400	666	853	-	
+201401	666	842	-	
+201402	666	874	-	
+201403	666	825	-	
+201404	1389	826	-	
+201405	1389	850	-	
+201406	1389	832	-	
+201407	1389	833	-	
+201408	1389	875	-	
+201409	1389	824	-	
+201410	250	866,867	201411,201412	Sticker_Bundle_SpaceFastFood
+201411	125	866	-	
+201412	125	867	-	
+201413	1250	871,874,875	201414,201415,201416	Sticker_Bundle_GasmoxiaSpace
+201414	250	871	-	
+201415	500	874	-	
+201416	500	875	-	
+201417	4275	934,937,948,954	201418,201419,201420,201421	Bundle_Karts_NitroGT
+201418	2250	934	-	
+201419	675	937	-	Paint_NitroGT
+201420	1125	954	-	Wheel_NitroGT
+201421	225	948	-	Decal_NitroGT_Formulan
+201422	4275	933,936,943	201423,201424,201425	Bundle_Karts_NeonHawk
+201423	3375	933	-	
+201424	675	936	-	Paint_NeonHawk
+201425	225	943	-	
+201426	1500	924	-	Character_LabAssistant
+201427	1500	925	-	Character_BabyCortex
+201428	1500	926	-	Character_BabyNTropy
+201429	2500	879	-	Skin_Coco_Alice
+201430	2500	881	-	Skin_RipperRoo_Bedtime
+201431	2500	882	-	Skin_Penta_Gentleman
+201432	2500	883	-	Skin_Crash_Aviator_01
+201433	2500	884	-	Skin_Crash_Aviator_02
+201434	2500	886	-	Skin_Cortex_Robot_Anime
+201435	2500	887	-	Skin_Cortex_Robot_Rusted
+201436	2500	889	-	Skin_TinyTiger_General_01
+201437	2500	890	-	Skin_TinyTiger_General_02
+201438	2500	891	-	Skin_TinyTiger_General_03
+201439	2500	892	-	Skin_Dingodile_Hazmat_01
+201440	2500	893	-	Skin_Dingodile_Hazmat_02
+201441	2500	894	-	Skin_Dingodile_Hazmat_03
+201442	2500	895	-	Skin_Polar_Fisherman_01
+201443	2500	896	-	Skin_Polar_Fisherman_02
+201444	2500	897	-	Skin_Polar_Fisherman_03
+201445	2500	898	-	Skin_Pura_Musketeer_01
+201446	2500	899	-	Skin_Pura_Musketeer_02
+201447	2500	900	-	Skin_Pura_Musketeer_03
+201448	2500	901	-	Skin_FakeCrash_Monster_01
+201449	2500	902	-	Skin_FakeCrash_Monster_02
+201450	2500	903	-	Skin_FakeCrash_Monster_03
+201451	2500	905	-	Skin_Crunch_24hRacer
+201452	2500	906	-	Skin_Crunch_LeCrunch
+201453	2500	907	-	Skin_Tawna_Witch_01
+201454	2500	908	-	Skin_Tawna_Witch_02
+201455	2500	909	-	Skin_Tawna_Witch_03
+201456	2500	910	-	Skin_KoalaKong_Space_01
+201457	2500	911	-	Skin_KoalaKong_Space_02
+201458	2500	912	-	Skin_KoalaKong_Space_03
+201459	2500	913	-	Skin_Megamix_Rustland_01
+201460	2500	914	-	Skin_Penta_Ninja_01
+201461	2500	915	-	Skin_Penta_Ninja_02
+201462	2500	916	-	Skin_Penta_Ninja_03
+201463	2500	917	-	Skin_Nina_Ragdoll_01
+201464	2500	918	-	Skin_Nina_Ragdoll_02
+201465	2500	919	-	Skin_Nina_Ragdoll_03
+201466	2500	920	-	Skin_Pinstripe_Gangster_01
+201467	2500	921	-	Skin_Pinstripe_Gangster_02
+201468	2500	922	-	Skin_Pinstripe_Gangster_03
+201469	2500	923	-	Skin_Ntrance_Humpty_Chocolate
+201470	2500	928	-	Skin_LabAssistant_Knight
+201471	2500	929	-	Skin_LabAssistant_Lumberjack
+201472	2500	930	-	Skin_LabAssistant_Prince
+201473	2500	927	-	
+201474	250	938	-	Decal_TheCog_SpaceTube
+201475	250	939	-	Decal_TheCog_StraightLine
+201476	500	940	-	Decal_TheCog_SoundWaves
+201477	500	941	-	Decal_TheCog_OptimalPrimer
+201478	1000	942	-	Decal_TheCog_FlyingDonut
+201479	250	949	-	Decal_NitroGT_NitroEdge
+201480	500	950	-	Decal_NitroGT_NitroSpeed
+201481	500	951	-	Decal_NitroGT_NitroBurst
+201482	1000	952	-	Decal_NitroGT_StickerBlast
+201483	250	944	-	Decal_NeonHawk_AirStyle
+201484	500	945	-	Decal_NeonHawk_MovingTarget
+201485	500	946	-	Decal_NeonHawk_FlyingStars
+201486	1000	947	-	Decal_NeonHawk_CloudBurst
+201487	1500	931	-	Character_FixedRillaRoo
+201488	2500	696	-	Skin_Hasty_BlizzardRider
+201489	2500	691	-	Skin_Polar_UglySweater
+201490	500	832	-	Decal_VoidManta_SunFlare
+201491	1000	833	-	Decal_VoidManta_NukeDelivery
+201492	500	841	-	Decal_GalacticCruiser_SpacePirate
+201493	500	842	-	Decal_GalacticCruiser_AntigravCab
+201494	4688	244,365,664,923	201495,201497,201496,201498	Bundle_Characters_SpringHappiness
+201495	1875	923	-	
+201496	1875	365	-	
+201497	563	664	-	
+201498	375	244	-	
+201499	5250	121,122,188,322	200907,201500,201502,201501	Bundle_Characters_HitTheRoad
+201500	1875	121	-	
+201501	375	188	-	
+201502	1125	122	-	
+201503	2200	627,664,670,671	201504,201505,201507,201506	Bundle_Characters_PartyTime
+201504	1200	627	-	
+201505	600	664	-	
+201506	200	671	-	
+201507	200	670	-	
+201508	5200	678,687,688,825	201511,201509,201510,201512	Bundle_Characters_RunningAFowl
+201509	1200	687	-	
+201510	1200	688	-	
+201511	2000	825	-	
+201512	800	678	-	
+201513	5600	811,822,824,872	201515,201514,201516,201517	Bundle_Characters_Pirate
+201514	2000	822	-	
+201515	2000	824	-	
+201516	800	811	-	
+201517	800	872	-	
+201518	3800	243,529,630,799	201519,201520,201521,201522	Bundle_Characters_Farmer
+201519	2000	630	-	
+201520	600	799	-	
+201521	400	529	-	
+201522	800	243	-	
