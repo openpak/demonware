@@ -4,7 +4,11 @@
 
 ## Unreleased
 
-First version. Not tagged, not deployed.
+- ci: build scratch in the runner temp, not the checkout.
+
+## v0.1.0 — 2026-09-23
+
+First version. Deployed to prod.
 
 - CTR key patch (`tools/ctr-key-patch`): a data-only IPS for the final update swapping the
   embedded RSA modulus for OpenPak's, the one game patch OpenPak ships; the lobby accepts a
