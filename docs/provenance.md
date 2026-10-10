@@ -28,6 +28,7 @@ nx-mod and the Crash Team Racing work to CollectingW.
 | CTR `X-Signature`, RSA-PSS SHA-256 zero salt, client mod needed | NX:README.md, NX:ctr_signing.go |
 | CTR's verify key is the embedded Demonware SPKI at NSO `0x40B4E40`; the X-Signature handler (mapped `0xd4e0`..`0xd5a0`) and the lobby key wrap (`0x14584`, flag-gated) both load it | OpenPak's own dump of the v983040 update, disassembled (`tools/ctr-key-patch/README.md`) |
 | Umbrella `/v1.0/tokens/lsg/` request and reply fields | NX:ctr_umbrella.go |
+| Umbrella host `https://{prod,cert,dev}.umbrella.demonware.net`, URL `%s/v1.0/tokens/lsg/?client=%s`; lobby port 3074 and title 5775 in the same config block as the lavender host names | OpenPak's own dump of the v983040 `main` (strings and their loads at mapped `0x10e2c8`, `0x10eeb4`, `0xa1f72c`) |
 | Hello layout, frame layout, 0x81..0x85, keepalive echo | NX:NOTES.md §3, NX:handshake.go |
 | Transcript, HMAC/HKDF-style expand, CLIENTCHAL/BDDATA split | NX:NOTES.md §3, NX:bdcrypto.go |
 | Optional RSA-DER wrapping of the lobby key and the 294-byte DER itself (a constant in the game binary) | NX:NOTES.md §3, NX:pubkey.go |

@@ -132,6 +132,7 @@ crimson-switch-auth3.prod.demonware.net   crimson-switch-lobby.prod.demonware.ne
 crimson-switch-auth3.cert.demonware.net   crimson-switch-lobby.cert.demonware.net
 crimson-switch-auth3.dev.demonware.net    crimson-switch-lobby.dev.demonware.net
 lavender-switch-auth3.prod.demonware.net  lavender-switch-lobby.prod.demonware.net
+prod.umbrella.demonware.net               (CTR's LSG token, served by auth3)
 stun.us.demonware.net  stun.eu.demonware.net  stun.jp.demonware.net  stun.au.demonware.net
 ```
 
@@ -139,11 +140,13 @@ Without the `stun.*` names the game probes Activision and only offers local game
 
 ## Deploy notes
 
-- **Traefik**: one `HostSNI` router per auth3 name above (`tls.passthrough: true`) to a service
+- **Traefik**: one `HostSNI` router per auth3 name above and `prod.umbrella.demonware.net`
+  (`tls.passthrough: true`) to a service
   at `host.containers.internal:22610`. Optionally `proxyProtocol: {version: 1}` on that service
   together with `DEMONWARE_PROXY_PROTOCOL=1`, so auth logs show the console's address; the
   current OpenPak Traefik config sends no PROXY header, so the default is off.
-- **Certificate**: an OpenPak-CA leaf for the four auth3 names; TLS 1.0 and up is accepted
+- **Certificate**: an OpenPak-CA leaf for the auth3 names and `prod.umbrella.demonware.net`
+  (the prod leaf since 2026-10-10 also names `cert.umbrella`, `prod.uno` and `cert.uno`); TLS 1.0 and up is accepted
   because the games' HTTP client is old.
 - **Quadlet**: `openpak-demonware.container`, `Image=ghcr.io/openpak/demonware:latest`,
   `Network=host`, a volume on `/app/data`, the certificate mounted read-only, the shared

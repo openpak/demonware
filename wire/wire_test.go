@@ -153,3 +153,13 @@ func TestPB(t *testing.T) {
 		t.Fatal("fixed32 accepted")
 	}
 }
+
+func TestDescribe(t *testing.T) {
+	w := &Writer{}
+	w.U32(3).Bool(true).String("secret name").U64(0x1122334455667788).U64(7).Blob([]byte{1, 2})
+	got := Describe(append(w.B, 0))
+	want := "u32:3 1:1 str[11] a:# a:7 blob[2]"
+	if got != want {
+		t.Fatalf("Describe = %q, want %q", got, want)
+	}
+}

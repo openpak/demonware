@@ -135,7 +135,8 @@ func (s *Shared) matchmaking(c *lobby.Conn, r *lobby.Request, ctx string) []byte
 		}
 		s.games[g.id] = g
 		s.mu.Unlock()
-		c.Log().Info("game created", "context", redact.Tag(ctx), "max", in.maxPlayers)
+		c.Log().Info("game created", "context", redact.Tag(ctx), "type", in.gameType, "max", in.maxPlayers,
+			"attrs", wire.Describe(in.attrs))
 		return wire.Rows(r.Task, func(w *wire.Writer) uint32 { w.Blob(g.id[:]); return 1 })
 
 	case mmUpdate, mmInitialize, mmPlayers:
@@ -163,6 +164,8 @@ func (s *Shared) matchmaking(c *lobby.Conn, r *lobby.Request, ctx string) []byte
 		g.owner, g.ownerID, g.updated = c.ID, c.OnlineID(), now
 		if infoErr == nil {
 			g.set(in)
+			c.Log().Info("game updated", "task", r.Task, "type", in.gameType, "max", in.maxPlayers,
+				"players", g.players, "attrs", wire.Describe(in.attrs))
 		}
 		switch r.Task {
 		case mmInitialize:
@@ -183,9 +186,10 @@ func (s *Shared) matchmaking(c *lobby.Conn, r *lobby.Request, ctx string) []byte
 		return wire.Empty(r.Task)
 
 	case mmFind:
-		_, _ = r.Args.U32() // query
+		query, _ := r.Args.U32()
 		start, _ := r.Args.U32()
 		limit, _ := r.Args.U32()
+		filters := r.Args.Rest()
 		if limit == 0 || limit > maxResults {
 			limit = maxResults
 		}
@@ -201,7 +205,8 @@ func (s *Shared) matchmaking(c *lobby.Conn, r *lobby.Request, ctx string) []byte
 		sort.Slice(found, func(i, j int) bool { return found[i].updated.After(found[j].updated) })
 		found = found[min(int(start), len(found)):]
 		found = found[:min(int(limit), len(found))]
-		c.Log().Debug("games found", "context", redact.Tag(ctx), "n", len(found))
+		c.Log().Info("games searched", "context", redact.Tag(ctx), "query", query, "filters", wire.Describe(filters),
+			"open", len(found))
 		return s.results(c, r.Task, found)
 
 	case mmFriends:

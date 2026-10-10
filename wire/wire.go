@@ -6,6 +6,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"math"
 	"sync/atomic"
 )
 
@@ -278,4 +279,68 @@ func Push(event uint32, fill func(w *Writer)) []byte {
 		fill(w)
 	}
 	return w.B
+}
+
+// scalarSize is the payload size of each fixed-size tag (0x02 char, 0x04/0x05 16-bit, 0x0D/0x0E
+// float32/float64 besides the ones above).
+var scalarSize = map[byte]int{TBool: 1, 0x02: 1, TU8: 1, 0x04: 2, 0x05: 2, TU16: 2, TI32: 4, TU32: 4,
+	TI64: 8, TU64: 8, 0x0D: 4, 0x0E: 8}
+
+// Describe renders a run of typed values for a log line: numbers as they are, except u64s
+// above 32 bits (ids) as "u64:#"; strings and blobs by length only, so nothing a player
+// typed reaches the log. It stops at the first tag it does not know.
+func Describe(b []byte) string {
+	var out []byte
+	sep := func() {
+		if len(out) > 0 {
+			out = append(out, ' ')
+		}
+	}
+	le := binary.LittleEndian
+	for i := 0; i < len(b); {
+		tag := b[i]
+		size := scalarSize[tag]
+		sep()
+		switch {
+		case tag == 0 && i == len(b)-1:
+			return string(out[:max(len(out)-1, 0)])
+		case size > 0 && i+1+size <= len(b):
+			v := b[i+1 : i+1+size]
+			switch tag {
+			case TBool, 0x02, TU8:
+				out = fmt.Appendf(out, "%x:%d", tag, v[0])
+			case 0x04, 0x05, TU16:
+				out = fmt.Appendf(out, "%x:%d", tag, le.Uint16(v))
+			case TI32:
+				out = fmt.Appendf(out, "i32:%d", int32(le.Uint32(v)))
+			case TU32:
+				out = fmt.Appendf(out, "u32:%d", le.Uint32(v))
+			case 0x0D:
+				out = fmt.Appendf(out, "f32:%g", math.Float32frombits(le.Uint32(v)))
+			case 0x0E:
+				out = fmt.Appendf(out, "f64:%g", math.Float64frombits(le.Uint64(v)))
+			default:
+				if n := le.Uint64(v); n > 1<<32 {
+					out = fmt.Appendf(out, "%x:#", tag)
+				} else {
+					out = fmt.Appendf(out, "%x:%d", tag, n)
+				}
+			}
+			i += 1 + size
+		case tag >= 0x10 && tag <= 0x12:
+			end := i + 1
+			for end < len(b) && b[end] != 0 {
+				end++
+			}
+			out = fmt.Appendf(out, "str[%d]", end-i-1)
+			i = end + 1
+		case (tag == TBlob || tag == TStruct) && i+6 <= len(b) && b[i+1] == TU32:
+			n := int(le.Uint32(b[i+2:]))
+			out = fmt.Appendf(out, "blob[%d]", n)
+			i += 6 + n
+		default:
+			return string(fmt.Appendf(out, "?%x(+%d)", tag, len(b)-i))
+		}
+	}
+	return string(out)
 }

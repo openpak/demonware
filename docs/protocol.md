@@ -83,7 +83,9 @@ lobby key equal.
   (Demonware's, the same one `lobby/crypto.go` names), so signed replies need
   [`tools/ctr-key-patch`](../tools/ctr-key-patch), which swaps it for OpenPak's. The lobby
   key wrap uses the same embedded key, so a patched client wraps with OpenPak's.
-- **Umbrella token.** `POST /v1.0/tokens/lsg/` on the same auth host, JSON
+- **Umbrella token.** `POST /v1.0/tokens/lsg/?client=<name>` on
+  `https://prod.umbrella.demonware.net` (its own host, not auth3; `cert.` and `dev.` variants
+  exist), JSON
   `{"ticket": "<base64 128 bytes>", "titleID": 5775 or "5775"}`. Reply JSON
   `{"umbrellaID": <u64>, "accessToken": "<string>", "expires": <unix s>, "accounts": []}`.
 
