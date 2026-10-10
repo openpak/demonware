@@ -39,6 +39,9 @@ type Shared struct {
 	games    map[[8]byte]*game
 	userData map[dataKey][]byte
 	presence map[presenceKey]presence
+	// presenceLogs counts rich presence log lines per connection: a client can repeat these
+	// tasks many times a second, so only the first few reach the info log.
+	presenceLogs map[uint64]int
 }
 
 type dataKey struct {
@@ -61,7 +64,8 @@ type presence struct {
 // New builds the shared services and starts the stale-game sweep.
 func New(l *lobby.Server, relay *nat.Relay, log *slog.Logger) *Shared {
 	s := &Shared{Lobby: l, Relay: relay, Log: log, Now: time.Now,
-		games: map[[8]byte]*game{}, userData: map[dataKey][]byte{}, presence: map[presenceKey]presence{}}
+		games: map[[8]byte]*game{}, userData: map[dataKey][]byte{}, presence: map[presenceKey]presence{},
+		presenceLogs: map[uint64]int{}}
 	go func() {
 		for range time.Tick(30 * time.Second) {
 			s.expire()
@@ -127,6 +131,7 @@ func (s *Shared) Closed(c *lobby.Conn) {
 	if !still {
 		delete(s.presence, presenceKey{c.Title(), id})
 	}
+	delete(s.presenceLogs, c.ID)
 }
 
 // Online returns the connection of a player of title by online id (or PID), or nil.
@@ -220,7 +225,7 @@ func (s *Shared) presenceTask(c *lobby.Conn, r *lobby.Request) []byte {
 		s.mu.Lock()
 		s.presence[presenceKey{c.Title(), me}] = presence{platform, flag, data}
 		s.mu.Unlock()
-		c.Log().Info("rich presence set", "flag", flag, "bytes", len(data))
+		s.presenceLog(c, "rich presence set", "flag", flag, "bytes", len(data))
 		return wire.Empty(r.Task)
 	case 4, 5:
 		n, err := r.Args.U32()
@@ -232,6 +237,7 @@ func (s *Shared) presenceTask(c *lobby.Conn, r *lobby.Request) []byte {
 			p  presence
 		}
 		var hits []hit
+		zero := 0
 		for range n {
 			id, e1 := r.Args.U64()
 			_, e2 := r.Args.String()
@@ -239,6 +245,7 @@ func (s *Shared) presenceTask(c *lobby.Conn, r *lobby.Request) []byte {
 				break
 			}
 			if id == 0 {
+				zero++
 				id = me
 			}
 			if id != me && s.Online(c.Title(), id) == nil {
@@ -251,7 +258,7 @@ func (s *Shared) presenceTask(c *lobby.Conn, r *lobby.Request) []byte {
 				hits = append(hits, hit{id, p})
 			}
 		}
-		c.Log().Info("rich presence read", "task", r.Task, "asked", n, "found", len(hits))
+		s.presenceLog(c, "rich presence read", "task", r.Task, "asked", n, "zero_ids", zero, "found", len(hits))
 		return wire.Rows(r.Task, func(w *wire.Writer) uint32 {
 			for _, h := range hits {
 				w.U64(h.id).String(h.p.platform).U8(h.p.flag).Blob(h.p.data)
@@ -259,6 +266,25 @@ func (s *Shared) presenceTask(c *lobby.Conn, r *lobby.Request) []byte {
 			return uint32(len(hits))
 		})
 	}
-	c.Log().Info("rich presence task", "task", r.Task, "args", wire.Describe(r.Args.Rest()))
+	s.presenceLog(c, "rich presence task", "task", r.Task, "args", wire.Describe(r.Args.Rest()))
 	return wire.Empty(r.Task)
 }
+
+// presenceLog writes a rich presence line at info for a connection's first presenceLogInfo
+// lines and at debug after that.
+func (s *Shared) presenceLog(c *lobby.Conn, msg string, args ...any) {
+	s.mu.Lock()
+	if s.presenceLogs == nil {
+		s.presenceLogs = map[uint64]int{}
+	}
+	s.presenceLogs[c.ID]++
+	n := s.presenceLogs[c.ID]
+	s.mu.Unlock()
+	if n <= presenceLogInfo {
+		c.Log().Info(msg, args...)
+		return
+	}
+	c.Log().Debug(msg, args...)
+}
+
+const presenceLogInfo = 20
