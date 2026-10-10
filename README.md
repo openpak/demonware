@@ -6,8 +6,8 @@ one process for every title.
 
 | Title | `DEMONWARE_TITLES` | Demonware id | Status |
 | --- | --- | --- | --- |
-| Diablo III: Eternal Collection | `diablo-3` | 5745 ("crimson") | implemented, not yet run against a console on OpenPak |
-| Crash Team Racing Nitro-Fueled | `crash-team-racing` | 5775 ("lavender") | implemented, not yet run against a console on OpenPak; login needs the CTR key patch (below) |
+| Diablo III: Eternal Collection | `diablo-3` | 5745 ("crimson") | two Harbor consoles: Quick Match joins a public game (2026-10-10) |
+| Crash Team Racing Nitro-Fueled | `crash-team-racing` | 5775 ("lavender") | two Harbor consoles race via matchmaking (2026-10-10); login needs the CTR key patch (below) |
 
 Built clean-room from the facts in [`docs/protocol.md`](docs/protocol.md); where every fact came
 from is in [`docs/provenance.md`](docs/provenance.md). This repository supersedes the
