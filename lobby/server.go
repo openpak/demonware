@@ -70,7 +70,7 @@ func (s *Server) Serve(ln net.Listener) error {
 		}
 		s.Accepted.Add(1)
 		c := &Conn{srv: s, nc: nc, ID: 0x0D3000000000 + s.ids.Add(1)}
-		c.log = s.Log.With("conn", c.ID, "remote", nc.RemoteAddr().String())
+		c.log = s.Log.With("conn", c.ID)
 		go c.run()
 	}
 }

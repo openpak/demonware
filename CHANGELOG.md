@@ -2,9 +2,15 @@
 
 `git log` stays the source of truth; this file is the readable summary.
 
-## Unreleased
+## v0.1.1 — 2026-10-10
 
 - ci: build scratch in the runner temp, not the checkout.
+- Logs no longer carry pids, account or NSA ids, nicknames, tokens, tickets, pairing or search ids,
+  or client addresses. Where two lines have to be matched they carry a short per-process tag
+  (`redact.Tag`: keyed HMAC prefix, key random per start). Lobby task bodies are logged only with
+  `DEMONWARE_TRACE_BODIES=1`. Net and URL errors drop the addresses they spell out.
+- `TestLogsCarryNoPersonalData` in auth, lobby and titles/ctr fails if a known id, name or token
+  reaches a log line.
 
 ## v0.1.0 — 2026-09-23
 

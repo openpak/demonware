@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/openpak/demonware/lobby"
+	"github.com/openpak/demonware/redact"
 	"github.com/openpak/demonware/wire"
 )
 
@@ -134,7 +135,7 @@ func (s *Shared) matchmaking(c *lobby.Conn, r *lobby.Request, ctx string) []byte
 		}
 		s.games[g.id] = g
 		s.mu.Unlock()
-		c.Log().Info("game created", "context", ctx, "max", in.maxPlayers)
+		c.Log().Info("game created", "context", redact.Tag(ctx), "max", in.maxPlayers)
 		return wire.Rows(r.Task, func(w *wire.Writer) uint32 { w.Blob(g.id[:]); return 1 })
 
 	case mmUpdate, mmInitialize, mmPlayers:
@@ -200,7 +201,7 @@ func (s *Shared) matchmaking(c *lobby.Conn, r *lobby.Request, ctx string) []byte
 		sort.Slice(found, func(i, j int) bool { return found[i].updated.After(found[j].updated) })
 		found = found[min(int(start), len(found)):]
 		found = found[:min(int(limit), len(found))]
-		c.Log().Debug("games found", "context", ctx, "n", len(found))
+		c.Log().Debug("games found", "context", redact.Tag(ctx), "n", len(found))
 		return s.results(c, r.Task, found)
 
 	case mmFriends:

@@ -12,6 +12,7 @@ import (
 
 	"github.com/openpak/demonware"
 	"github.com/openpak/demonware/lobby"
+	"github.com/openpak/demonware/redact"
 	"github.com/openpak/demonware/wire"
 )
 
@@ -70,7 +71,7 @@ func (t *Title) Handle(c *lobby.Conn, r *lobby.Request) (lobby.Response, bool) {
 func (t *Title) send(ns []notice) {
 	for _, n := range ns {
 		if err := n.to.Push(n.payload()); err != nil {
-			n.to.Log().Info("ctr: push failed", "event", n.event, "err", err)
+			n.to.Log().Info("ctr: push failed", "event", n.event, "err", redact.Err(err))
 		}
 	}
 }
@@ -84,7 +85,7 @@ func (t *Title) async(c *lobby.Conn, r *lobby.Request) lobby.Response {
 			err = t.mm.setInfo(c, doc)
 		}
 		if err != nil {
-			c.Log().Info("ctr: player info rejected", "err", err)
+			c.Log().Info("ctr: player info rejected", "err", redact.Err(err))
 		}
 		return resp(wire.Empty(r.Task)) // the game's registration stops if this one fails
 	case 3: // player token
@@ -120,7 +121,7 @@ func (t *Title) async(c *lobby.Conn, r *lobby.Request) lobby.Response {
 		if e1 == nil && e2 == nil && e3 == nil {
 			ok, ns = t.mm.sync(c, id, version, doc)
 		}
-		c.Log().Debug("ctr: sync", "lobby", id, "version", version, "accepted", ok)
+		c.Log().Debug("ctr: sync", "lobby", redact.Tag(id), "version", version, "accepted", ok)
 		return lobby.Response{
 			Body: wire.Rows(r.Task, func(w *wire.Writer) uint32 { w.Bool(ok); return 1 }),
 			Then: func() { t.send(ns) },
@@ -132,14 +133,14 @@ func (t *Title) async(c *lobby.Conn, r *lobby.Request) lobby.Response {
 		}
 		s, err := t.mm.parseSearch(c, doc)
 		if err != nil {
-			c.Log().Info("ctr: search rejected", "err", err)
+			c.Log().Info("ctr: search rejected", "err", redact.Err(err))
 			return resp(wire.Fail(wire.Failed))
 		}
 		return lobby.Response{
 			Body: wire.Rows(r.Task, func(w *wire.Writer) uint32 { w.String(searchReply(s.id)); return 1 }),
 			Then: func() {
 				ns := t.mm.place(s)
-				c.Log().Info("ctr: searching", "search", s.id, "party", len(s.members), "notices", len(ns))
+				c.Log().Info("ctr: searching", "search", redact.Tag(s.id), "party", len(s.members), "notices", len(ns))
 				t.send(ns)
 			},
 		}
@@ -166,7 +167,7 @@ func (t *Title) pushBalance(c *lobby.Conn) {
 	entry := wire.PB{}.Bytes(1, owner).Varint(2, coins).Varint(3, 0xFFFFFFFF).Varint(4, 0).
 		Signed(5, w.Balance[coins])
 	if err := c.Push(wire.Push(pushBalance, func(pw *wire.Writer) { pw.Struct(wire.PB{}.Bytes(1, entry)) })); err != nil {
-		c.Log().Info("ctr: balance push failed", "err", err)
+		c.Log().Info("ctr: balance push failed", "err", redact.Err(err))
 	}
 }
 
@@ -184,7 +185,7 @@ func (t *Title) market(c *lobby.Conn, r *lobby.Request) lobby.Response {
 		}
 		w, err := t.Wallets.view(pid)
 		if err != nil {
-			c.Log().Error("ctr: wallet", "err", err)
+			c.Log().Error("ctr: wallet", "err", redact.Err(err))
 			return resp(wire.Fail(wire.Failed))
 		}
 		var sb wire.PB
@@ -225,7 +226,7 @@ func (t *Title) market(c *lobby.Conn, r *lobby.Request) lobby.Response {
 		}
 		debit, err := t.Wallets.Buy(pid, skus)
 		if err != nil {
-			c.Log().Info("ctr: purchase refused", "skus", skus, "err", err)
+			c.Log().Info("ctr: purchase refused", "skus", skus, "err", redact.Err(err))
 			return resp(wire.Fail(wire.Failed))
 		}
 		c.Log().Info("ctr: purchase", "skus", skus, "coins", debit)
@@ -268,12 +269,12 @@ func (t *Title) achievements(c *lobby.Conn, r *lobby.Request) lobby.Response {
 	case 1: // reportEvents
 		events, err := parseEvents(structArg(r))
 		if err != nil {
-			c.Log().Info("ctr: events rejected", "err", err)
+			c.Log().Info("ctr: events rejected", "err", redact.Err(err))
 			return resp(wire.Fail(wire.Failed))
 		}
 		credit, changed, err := t.Wallets.report(pid, events, now)
 		if err != nil {
-			c.Log().Error("ctr: wallet", "err", err)
+			c.Log().Error("ctr: wallet", "err", redact.Err(err))
 			return resp(wire.Fail(wire.Failed))
 		}
 		if credit != 0 {
@@ -291,7 +292,7 @@ func (t *Title) achievements(c *lobby.Conn, r *lobby.Request) lobby.Response {
 				sb = sb.Bytes(1, s.encode())
 			}
 			if err := c.Push(wire.Push(pushAchievements, func(w *wire.Writer) { w.Struct(sb) })); err != nil {
-				c.Log().Info("ctr: achievements push failed", "err", err)
+				c.Log().Info("ctr: achievements push failed", "err", redact.Err(err))
 			}
 		}}
 	case 3: // getAchievementStates

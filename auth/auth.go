@@ -19,6 +19,7 @@ import (
 	"time"
 
 	"github.com/openpak/demonware/account"
+	"github.com/openpak/demonware/redact"
 	"github.com/openpak/demonware/session"
 )
 
@@ -82,12 +83,12 @@ type loginReply struct {
 
 func (s *Service) refuse(w http.ResponseWriter, log *slog.Logger, reason string, err error) {
 	s.Refusals.Add(1)
-	log.Info("auth refused", "reason", reason, "err", err)
+	log.Info("auth refused", "reason", reason, "err", redact.Err(err))
 	http.Error(w, "forbidden", http.StatusForbidden)
 }
 
 func (s *Service) login(w http.ResponseWriter, r *http.Request) {
-	log := s.Log.With("remote", r.RemoteAddr, "host", r.Host)
+	log := s.Log.With("host", r.Host)
 	body, err := io.ReadAll(io.LimitReader(r.Body, 64<<10))
 	if err != nil {
 		http.Error(w, "bad request", http.StatusBadRequest)
@@ -117,7 +118,7 @@ func (s *Service) login(w http.ResponseWriter, r *http.Request) {
 		return
 	case err != nil && s.Open && extra.Token != "":
 		p = openPlayer(extra.Token, extra.Username)
-		log.Warn("auth: identity not proven, admitted by DEMONWARE_REQUIRE_ACCOUNT=0", "err", err)
+		log.Warn("auth: identity not proven, admitted by DEMONWARE_REQUIRE_ACCOUNT=0", "err", redact.Err(err))
 	case err != nil:
 		s.refuse(w, log, "identity not proven", err)
 		return
@@ -125,7 +126,7 @@ func (s *Service) login(w http.ResponseWriter, r *http.Request) {
 
 	sess, err := s.Sessions.Issue(p, title)
 	if err != nil {
-		log.Error("auth: issue ticket", "err", err)
+		log.Error("auth: issue ticket", "err", redact.Err(err))
 		http.Error(w, "unavailable", http.StatusServiceUnavailable)
 		return
 	}
@@ -149,21 +150,21 @@ func (s *Service) login(w http.ResponseWriter, r *http.Request) {
 	if title == session.TitleCTR && s.Signer != nil {
 		sig, err := s.Signer.Sign(out)
 		if err != nil {
-			log.Error("auth: sign", "err", err)
+			log.Error("auth: sign", "err", redact.Err(err))
 			http.Error(w, "unavailable", http.StatusServiceUnavailable)
 			return
 		}
 		w.Header().Set("X-Signature", sig)
 	}
 	s.Logins.Add(1)
-	log.Info("auth ok", "pid", p.PID, "nickname", p.Nickname, "auth_task", task)
+	log.Info("auth ok", "pid", redact.Tag(p.PID), "auth_task", task)
 	w.Header().Set("Content-Type", "application/json")
 	_, _ = w.Write(out)
 }
 
 // umbrella answers CTR's /v1.0/tokens/lsg/ for a live ticket issued here.
 func (s *Service) umbrella(w http.ResponseWriter, r *http.Request) {
-	log := s.Log.With("remote", r.RemoteAddr, "path", r.URL.Path)
+	log := s.Log.With("path", r.URL.Path)
 	var req struct {
 		Ticket  string `json:"ticket"`
 		TitleID strInt `json:"titleID"`
@@ -186,7 +187,7 @@ func (s *Service) umbrella(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "unavailable", http.StatusServiceUnavailable)
 		return
 	}
-	log.Info("umbrella ok", "pid", sess.Player.PID)
+	log.Info("umbrella ok", "pid", redact.Tag(sess.Player.PID))
 	w.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(w).Encode(map[string]any{
 		"umbrellaID":  sess.Player.OnlineID(),

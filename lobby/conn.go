@@ -10,10 +10,12 @@ import (
 	"io"
 	"log/slog"
 	"net"
+	"os"
 	"sync"
 	"time"
 
 	"github.com/openpak/demonware/account"
+	"github.com/openpak/demonware/redact"
 	"github.com/openpak/demonware/session"
 	"github.com/openpak/demonware/wire"
 )
@@ -117,18 +119,31 @@ func (c *Conn) readFrame(deadline time.Duration) ([]byte, error) {
 	return f, nil
 }
 
+// TraceBodies puts the raw task bytes in the log (DEMONWARE_TRACE_BODIES=1). Task bodies carry
+// player names, ids and free text, so they are off unless a bench run asks for them; never set
+// it in production.
+var TraceBodies = os.Getenv("DEMONWARE_TRACE_BODIES") == "1"
+
+// dump is the hex of a task body when tracing is on, and nothing otherwise.
+func dump(p []byte) string {
+	if !TraceBodies {
+		return ""
+	}
+	return fmt.Sprintf("%x", p)
+}
+
 func (c *Conn) run() {
 	defer c.Close()
 	if err := c.handshake(); err != nil {
 		c.srv.Refused.Add(1)
-		c.log.Info("lobby handshake refused", "err", err)
+		c.log.Info("lobby handshake refused", "err", redact.Err(err))
 		return
 	}
 	c.srv.Authenticated.Add(1)
 	c.srv.join(c)
 	defer c.srv.leave(c)
-	c.log = c.log.With("pid", c.Session.Player.PID, "title", c.Session.Title)
-	c.log.Info("lobby connected", "nickname", c.Session.Player.Nickname)
+	c.log = c.log.With("pid", redact.Tag(c.Session.Player.PID), "title", c.Session.Title)
+	c.log.Info("lobby connected")
 
 	idle := c.srv.Idle
 	if idle == 0 {
@@ -138,7 +153,7 @@ func (c *Conn) run() {
 		f, err := c.readFrame(idle)
 		if err != nil {
 			if !errors.Is(err, io.EOF) && !errors.Is(err, net.ErrClosed) {
-				c.log.Info("lobby closed", "err", err)
+				c.log.Info("lobby closed", "err", redact.Err(err))
 			} else {
 				c.log.Info("lobby closed")
 			}
@@ -159,7 +174,7 @@ func (c *Conn) run() {
 		}
 		inner, payload, err := c.ch.open(f)
 		if err != nil {
-			c.log.Warn("lobby: dropped frame", "err", err)
+			c.log.Warn("lobby: dropped frame", "err", redact.Err(err))
 			continue
 		}
 		if inner != innerTask {
@@ -167,7 +182,7 @@ func (c *Conn) run() {
 			continue
 		}
 		if err := c.task(payload); err != nil {
-			c.log.Info("lobby: send failed", "err", err)
+			c.log.Info("lobby: send failed", "err", redact.Err(err))
 			return
 		}
 	}
@@ -299,7 +314,7 @@ func (c *Conn) task(p []byte) error {
 	var body []byte
 	var then func()
 	if len(p) < 3 {
-		c.log.Warn("lobby: task too short", "payload", fmt.Sprintf("%x", p))
+		c.log.Warn("lobby: task too short", "len", len(p), "payload", dump(p))
 		body = wire.Fail(wire.Failed)
 	} else {
 		req.Service = p[0]
@@ -310,7 +325,7 @@ func (c *Conn) task(p []byte) error {
 			// Answer anyway: an unanswered task fails the game's whole login sequence.
 			task = p[2]
 			body = wire.Empty(task)
-			c.log.Warn("lobby: task id unreadable", "service", req.Service, "payload", fmt.Sprintf("%x", p))
+			c.log.Warn("lobby: task id unreadable", "service", req.Service, "len", len(p), "payload", dump(p))
 		}
 		req.Task = task
 		if body == nil {
@@ -320,7 +335,7 @@ func (c *Conn) task(p []byte) error {
 				body = wire.Empty(task)
 			}
 		}
-		c.log.Debug("task", "service", req.Service, "task", req.Task, "args", fmt.Sprintf("%x", p[3:]))
+		c.log.Debug("task", "service", req.Service, "task", req.Task, "len", len(p)-3, "args", dump(p[3:]))
 	}
 	if err := c.sendSealed(innerReply, body); err != nil {
 		return err

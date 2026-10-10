@@ -81,7 +81,7 @@ func (s *Server) handle(p []byte, from *net.UDPAddr) *out {
 		s.Intros.Add(1)
 		fwd := append([]byte{0x0B}, p[1:]...)
 		if s.Log != nil {
-			s.Log.Debug("nat: introduction", "from", from.String(), "to", dst.String())
+			s.Log.Debug("nat: introduction")
 		}
 		return &out{fwd, dst}
 	}

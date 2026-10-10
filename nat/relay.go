@@ -5,6 +5,8 @@ import (
 	"net"
 	"sync"
 	"time"
+
+	"github.com/openpak/demonware/redact"
 )
 
 // Relay gives a joiner a relay address for a host it may not reach directly. The address is
@@ -97,10 +99,10 @@ func (r *Relay) open(key [2]uint64, host *net.UDPAddr, joinerIP net.IP) *link {
 		p := &link{conn: c, port: port, host: host, joinerIP: joinerIP, last: time.Now()}
 		r.pairs[key] = p
 		go r.forward(p)
-		r.Log.Info("relay: pair opened", "host", key[0], "joiner", key[1], "port", port)
+		r.Log.Info("relay: pair opened", "host", redact.Tag(key[0]), "joiner", redact.Tag(key[1]), "port", port)
 		return p
 	}
-	r.Log.Warn("relay: no free port", "host", key[0], "joiner", key[1])
+	r.Log.Warn("relay: no free port", "host", redact.Tag(key[0]), "joiner", redact.Tag(key[1]))
 	return nil
 }
 

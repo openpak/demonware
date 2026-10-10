@@ -9,6 +9,7 @@ import (
 
 	"github.com/openpak/demonware"
 	"github.com/openpak/demonware/lobby"
+	"github.com/openpak/demonware/redact"
 	"github.com/openpak/demonware/wire"
 )
 
@@ -46,10 +47,15 @@ func publisherFile(c *lobby.Conn, r *lobby.Request, path string, log *slog.Logge
 	}
 	s, err := Load(path)
 	if err != nil {
-		log.Error("diablo3: settings unreadable, serving defaults", "err", err)
+		log.Error("diablo3: settings unreadable, serving defaults", "err", redact.Err(err))
 	}
 	data := s.File(name)
-	c.Log().Info("publisher file", "name", name, "bytes", len(data), "season", s.Season)
+	// A name the catalog does not know is the client's own text; keep it out of the log.
+	logged := redact.Tag(name)
+	if data != nil {
+		logged = name
+	}
+	c.Log().Info("publisher file", "name", logged, "bytes", len(data), "season", s.Season)
 	if data == nil {
 		return wire.Empty(r.Task) // a missing file is normal (update-1.cpk)
 	}

@@ -11,6 +11,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/openpak/demonware/redact"
 	"github.com/openpak/demonware/session"
 )
 
@@ -62,7 +63,7 @@ func (s *Wallets) read(pid uint64) (*wallet, error) {
 		return nil, err
 	default:
 		if err := json.Unmarshal(raw, w); err != nil {
-			return nil, fmt.Errorf("wallet %d: %w", pid, err)
+			return nil, fmt.Errorf("wallet %s: %w", redact.Tag(pid), err)
 		}
 	}
 	if w.Balance == nil {

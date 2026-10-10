@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	stdlog "log"
 	"log/slog"
 	"net"
 	"net/http"
@@ -24,6 +25,7 @@ import (
 	"github.com/openpak/demonware/lobby"
 	"github.com/openpak/demonware/nat"
 	"github.com/openpak/demonware/play"
+	"github.com/openpak/demonware/redact"
 	"github.com/openpak/demonware/session"
 	"github.com/openpak/demonware/titles"
 )
@@ -35,6 +37,18 @@ func env(k, d string) string {
 	return d
 }
 
+// stdLogger is the net/http server's error log, whose messages ("TLS handshake error from
+// 203.0.113.7:5000: ...") name the client; addresses are scrubbed before they reach the log.
+func stdLogger(l *slog.Logger) *stdlog.Logger {
+	return stdlog.New(writerFunc(func(p []byte) {
+		l.Debug(redact.Scrub(strings.TrimSpace(string(p))))
+	}), "", 0)
+}
+
+type writerFunc func([]byte)
+
+func (f writerFunc) Write(p []byte) (int, error) { f(p); return len(p), nil }
+
 func main() {
 	level := slog.LevelInfo
 	if os.Getenv("LOG_LEVEL") == "debug" {
@@ -42,7 +56,7 @@ func main() {
 	}
 	log := slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{Level: level}))
 	if err := run(log); err != nil {
-		log.Error("demonwared", "err", err)
+		log.Error("demonwared", "err", redact.Err(err))
 		os.Exit(1)
 	}
 }
@@ -135,7 +149,7 @@ func run(log *slog.Logger) error {
 			return fmt.Errorf("lobby: %w", err)
 		}
 		log.Info("lobby listening", "addr", ln.Addr().String())
-		go func() { log.Error("lobby stopped", "err", lob.Serve(ln)) }()
+		go func() { log.Error("lobby stopped", "err", redact.Err(lob.Serve(ln))) }()
 	}
 
 	// NAT probes and introductions.
@@ -154,7 +168,7 @@ func run(log *slog.Logger) error {
 			return known
 		}}
 	log.Info("nat listening", "addr", udp.LocalAddr().String(), "announced", publicIP.String())
-	go func() { log.Error("nat stopped", "err", natSrv.Serve()) }()
+	go func() { log.Error("nat stopped", "err", redact.Err(natSrv.Serve())) }()
 
 	// Bans and expiry: a banned account or an expired session leaves the lobby within a minute.
 	go func() {
@@ -198,11 +212,13 @@ func run(log *slog.Logger) error {
 		TLSConfig:         &tls.Config{Certificates: []tls.Certificate{cert}, MinVersion: tls.VersionTLS10},
 		ReadHeaderTimeout: 15 * time.Second,
 		ReadTimeout:       30 * time.Second,
-		ErrorLog:          slog.NewLogLogger(log.Handler(), slog.LevelDebug),
+		ErrorLog:          stdLogger(log),
 	}
 	log.Info("auth listening", "addr", authLn.Addr().String(), "proxy_protocol", os.Getenv("DEMONWARE_PROXY_PROTOCOL") == "1",
 		"require_account", requireAccount, "titles", names)
-	go func() { log.Error("auth stopped", "err", authSrv.Serve(tls.NewListener(authLn, authSrv.TLSConfig))) }()
+	go func() {
+		log.Error("auth stopped", "err", redact.Err(authSrv.Serve(tls.NewListener(authLn, authSrv.TLSConfig))))
+	}()
 
 	// /health.
 	mux := http.NewServeMux()
