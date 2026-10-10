@@ -151,7 +151,7 @@ func (s *Shared) userNames(c *lobby.Conn, r *lobby.Request) []byte {
 			hits = append(hits, hit{id, o.Player().Nickname})
 		}
 	}
-	c.Log().Debug("user names", "asked", len(ids), "online", len(hits))
+	c.Log().Info("user names", "asked", len(ids), "online", len(hits))
 	return wire.Rows(r.Task, func(w *wire.Writer) uint32 {
 		for _, h := range hits {
 			w.U64(h.id).String(h.name)
@@ -218,6 +218,7 @@ func (s *Shared) presenceTask(c *lobby.Conn, r *lobby.Request) []byte {
 		s.mu.Lock()
 		s.presence[presenceKey{c.Title(), me}] = presence{platform, flag, data}
 		s.mu.Unlock()
+		c.Log().Info("rich presence set", "flag", flag, "bytes", len(data))
 		return wire.Empty(r.Task)
 	case 4, 5:
 		n, err := r.Args.U32()
@@ -248,6 +249,7 @@ func (s *Shared) presenceTask(c *lobby.Conn, r *lobby.Request) []byte {
 				hits = append(hits, hit{id, p})
 			}
 		}
+		c.Log().Info("rich presence read", "task", r.Task, "asked", n, "found", len(hits))
 		return wire.Rows(r.Task, func(w *wire.Writer) uint32 {
 			for _, h := range hits {
 				w.U64(h.id).String(h.p.platform).U8(h.p.flag).Blob(h.p.data)
@@ -255,5 +257,6 @@ func (s *Shared) presenceTask(c *lobby.Conn, r *lobby.Request) []byte {
 			return uint32(len(hits))
 		})
 	}
+	c.Log().Info("rich presence task", "task", r.Task, "args", wire.Describe(r.Args.Rest()))
 	return wire.Empty(r.Task)
 }

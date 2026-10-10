@@ -28,6 +28,7 @@ import (
 	"github.com/openpak/demonware/redact"
 	"github.com/openpak/demonware/session"
 	"github.com/openpak/demonware/titles"
+	"github.com/openpak/demonware/wire"
 )
 
 func env(k, d string) string {
@@ -140,7 +141,10 @@ func run(log *slog.Logger) error {
 		if resp, ok := shared.Handle(c, r); ok {
 			return resp
 		}
-		c.Log().Debug("task answered with an empty success", "service", r.Service, "task", r.Task)
+		// Info, so a title's undecoded tasks show up in production: the argument shape only
+		// (wire.Describe: numbers, lengths of strings and blobs, ids as "#").
+		c.Log().Info("task answered with an empty success", "service", r.Service, "task", r.Task,
+			"args", wire.Describe(r.Raw[min(3, len(r.Raw)):]))
 		return lobby.Response{}
 	}
 	lob.OnClose(shared.Closed)
