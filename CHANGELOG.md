@@ -2,6 +2,21 @@
 
 `git log` stays the source of truth; this file is the readable summary.
 
+## v0.1.4 — 2026-10-10
+
+- Diablo III Quick Match (21/5) returns only the public games the search asks for: mode,
+  difficulty, version, region, option and flag equal, level in the searcher's range, room for
+  the party, act and quest as the query id says; closest level first. Layouts read from the
+  v1441792 `main` (docs/protocol.md §6). Search lines log open/returned counts and why games
+  were left out.
+
+## v0.1.2, v0.1.3 — 2026-10-10
+
+- CTR's LSG token comes from `prod.umbrella.demonware.net` (its own host); deployment now routes
+  and certifies that name. auth logs paths it does not serve (shape only, via `redact.Path`).
+- Matchmaking logs game attributes and search filters by type and value (strings and blobs by
+  length, ids masked), with a log-privacy test.
+
 ## v0.1.1 — 2026-10-10
 
 - ci: build scratch in the runner temp, not the checkout.
