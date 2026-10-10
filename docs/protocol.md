@@ -241,11 +241,31 @@ game (seen live): the relay then forwards between that joiner and the host's pub
 | 68/3 rich presence set | `10 context, 0A u64 id (0 = self), 10 platform, 03 u8 flag, 13 blob` | none |
 | 68/4, 68/5 rich presence get (and subscribe) | `10 context, 08 u32 count, count x (0A u64 id, 10 platform)` | rows `0A u64 id, 10 platform, 03 u8 flag, 13 blob` |
 | 68/7 unsubscribe | | none |
+| 6/14 send message | `0A u64 recipient online id, 13 blob` (at most 4096 bytes) | none; the recipient, if connected to the same title, gets push 21 |
 | 194/1 A/B testing enroll | | struct reply `{1: http status, 2: http status, 3: body}`; body JSON `{"expiresIn":3600,"ABToken":"<non-empty>","enrollments":[]}`. Status is written in both fields because two readers exist (field 2 and field 1). An empty ABToken fails the login. |
 
 Friend ids: the ids the game asks about are the ones Nintendo's friend service gives it for
 each friend (the friend's network service account id on a console). A server answers for
 players it knows are connected.
+
+Push 21 (instant message), what the recipient of a 6/14 reads: `08 u32 21 | 0A u64 sender
+online id | 10 sender name (read into 64 bytes) | 13 blob (read into 4096 bytes)`.
+
+### Diablo III parties: friends, invites and joining
+
+- The in-game Online Friends list is the Nintendo friend list (`nn::friends::GetFriendList`
+  with an all-zero filter: every friend, any status). A friend counts as online in Diablo III
+  when `FriendPresence::GetStatus() > 0` (ONLINE or PLAYING) **and**
+  `IsSamePresenceGroupApplication()`. The game never declares an online-play session, so
+  ONLINE with Diablo III's app id and presence group is all a console ever shows.
+- The game imports no Nintendo invitation API. 6/14 is the only task it has that addresses
+  another player, and push 21 the only player-to-player event its handler takes, so party
+  invites, join requests and their answers travel as 6/14 messages to the friend's online id,
+  delivered as push 21 (read from the binary; the live check is the `message ... delivered`
+  log line during an invite). The blob is a bit stream whose first 32 bits are a message type
+  (1); the server relays it unread.
+- Pushes the game's own event handler takes besides 21: 18 (no payload) and 29 (`0A u64`).
+  Other push events go to the SDK's default handler and are ignored.
 
 ### bdMatchMaking (service 21, Diablo III public games)
 
@@ -315,7 +335,7 @@ games hosted by those friends. Without an answer every online friend shows as no
 | --- | --- | --- |
 | 10/21 getPublisherFile | `10 context, 10 name` | 1 result `13 blob` file bytes, or 0 results for a missing file (normal) |
 | 4/1,4,5,11,13 stats/leaderboards | | empty success |
-| 6/14, 10/10,12,13, 23/1, 27/2, 29/5,8,11, 67/6 | mail, hero upload, counters, DML, event log | empty success |
+| 10/10,12,13, 23/1, 27/2, 29/5,8,11, 67/6 | hero upload, counters, DML, event log | empty success |
 
 Publisher files asked for when a session starts: `Config.txt`, `Seasons.txt`,
 `Blacklist.txt`, and `update-1.cpk` (absent is fine). The Challenge Rift menu asks

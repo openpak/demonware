@@ -48,6 +48,8 @@ nx-mod and the Crash Team Racing work to CollectingW.
 | Service 21 task numbers and layouts, observed join sequence, stale-game failure | NX:matchmaking.go, NX:NOTES.md §header and §7 |
 | Service 138 context, CTR attribute blob, 138/14 friend sessions | NX:services.go, NX:matchmaking.go |
 | D3 public-game attribute and Quick Match filter layouts, query ids 1-3, the level range formula, max 20 results | OpenPak's own dump of the v1441792 `main`: the 21/5 builder at mapped `0xbe2120`, its caller `0x8a680` (query choice, filter values), the filter writer `0x8abd0` and the game-info writer `0x8acc0` with its setter `0x89ad4` |
+| 6/14 request layout, push 21 layout and limits, D3's handler overrides (21, 18, 29), the message bit stream's leading type 1, every task D3 can send | OpenPak's own dump of the v1441792 `main`: the 6/14 builder at mapped `0xbf6d00` (task init `0xbe3b10`, u64 then blob writers), the push dispatcher `0xbe9a70` (case 21 reads u64, string of 64, blob of 0x1000, then calls handler slot `0xd8`), the game's handler vtable at `0x1098ff8` overriding slots `0x80`, `0x88`, `0xd8` (`0x667a0` parses the blob) ; task inits `0xbe3b10` and `0xbe6620` enumerated by their callers |
+| D3 Online Friends: all-zero FriendFilter, online = status > 0 and same presence group | the same dump: `GetFriendList` call at `0xa3dc4`, flag computation at `0xa44f8`..`0xa4520` |
 | D3 empty-success services list | NX:STATUS.md, NX:NOTES.md §4 |
 | Publisher file names, `update-1.cpk` absent, rift file names | NX:NOTES.md §4, NX:riftdata.go |
 | Config.txt keys and order, 21 event names, Seasons.txt and Blacklist.txt shapes, date format, 2038 limit | NX:pubfiles.go, NX:PUBFILES.md |

@@ -80,6 +80,8 @@ func (s *Shared) Handle(c *lobby.Conn, r *lobby.Request) (lobby.Response, bool) 
 		return reply(s.userNames(c, r)), true
 	case r.Service == SvcUserData && (r.Task == 1 || r.Task == 4):
 		return reply(s.userDataTask(c, r)), true
+	case r.Service == SvcMessaging && r.Task == taskSendMessage:
+		return s.sendMessage(c, r), true
 	case r.Service == SvcPresence:
 		return reply(s.presenceTask(c, r)), true
 	case r.Service == SvcMatchMaking:
