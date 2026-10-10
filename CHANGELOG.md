@@ -2,6 +2,13 @@
 
 `git log` stays the source of truth; this file is the readable summary.
 
+## v0.1.5 — 2026-10-10
+
+- CTR async matchmaking logs each step at info level: pushes sent (event only), lobby document
+  reads, host syncs (accepted, or why not: missing key, not the host, stale version), searches
+  cancelled, lobbies left. First two-console test: both consoles reach Online and search, the
+  host is sent 2005, nobody joins; these lines show where it stops.
+
 ## v0.1.4 — 2026-10-10
 
 - Diablo III Quick Match (21/5) returns only the public games the search asks for: mode,

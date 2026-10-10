@@ -270,13 +270,13 @@ func TestAsyncMatchmaking(t *testing.T) {
 	lobbyID, version := ns[0].ids[1], ns[0].ids[2]
 
 	// The guest is told only after the host syncs, and only with the current version.
-	if ok, _ := f.m.sync(a, lobbyID, version+1, hostDoc(true, map[uint64]int{1: 1}, version)); ok {
+	if ok, _, _ := f.m.sync(a, lobbyID, version+1, hostDoc(true, map[uint64]int{1: 1}, version)); ok {
 		t.Fatal("stale version accepted")
 	}
-	if ok, _ := f.m.sync(b, lobbyID, version, hostDoc(true, nil, version)); ok {
+	if ok, _, _ := f.m.sync(b, lobbyID, version, hostDoc(true, nil, version)); ok {
 		t.Fatal("a guest synced the host doc")
 	}
-	ok, ns := f.m.sync(a, lobbyID, version, hostDoc(true, map[uint64]int{1: 1}, version))
+	ok, _, ns := f.m.sync(a, lobbyID, version, hostDoc(true, map[uint64]int{1: 1}, version))
 	if !ok || len(ns) != 1 || ns[0].event != evJoin || ns[0].to != b || ns[0].ids[0] != sb.id {
 		t.Fatalf("guest not told: %v %+v", ok, ns)
 	}
@@ -299,7 +299,7 @@ func TestAsyncMatchmaking(t *testing.T) {
 	}
 	version++
 	// The host reports player 3 timed out: the seat is released.
-	ok, _ = f.m.sync(a, lobbyID, version, hostDoc(true, map[uint64]int{1: 1, 2: 2, 3: 3}, version))
+	ok, _, _ = f.m.sync(a, lobbyID, version, hostDoc(true, map[uint64]int{1: 1, 2: 2, 3: 3}, version))
 	r := f.m.rooms[lobbyID]
 	if !ok || r.seated() != 2 {
 		t.Fatalf("failed join still holds a seat: %d", r.seated())

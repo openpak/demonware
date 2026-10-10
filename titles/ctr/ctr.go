@@ -72,7 +72,9 @@ func (t *Title) send(ns []notice) {
 	for _, n := range ns {
 		if err := n.to.Push(n.payload()); err != nil {
 			n.to.Log().Info("ctr: push failed", "event", n.event, "err", redact.Err(err))
+			continue
 		}
+		n.to.Log().Info("ctr: pushed", "event", n.event)
 	}
 }
 
@@ -95,19 +97,23 @@ func (t *Title) async(c *lobby.Conn, r *lobby.Request) lobby.Response {
 		id := strconv.FormatUint(c.OnlineID(), 10)
 		return resp(wire.Rows(r.Task, func(w *wire.Writer) uint32 { w.String(id); return 1 }))
 	case 4, 14:
+		c.Log().Info("ctr: mm task", "task", r.Task)
 		return resp(wire.Empty(r.Task))
 	case 8: // cancel search
 		id, err := a.U64()
 		ok := err == nil && t.mm.withdraw(c, id)
+		c.Log().Info("ctr: search cancelled", "search", redact.Tag(id), "found", ok)
 		return resp(wire.Rows(r.Task, func(w *wire.Writer) uint32 { w.Bool(ok); return 1 }))
 	case 10: // lobby disbanded
 		if id, err := a.U64(); err == nil {
+			c.Log().Info("ctr: lobby left", "lobby", redact.Tag(id))
 			t.mm.remove(c, id)
 		}
 		return resp(wire.Empty(r.Task))
 	case 13: // lobby documents
 		id, err := a.U64()
 		h, b, ok := t.mm.docsFor(c, id)
+		c.Log().Info("ctr: lobby documents", "lobby", redact.Tag(id), "found", ok)
 		if err != nil || !ok {
 			return resp(wire.Fail(wire.Failed))
 		}
@@ -116,12 +122,16 @@ func (t *Title) async(c *lobby.Conn, r *lobby.Request) lobby.Response {
 		id, e1 := a.U64()
 		version, e2 := a.U64()
 		doc, e3 := a.String()
-		var ok bool
+		ok, why := false, "unreadable arguments"
 		var ns []notice
 		if e1 == nil && e2 == nil && e3 == nil {
-			ok, ns = t.mm.sync(c, id, version, doc)
+			ok, why, ns = t.mm.sync(c, id, version, doc)
 		}
-		c.Log().Debug("ctr: sync", "lobby", redact.Tag(id), "version", version, "accepted", ok)
+		if ok {
+			c.Log().Info("ctr: sync", "lobby", redact.Tag(id), "version", version, "accepted", ok, "notices", len(ns))
+		} else {
+			c.Log().Info("ctr: sync", "lobby", redact.Tag(id), "version", version, "accepted", ok, "why", why)
+		}
 		return lobby.Response{
 			Body: wire.Rows(r.Task, func(w *wire.Writer) uint32 { w.Bool(ok); return 1 }),
 			Then: func() { t.send(ns) },

@@ -354,21 +354,26 @@ var syncKeys = []string{"lobby_open", "lobby_open_for_pres_join", "player_state"
 
 // sync takes the host's new doc (145/15). Accepted only from the host, for the current
 // version; then guests not yet told are sent 2001, and waiting searches fill open seats.
-func (m *matcher) sync(c *lobby.Conn, id, version uint64, raw string) (bool, []notice) {
+func (m *matcher) sync(c *lobby.Conn, id, version uint64, raw string) (bool, string, []notice) {
 	doc, err := decode([]byte(raw))
 	if err != nil {
-		return false, nil
+		return false, "unreadable doc", nil
 	}
 	for _, k := range syncKeys {
 		if _, ok := doc[k]; !ok {
-			return false, nil
+			return false, "doc lacks " + k, nil
 		}
 	}
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	r := m.rooms[id]
-	if r == nil || r.host.conn != c || r.version != version {
-		return false, nil
+	switch {
+	case r == nil:
+		return false, "no such lobby", nil
+	case r.host.conn != c:
+		return false, "not the host", nil
+	case r.version != version:
+		return false, "version " + strconv.FormatUint(r.version, 10) + " expected", nil
 	}
 	now := m.now()
 	doc["update_id"], doc["update_time"] = r.version, now.Unix()
@@ -418,7 +423,7 @@ func (m *matcher) sync(c *lobby.Conn, id, version uint64, raw string) (bool, []n
 			out = append(out, r.tell(r.host, evUpdate, now))
 		}
 	}
-	return true, out
+	return true, "", out
 }
 
 // documents answers 145/13 for a member of the room.
