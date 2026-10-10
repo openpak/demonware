@@ -52,6 +52,12 @@ func (w *Writer) U32(v uint32) *Writer {
 	return w
 }
 
+func (w *Writer) I32(v int32) *Writer {
+	w.B = append(w.B, TI32)
+	w.B = binary.LittleEndian.AppendUint32(w.B, uint32(v))
+	return w
+}
+
 func (w *Writer) U64(v uint64) *Writer {
 	w.B = binary.LittleEndian.AppendUint64(append(w.B, TU64), v)
 	return w
@@ -343,4 +349,63 @@ func Describe(b []byte) string {
 		}
 	}
 	return string(out)
+}
+
+// Value is one typed value of a run read by Values: a number (signed tags sign-extended), or
+// for strings and blobs their length.
+type Value struct {
+	Tag byte
+	N   int64
+}
+
+// Values reads a run of typed scalars, strings and blobs (a title's matchmaking attributes or
+// search filters); ok is false when it meets a tag it does not know.
+func Values(b []byte) (vals []Value, ok bool) {
+	le := binary.LittleEndian
+	for i := 0; i < len(b); {
+		tag := b[i]
+		size := scalarSize[tag]
+		switch {
+		case tag == 0 && i == len(b)-1:
+			return vals, true
+		case size > 0 && i+1+size <= len(b):
+			v := b[i+1 : i+1+size]
+			var n int64
+			switch size {
+			case 1:
+				n = int64(v[0])
+			case 2:
+				n = int64(le.Uint16(v))
+				if tag == 0x05 {
+					n = int64(int16(n))
+				}
+			case 4:
+				n = int64(le.Uint32(v))
+				if tag == TI32 {
+					n = int64(int32(n))
+				}
+			case 8:
+				n = int64(le.Uint64(v))
+			}
+			vals = append(vals, Value{tag, n})
+			i += 1 + size
+		case tag >= 0x10 && tag <= 0x12:
+			end := i + 1
+			for end < len(b) && b[end] != 0 {
+				end++
+			}
+			vals = append(vals, Value{tag, int64(end - i - 1)})
+			i = end + 1
+		case (tag == TBlob || tag == TStruct) && i+6 <= len(b) && b[i+1] == TU32:
+			n := int(le.Uint32(b[i+2:]))
+			if i+6+n > len(b) {
+				return vals, false
+			}
+			vals = append(vals, Value{tag, int64(n)})
+			i += 6 + n
+		default:
+			return vals, false
+		}
+	}
+	return vals, true
 }

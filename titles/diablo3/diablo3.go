@@ -30,6 +30,7 @@ func New(settings string, log *slog.Logger) *demonware.Title {
 			"crimson-switch-lobby.prod.demonware.net", "crimson-switch-lobby.cert.demonware.net",
 			"crimson-switch-lobby.dev.demonware.net",
 		},
+		Match: Match,
 		Handle: func(c *lobby.Conn, r *lobby.Request) (lobby.Response, bool) {
 			if r.Service != svcStorage || r.Task != taskPublisherFile {
 				return lobby.Response{}, false

@@ -270,6 +270,35 @@ connect (with a 0x0A introduction when not on one LAN), then host 21/12 with pla
 joiner refuses a found game whose attributes differ from its filter. A game whose host is no
 longer in it can still be found, and joining it fails.
 
+#### Diablo III public games and Quick Match
+
+The game's attributes (after maxPlayers), in order:
+
+```
+i32 level        compared with the searcher's level range
+i32 act          0, 100, 200, 300, 400 = Acts I-V, 3000 = Adventure Mode
+i32 quest        -1 = none
+13 blob[8], 13 blob[16]
+i32 mode         0 normal, 1 hardcore, 2 seasonal, 3 seasonal hardcore, 4 the special game type
+u32 free slots
+i32 version, i32 region, i32 difficulty, i32 option
+i32 (not searched on)
+i32 flag         0 or 1
+```
+
+Quick Match is 21/5 with up to 20 results and twelve filter values after query, start, max:
+
+```
+i32 level, i32 level min, i32 level max     min/max = level -/+ max(2, round(sqrt(level / 2)))
+i32 act (-1 any), i32 quest (-1 any), i32 mode, u32 party size,
+i32 version, i32 region, i32 difficulty, i32 option, i32 flag
+```
+
+The query id says how act and quest are matched: 1 act and quest, 2 act only (Adventure Mode,
+or no quest), 3 any act. Every other value must equal the game's, the level must be inside the
+range and the game must have room for the party. The server returns only such games, closest
+level first; with none the client hosts a new public game itself.
+
 ### Contextual sessions (service 138, Crash Team Racing)
 
 Every request starts with `10 context`. Tasks 1, 2, 3, 12, 19, 20 as in service 21, scoped by

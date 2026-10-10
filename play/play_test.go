@@ -280,3 +280,39 @@ func TestNamesPresenceUserData(t *testing.T) {
 		t.Fatalf("A/B reply %x", sb)
 	}
 }
+
+// A title's matcher decides which open games a search returns, best rank first.
+func TestFindUsesTitleMatcher(t *testing.T) {
+	f := newFixture()
+	f.shared.Matchers = map[uint32]Matcher{5745: func(query uint32, filters, attrs []byte) (int, bool, string) {
+		if attrs[1] != filters[1] { // the first u8 value must equal
+			return 0, false, "mode"
+		}
+		return int(attrs[3]), true, "" // then the second u8 is the rank
+	}}
+	a := f.player(1, "00000000000000b1", 5745, "198.51.100.1")
+	b := f.player(2, "00000000000000b2", 5745, "198.51.100.2")
+	c := f.player(3, "00000000000000b3", 5745, "198.51.100.3")
+	joiner := f.player(4, "00000000000000b4", 5745, "198.51.100.4")
+	create := func(p *lobby.Conn, mode, rank byte) {
+		head(t, f.call(p, SvcMatchMaking, mmCreate, func(w *wire.Writer) { writeInfo(w, hostAddr(byte(p.ID)), 4, []byte{3, mode, 3, rank}, false) }))
+	}
+	create(a, 1, 5)
+	create(b, 2, 0) // other mode: never returned
+	create(c, 1, 1)
+	r := f.call(joiner, SvcMatchMaking, mmFind, func(w *wire.Writer) { w.U32(1).U32(0).U32(10).U8(1) })
+	if _, n := head(t, r); n != 2 {
+		t.Fatalf("found %d games, want the 2 of the searched mode", n)
+	}
+	_, _ = r.Blob()
+	_, _ = r.Blob()
+	_, _ = r.U32()
+	_, _ = r.U32()
+	_, _ = r.U32()
+	if first, _ := r.U8(); first != 1 {
+		t.Fatalf("first result has mode %d", first)
+	}
+	if rank, _ := r.U8(); rank != 1 {
+		t.Fatalf("best-ranked game is not first (rank %d)", rank)
+	}
+}

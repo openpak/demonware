@@ -19,6 +19,9 @@ type Title struct {
 	Handle func(c *lobby.Conn, r *lobby.Request) (resp lobby.Response, ok bool)
 	// Closed cleans up after a connection of this title.
 	Closed func(c *lobby.Conn)
+	// Match picks the open public games a search of this title may find (play.Matcher);
+	// nil returns every open game.
+	Match func(query uint32, filters, attrs []byte) (rank int, ok bool, why string)
 }
 
 // NATHosts are the probe hosts every title uses.

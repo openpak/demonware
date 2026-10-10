@@ -125,6 +125,12 @@ func run(log *slog.Logger) error {
 	}
 	relay := relayFromEnv(publicIP, log)
 	shared := play.New(lob, relay, log.With("part", "play"))
+	shared.Matchers = map[uint32]play.Matcher{}
+	for id, t := range byID {
+		if t.Match != nil {
+			shared.Matchers[id] = t.Match
+		}
+	}
 	lob.Handle = func(c *lobby.Conn, r *lobby.Request) lobby.Response {
 		if t := byID[c.Title()]; t != nil && t.Handle != nil {
 			if resp, ok := t.Handle(c, r); ok {

@@ -47,6 +47,7 @@ nx-mod and the Crash Team Racing work to CollectingW.
 | 194/1 A/B testing reply, status in fields 1 and 2, non-empty ABToken | NX:services.go |
 | Service 21 task numbers and layouts, observed join sequence, stale-game failure | NX:matchmaking.go, NX:NOTES.md §header and §7 |
 | Service 138 context, CTR attribute blob, 138/14 friend sessions | NX:services.go, NX:matchmaking.go |
+| D3 public-game attribute and Quick Match filter layouts, query ids 1-3, the level range formula, max 20 results | OpenPak's own dump of the v1441792 `main`: the 21/5 builder at mapped `0xbe2120`, its caller `0x8a680` (query choice, filter values), the filter writer `0x8abd0` and the game-info writer `0x8acc0` with its setter `0x89ad4` |
 | D3 empty-success services list | NX:STATUS.md, NX:NOTES.md §4 |
 | Publisher file names, `update-1.cpk` absent, rift file names | NX:NOTES.md §4, NX:riftdata.go |
 | Config.txt keys and order, 21 event names, Seasons.txt and Blacklist.txt shapes, date format, 2038 limit | NX:pubfiles.go, NX:PUBFILES.md |
@@ -95,6 +96,6 @@ nx-mod and the Crash Team Racing work to CollectingW.
   `SeasonOnly "0"` is safe are open in the fact source.
 - **Seasons.txt comment lines.** The fact source writes two `#` comment lines first; we omit
   them. Assumed harmless, not tested on a game.
-- **Quick-match refusal** when one attribute differs (flag 1 vs 0) was never explained.
+- **Quick-match refusal** when one attribute differs (flag 1 vs 0): the last filter value is compared with the last attribute (docs/protocol.md §6); which setting it is was not traced.
 - **Race rewards** are keyed by the game's track-name hash; the hash function itself is not
   known to us, only the table.

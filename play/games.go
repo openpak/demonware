@@ -2,6 +2,7 @@ package play
 
 import (
 	"crypto/rand"
+	"fmt"
 	"net"
 	"sort"
 	"time"
@@ -193,20 +194,41 @@ func (s *Shared) matchmaking(c *lobby.Conn, r *lobby.Request, ctx string) []byte
 		if limit == 0 || limit > maxResults {
 			limit = maxResults
 		}
+		match := s.Matchers[c.Title()]
+		if ctx != "" {
+			match = nil // the contextual (138) searches carry no filters of this kind
+		}
 		s.mu.Lock()
 		var found []game
+		rank := map[[8]byte]int{}
+		open, refused := 0, map[string]int{}
 		for _, g := range s.games {
-			if g.title == c.Title() && g.context == ctx && !g.reserved && g.owner != 0 && !s.owns(c, g) &&
-				(g.maxPlayers == 0 || g.players < g.maxPlayers) {
-				found = append(found, *g)
+			if g.title != c.Title() || g.context != ctx || g.reserved || g.owner == 0 || s.owns(c, g) ||
+				(g.maxPlayers != 0 && g.players >= g.maxPlayers) {
+				continue
 			}
+			open++
+			if match != nil {
+				r, ok, why := match(query, filters, g.attrs)
+				if !ok {
+					refused[why]++
+					continue
+				}
+				rank[g.id] = r
+			}
+			found = append(found, *g)
 		}
 		s.mu.Unlock()
-		sort.Slice(found, func(i, j int) bool { return found[i].updated.After(found[j].updated) })
+		sort.Slice(found, func(i, j int) bool {
+			if ri, rj := rank[found[i].id], rank[found[j].id]; ri != rj {
+				return ri < rj
+			}
+			return found[i].updated.After(found[j].updated)
+		})
 		found = found[min(int(start), len(found)):]
 		found = found[:min(int(limit), len(found))]
 		c.Log().Info("games searched", "context", redact.Tag(ctx), "query", query, "filters", wire.Describe(filters),
-			"open", len(found))
+			"open", open, "returned", len(found), "refused", fmt.Sprint(refused))
 		return s.results(c, r.Task, found)
 
 	case mmFriends:

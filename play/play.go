@@ -31,6 +31,10 @@ type Shared struct {
 	Log   *slog.Logger
 	Now   func() time.Time
 
+	// Matchers decide, per title, which open games a search may return (service 21 find).
+	// A title without one gets every open game.
+	Matchers map[uint32]Matcher
+
 	mu       sync.Mutex
 	games    map[[8]byte]*game
 	userData map[dataKey][]byte
@@ -92,6 +96,12 @@ func (s *Shared) Handle(c *lobby.Conn, r *lobby.Request) (lobby.Response, bool) 
 	}
 	return lobby.Response{}, false
 }
+
+// Matcher compares a search (its query id and the typed filter values after start and max)
+// with an open game's attributes. ok false leaves the game out and why says which value
+// differed (for the log: no ids, names or addresses); among the games kept, a lower rank is
+// returned first.
+type Matcher func(query uint32, filters, attrs []byte) (rank int, ok bool, why string)
 
 func reply(b []byte) lobby.Response { return lobby.Response{Body: b} }
 
