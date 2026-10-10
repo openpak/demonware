@@ -68,9 +68,10 @@ func TestLogsCarryNoPersonalData(t *testing.T) {
 	}
 	umb(reply.ClientTicket)
 	umb(base64.StdEncoding.EncodeToString([]byte("not a ticket")))
+	post("/v1.0/users/7788991122/Zorblaxa/tokens/?client=x", "{}")
 
 	got := out.String()
-	for _, want := range []string{"auth ok", "auth refused", "umbrella ok", "umbrella refused", "pid=~"} {
+	for _, want := range []string{"auth ok", "auth refused", "umbrella ok", "umbrella refused", "auth: unhandled request", "pid=~"} {
 		if !strings.Contains(got, want) {
 			t.Fatalf("expected %q in log:\n%s", want, got)
 		}

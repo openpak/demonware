@@ -13,7 +13,6 @@ import (
 	"io"
 	"log/slog"
 	"net/http"
-	"regexp"
 	"strconv"
 	"strings"
 	"sync/atomic"
@@ -52,15 +51,13 @@ func (s *Service) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	case r.Method == http.MethodPost && strings.HasPrefix(r.URL.Path, "/auth"):
 		s.login(w, r)
 	default:
-		// Host and path only, with long numbers (user and account ids in Demonware paths) masked:
-		// enough to see which Demonware service a game asked for.
-		s.Log.Info("auth: unhandled request", "method", r.Method, "host", r.Host,
-			"path", longNumber.ReplaceAllString(r.URL.Path, "#"))
+		// Host and path shape only (ids and names in the path are tagged, an address as host is
+		// scrubbed): enough to see which Demonware service a game asked for.
+		s.Log.Info("auth: unhandled request", "method", r.Method, "host", redact.Scrub(r.Host),
+			"path", redact.Path(r.URL.Path))
 		http.NotFound(w, r)
 	}
 }
-
-var longNumber = regexp.MustCompile(`[0-9A-Fa-f]{6,}`)
 
 // strInt accepts a JSON number or a numeric string: the client sends its integers as strings.
 type strInt uint64
