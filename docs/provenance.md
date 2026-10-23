@@ -9,7 +9,7 @@
 > current handoff for builds and testing; old results do not establish Harbor parity.
 
 Where each non-obvious fact in `docs/protocol.md` came from, per the
-[clean-room policy](../../../docs/clean-room-policy.md).
+[clean-room policy](https://docs.openpak.org/contributors/clean-room/).
 
 **Fact source:** earlier research notes on Demonware, read on 2026-09-23 for facts only; nothing was
 copied, translated or mirrored. Their file layout, package split, type and function names, and

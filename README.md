@@ -118,7 +118,7 @@ down, has broken seasonal heroes on a console's save**: pick one and keep it.
 
 ## Ports
 
-Block 22610-22619 in [`ports.md`](../../ports.md):
+Block 22610-22619 in [`ports.md`](https://docs.openpak.org/contributors/ports/):
 
 | Port | What | Reached how |
 | --- | --- | --- |
