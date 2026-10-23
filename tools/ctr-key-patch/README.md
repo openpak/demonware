@@ -1,5 +1,13 @@
 # OpenPak CTR key patch
 
+> **Current Switch client (2026-10-13): Harbor**, at
+> `~/REPOS/Openpak/emulators/harbor`. Harbor is an independent
+> OpenPak project based on Eden. Citron, Ryujinx (desktop and Android), and
+> the former OpenPak Eden checkouts have been removed. References to those
+> forks below record historical evidence only: do not run their commands,
+> reinstall them, or select them for current work. Use Harbor's README and
+> current handoff for builds and testing; old results do not establish Harbor parity.
+
 Crash Team Racing Nitro-Fueled (`0100F9F00C696000`) verifies every auth3 reply's
 `X-Signature` against the RSA-2048 key embedded in its `main`. It is Demonware's own key, the
 same one Diablo III carries; Diablo III just never checks a signature. This patch replaces the
@@ -54,7 +62,7 @@ The NSO comes from the v983040 update NSP (`nstool` for the ExeFS, then
 
 ## The private key
 
-Owner-local at `~/openpak-ctr-private/openpak-ctr-signing.pem` (mode 0600).
+Owner-local at `~/REPOS/Openpak/.secrets/ctr/openpak-ctr-signing.pem` (mode 0600).
 Deploy it to the server as `DEMONWARE_CTR_SIGNING_KEY`. Back it up privately: losing it means
 a new public key, a new patch and reinstalling it everywhere. Never put it in a repository,
 an image or an NRO.

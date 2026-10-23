@@ -1,5 +1,13 @@
 # demonware
 
+> **Current Switch client (2026-10-13): Harbor**, at
+> `~/REPOS/Openpak/emulators/harbor`. Harbor is an independent
+> OpenPak project based on Eden. Citron, Ryujinx (desktop and Android), and
+> the former OpenPak Eden checkouts have been removed. References to those
+> forks below record historical evidence only: do not run their commands,
+> reinstall them, or select them for current work. Use Harbor's README and
+> current handoff for builds and testing; old results do not establish Harbor parity.
+
 OpenPak's Demonware server: auth3, the encrypted lobby and the remote tasks that Activision's
 Demonware titles call on Nintendo Switch. One module, one image (`ghcr.io/openpak/demonware`),
 one process for every title.
@@ -11,7 +19,7 @@ one process for every title.
 
 Built clean-room from the facts in [`docs/protocol.md`](docs/protocol.md); where every fact came
 from is in [`docs/provenance.md`](docs/provenance.md). This repository supersedes the
-`servers/crash-team-racing` feasibility study, whose content and open questions are carried in
+`platforms/switch/games/crash-team-racing` feasibility study, whose content and open questions are carried in
 [`docs/crash-team-racing.md`](docs/crash-team-racing.md).
 
 ## Why one process for both titles

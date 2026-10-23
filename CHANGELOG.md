@@ -55,4 +55,4 @@ First version. Deployed to prod.
 - Diablo III publisher files from a JSON settings file.
 - Crash Team Racing async matchmaking, Pit Stop with persistent wallets, race rewards, Pit Stop
   refresh, Window Shopping.
-- Supersedes the `servers/crash-team-racing` feasibility study (`docs/crash-team-racing.md`).
+- Supersedes the `platforms/switch/games/crash-team-racing` feasibility study (`docs/crash-team-racing.md`).

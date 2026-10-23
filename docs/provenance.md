@@ -1,5 +1,13 @@
 # Provenance
 
+> **Current Switch client (2026-10-13): Harbor**, at
+> `~/REPOS/Openpak/emulators/harbor`. Harbor is an independent
+> OpenPak project based on Eden. Citron, Ryujinx (desktop and Android), and
+> the former OpenPak Eden checkouts have been removed. References to those
+> forks below record historical evidence only: do not run their commands,
+> reinstall them, or select them for current work. Use Harbor's README and
+> current handoff for builds and testing; old results do not establish Harbor parity.
+
 Where each non-obvious fact in `docs/protocol.md` came from, per the
 [clean-room policy](../../../docs/clean-room-policy.md).
 
@@ -13,7 +21,7 @@ nx-mod and the Crash Team Racing work to CollectingW.
 | D3 Demonware title id 5745, "crimson", Switch title `01001B300B9BE000` | earlier research notes |
 | D3 hosts `crimson-switch-{auth3,lobby}.{prod,cert,dev}.demonware.net`, `stun.{us,eu,jp,au}.demonware.net` | earlier research notes |
 | CTR title 5775, CTR Switch app id `0100f9f00c696000` | earlier research notes |
-| CTR hosts `lavender-switch-{auth3,lobby}.prod.demonware.net` | OpenPak's own tree: `emulators/citron/src/core/hle/service/sockets/sfdnsres.cpp` (observed live 2026-08-31), `servers/crash-team-racing/docs/design.md` |
+| CTR hosts `lavender-switch-{auth3,lobby}.prod.demonware.net` | OpenPak's own tree: `emulators/citron/src/core/hle/service/sockets/sfdnsres.cpp` (observed live 2026-08-31), `platforms/switch/games/crash-team-racing/docs/design.md` |
 | auth3 on 443 via TLS, URL `https://%s:%d/auth/`, old curl needs TLS 1.0 | earlier research notes |
 | Lobby on TCP 3074 (neighbouring ports 3075-3080 opened "because the real port can't be deduced") | earlier research notes |
 | Auth request fields, string integers, extra_data contents | earlier research notes |

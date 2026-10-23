@@ -1,6 +1,14 @@
 # Crash Team Racing Nitro-Fueled: from feasibility study to server
 
-This carries forward `servers/crash-team-racing` (a documentation-only feasibility study,
+> **Current Switch client (2026-10-13): Harbor**, at
+> `~/REPOS/Openpak/emulators/harbor`. Harbor is an independent
+> OpenPak project based on Eden. Citron, Ryujinx (desktop and Android), and
+> the former OpenPak Eden checkouts have been removed. References to those
+> forks below record historical evidence only: do not run their commands,
+> reinstall them, or select them for current work. Use Harbor's README and
+> current handoff for builds and testing; old results do not establish Harbor parity.
+
+This carries forward `platforms/switch/games/crash-team-racing` (a documentation-only feasibility study,
 2026-09-09 to 2026-09-15), which this repository supersedes. The study's verdict and the
 answers to its unknowns are kept here; its experiment list is kept only where it still
 applies.
