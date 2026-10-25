@@ -1,0 +1,97 @@
+# Deploy: demonware
+
+## Environment
+
+| Variable | Default | Meaning |
+| --- | --- | --- |
+| `DEMONWARE_TITLES` | `diablo-3,crash-team-racing` | games auth3 admits |
+| `DEMONWARE_PUBLIC_IP` | (required) | IPv4 consoles reach this server on; announced in NAT replies and relay slots |
+| `AUTH_LISTEN` | `:22610` | auth3, TLS terminated here (Traefik passes 443 through by SNI) |
+| `CERT_FILE`, `KEY_FILE` | `demonware.pem`, `demonware.key` | certificate for the auth3 names, from the OpenPak CA |
+| `DEMONWARE_PROXY_PROTOCOL` | off | `1`: every auth connection starts with a PROXY v1 header (Traefik `proxyProtocol: {version: 1}`) |
+| `LOBBY_LISTEN` | `:3074` | lobby, comma list |
+| `NAT_LISTEN` | `:3074` | UDP NAT probes and introductions |
+| `HEALTH_LISTEN` | `:22611` | `GET /health` |
+| `NX_INTERNAL_URL` | `http://127.0.0.1:20070` | nx-baas internal API |
+| `NX_INTERNAL_KEY` | (required) | nx-baas internal key |
+| `DEMONWARE_REQUIRE_ACCOUNT` | `1` | `0` admits players nx-baas cannot prove, for local tests only |
+| `DEMONWARE_DATA` | `data` (`/app/data` in the image) | sessions, CTR wallets, Diablo III settings |
+| `DEMONWARE_SESSION_TTL` | `24h` | ticket lifetime |
+| `DEMONWARE_D3_SETTINGS` | `$DEMONWARE_DATA/diablo3.json` | Diablo III publisher settings (see below) |
+| `DEMONWARE_CTR_START_BALANCE` | `0` | Wumpa Coins a new CTR wallet opens with |
+| `DEMONWARE_CTR_SIGNING_KEY` | unset | RSA-2048 PEM key that signs CTR auth replies |
+| `DEMONWARE_RELAY_PORTS` | unset | e.g. `22612-22619`: enables the CTR/D3 UDP relay |
+| `DEMONWARE_RELAY_FOR` | empty | `*` or a comma list of online ids that get relay offers |
+| `LOG_LEVEL` | info | `debug` logs every task |
+
+## Diablo III publisher settings
+
+Diablo III settings file (every field optional):
+
+```json
+{ "season": 37, "theme": true, "events": ["DoubleGoblins"], "xp": "2.0",
+  "gold_find": "1.0", "legendary_find": "1.0",
+  "season_start": "Wed, 01 Jan 2020 00:00:00 GMT", "season_end": "Tue, 01 Jan 2036 00:00:00 GMT" }
+```
+
+Dates need a two-digit day and are clamped to 1 Jan 2038. **Changing the served season, up or
+down, has broken seasonal heroes on a console's save**: pick one and keep it.
+
+## Ports
+
+Block 22610-22619 in [`ports.md`](https://docs.openpak.org/contributors/ports/):
+
+| Port | What | Reached how |
+| --- | --- | --- |
+| 22610/tcp | auth3 (TLS) | Traefik `HostSNI` passthrough from 443 |
+| 22611/tcp | `/health` | local |
+| 22612-22619/udp | optional relay, one port per player pair | published, only when `DEMONWARE_RELAY_PORTS` is set |
+| 3074/tcp | lobby | direct, fixed by the games: published and open in the firewall |
+| 3074/udp | NAT probes and introductions | direct, fixed by the games |
+
+NAT discovery must see the console's real address and port, so the container runs with host
+networking (like `switch-nexd`), not a published port behind rootless port forwarding.
+
+## DNS
+
+`nn-sssl-dns` must answer these with the production address:
+
+```
+crimson-switch-auth3.prod.demonware.net   crimson-switch-lobby.prod.demonware.net
+crimson-switch-auth3.cert.demonware.net   crimson-switch-lobby.cert.demonware.net
+crimson-switch-auth3.dev.demonware.net    crimson-switch-lobby.dev.demonware.net
+lavender-switch-auth3.prod.demonware.net  lavender-switch-lobby.prod.demonware.net
+prod.umbrella.demonware.net               (CTR's LSG token, served by auth3)
+stun.us.demonware.net  stun.eu.demonware.net  stun.jp.demonware.net  stun.au.demonware.net
+```
+
+Without the `stun.*` names the game probes Activision and only offers local games.
+
+## Deploy notes
+
+- **Traefik**: one `HostSNI` router per auth3 name above and `prod.umbrella.demonware.net`
+  (`tls.passthrough: true`) to a service
+  at `host.containers.internal:22610`. Optionally `proxyProtocol: {version: 1}` on that service
+  together with `DEMONWARE_PROXY_PROTOCOL=1`, so auth logs show the console's address; the
+  current OpenPak Traefik config sends no PROXY header, so the default is off.
+- **Certificate**: an OpenPak-CA leaf for the auth3 names and `prod.umbrella.demonware.net`
+  (the prod leaf since 2026-10-10 also names `cert.umbrella`, `prod.uno` and `cert.uno`); TLS 1.0 and up is accepted
+  because the games' HTTP client is old.
+- **Quadlet**: `openpak-demonware.container`, `Image=ghcr.io/openpak/demonware:latest`,
+  `Network=host`, a volume on `/app/data`, the certificate mounted read-only, the shared
+  `.env` for `NX_INTERNAL_KEY`.
+- **Firewall**: ACCEPT 3074/tcp and 3074/udp (and 22612-22619/udp if the relay is on) before the
+  host's final REJECT.
+- **CTR login needs the CTR key patch.** CTR checks the auth reply's `X-Signature` against the
+  key embedded in its `main`. [`tools/ctr-key-patch`](../tools/ctr-key-patch) swaps that key for
+  OpenPak's (a data-only IPS for the final update); `openpak.nro` installs it on consoles and
+  Ryujinx, Citron and Eden apply it built in. Deploy the matching private key as
+  `DEMONWARE_CTR_SIGNING_KEY`; the lobby then also accepts a key wrapped with it.
+
+## Run locally
+
+```sh
+DEMONWARE_PUBLIC_IP=127.0.0.1 DEMONWARE_REQUIRE_ACCOUNT=0 CERT_FILE=… KEY_FILE=… go run ./cmd/demonwared
+```
+
+Tests on this shared machine: `flock /tmp/openpak-build.lock nice -n 19 go test ./...`.

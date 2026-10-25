@@ -490,3 +490,53 @@ Leaderboards (service 4) are not implemented for CTR; an empty success is return
   (nx-baas `baas_user_id`, hex, as u64): stable per OpenPak account, and the same number the
   Switch friend service hands the game for that player, so friend lookups, friend sessions
   and party members all line up without a translation table.
+
+## From the previous README
+
+### What the server answers
+
+Both titles:
+
+- **auth3** (`POST /auth/`): proves the player's NSA id_token through nx-baas
+  (`/internal/switch/identity`, the `openpak` claim or the whole token), refuses banned (403
+  `account_banned`) and unknown accounts, and fails closed when nx-baas cannot answer. The
+  ticket carries a stable per-account id: the network service account id nx-baas holds for the
+  player, which is also the id the Switch friend service gives the game for that player.
+- **Lobby**: hello, ticket-signed handshake, AES/HMAC channel, keepalives, FIFO task replies.
+  Only a ticket this server issued and has not expired opens a session: no all-zero key, no
+  key taken from an unknown ticket. Sessions last `DEMONWARE_SESSION_TTL` and survive a restart
+  (`$DEMONWARE_DATA/sessions.json`). A banned account is disconnected within a minute.
+- **NAT**: IP and NAT discovery on UDP 3074; introductions between connected players only.
+- **Shared tasks**: server time (12/6), friend names (12/9, friends online in the same game),
+  user data (29/1, 29/4), rich presence (68/3/4/5/7; a player sets only their own), A/B
+  testing (194/1).
+- Any task nobody implements gets an empty success, so the game never waits on a reply.
+
+Diablo III:
+
+- Publisher files `Config.txt`, `Seasons.txt`, `Blacklist.txt` (10/21), from
+  `DEMONWARE_D3_SETTINGS` (JSON, read on every request; defaults: season 37 with its theme).
+- Public games (21/1, 2, 3, 5, 12, 19, 20): create, update, player counts, delete, find. Full
+  games and games whose host has gone are not offered; a game with no host for 2 minutes, or
+  untouched for 6 hours, is removed.
+- Empty successes for leaderboards (4), mail (6), hero upload (10/10...), counters (23), DML
+  (27), the rest of 29, event log (67): nobody has decoded those formats yet.
+
+Crash Team Racing:
+
+- Umbrella token `POST /v1.0/tokens/lsg/` for a live ticket issued here.
+- Signed auth replies (`X-Signature`, RSA-PSS SHA-256, zero salt) when
+  `DEMONWARE_CTR_SIGNING_KEY` is set.
+- Friend sessions and contextual games (138): friends show as joinable.
+- Async matchmaking (145): searches (parties included) grouped by identical filter, host
+  chosen, 2005/2006/2001 pushes, host-doc sync with version check, seat release for guests the
+  host reports as timed out, backfill of open lobbies. Lobby merges (2008) are not implemented.
+- Pit Stop (80): balances (245), inventory (165), purchases with bundle pricing (154), eShop
+  reconciliation acknowledged (246). Wallets persist per OpenPak account under
+  `$DEMONWARE_DATA/ctr-wallets/`.
+- Achievements engine (125): race rewards from the game's own table with its online, weekend
+  and Golden Wumpa rules, paid once per race; Pit Stop daily refresh (two a day); the Window
+  Shopping challenge (25 coins). Other challenges are not implemented; leaderboards (4) are
+  empty.
+- Optional UDP relay for pairs whose NAT hole punch fails (`DEMONWARE_RELAY_PORTS`), per
+  player allow-list.
