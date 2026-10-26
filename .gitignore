@@ -52,3 +52,4 @@ shared-docs
 # Runtime state
 /data/
 __pycache__/
+next-session.md
