@@ -135,7 +135,7 @@ func (ch *channel) open(frame []byte) (inner byte, payload []byte, err error) {
 
 // gamePublicKey is the RSA-2048 public key (DER SubjectPublicKeyInfo) embedded in the game,
 // used only as the label of the optional lobby-key transformation. It is a constant of the
-// client, not a secret (docs/provenance.md).
+// client, not a secret (docs/protocol.md section 10).
 var gamePublicKey = mustHex("" +
 	"30820122300d06092a864886f70d01010105000382010f003082010a0282010100c0a20b1f6cb81b1270ed1aef306c75" +
 	"9dc1088999f02ac8ac2fc7d5d03b612939f38f6239daf12011e792e916242296099eac19cd243e58c6408678d7df7077" +

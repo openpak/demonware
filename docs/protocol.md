@@ -1,7 +1,7 @@
 # Demonware on Switch: protocol notes
 
 The facts this server is built from, written down before any code. Every entry says what the
-game sends or expects; `docs/provenance.md` says where each fact came from. Nothing here is a
+game sends or expects; section 10 says where the facts came from. Nothing here is a
 description of another implementation's code.
 
 Integers are little-endian unless stated. "Typed" means the Demonware typed byte buffer
@@ -540,3 +540,67 @@ Crash Team Racing:
   empty.
 - Optional UDP relay for pairs whose NAT hole punch fails (`DEMONWARE_RELAY_PORTS`), per
   player allow-list.
+
+## 10. Sources, decisions and open questions
+
+### Where the facts came from
+
+Clean room (see the [clean-room policy](https://docs.openpak.org/contributors/clean-room/)).
+Most wire facts come from earlier research notes on Demonware, read for facts only; nothing was
+copied or mirrored. Those notes credit the Diablo III binary work to nx-mod, the Crash Team
+Racing work to CollectingW, the NAT probe formats to project-bo4/shield-development and the
+introduction layout to Protarium-Network/bo2-wiiu-demonware. Facts OpenPak read itself:
+
+- CTR hosts `lavender-switch-{auth3,lobby}.prod.demonware.net`: observed live 2026-08-31 in the
+  former Citron redirect hook.
+- CTR's verify key is the embedded Demonware SPKI at NSO `0x40B4E40`; the `X-Signature`
+  handler (mapped `0xd4e0`..`0xd5a0`) and the lobby key wrap (`0x14584`, flag-gated) both load
+  it (v983040 update dump, `tools/ctr-key-patch/README.md`).
+- Umbrella host `https://{prod,cert,dev}.umbrella.demonware.net`, URL
+  `%s/v1.0/tokens/lsg/?client=%s`; lobby port 3074 and title 5775 sit in the same config block
+  as the lavender host names (v983040 `main`, mapped `0x10e2c8`, `0x10eeb4`, `0xa1f72c`).
+- Diablo III public-game attribute and Quick Match filter layouts, query ids 1-3, the level
+  range formula, max 20 results (v1441792 `main`: 21/5 builder `0xbe2120`, caller `0x8a680`,
+  filter writer `0x8abd0`, game-info writer `0x8acc0`, setter `0x89ad4`).
+- 6/14 request layout, push 21 layout and limits, D3's handler overrides (21, 18, 29), the
+  message bit stream's leading type 1 (6/14 builder `0xbf6d00`, task init `0xbe3b10`, push
+  dispatcher `0xbe9a70`, handler vtable `0x1098ff8`, parser `0x667a0`).
+- D3 Online Friends: all-zero FriendFilter, online = status > 0 and same presence group
+  (`GetFriendList` call at `0xa3dc4`, flag computation `0xa44f8`..`0xa4520`).
+- The SKU catalog (`data/skus.tsv`) and race reward table (`data/race-rewards.tsv`) restate
+  the game's own catalog and map table.
+
+### Decisions of our own
+
+- Tickets are looked up by an id we choose inside the ticket and must match what we issued byte
+  for byte; the all-zero key and keys carried in an unknown ticket are never tried.
+- Demonware user id = the player's network service account id from nx-baas (section 9).
+- One process serves every title. The games dial the lobby on TCP 3074 and NAT probes on UDP
+  3074, fixed in the client, and both resolve to the same OpenPak address; a lobby connection
+  only says which game it is after its ticket is read. So the title comes from the ticket
+  (auth3 stamps it in) and `DEMONWARE_TITLES` only chooses which games auth3 admits.
+- Crash Team Racing login needs the CTR key patch (`tools/ctr-key-patch`).
+
+### Unexplained or contradictory
+
+- **CTR lobby port.** The old Citron hook rewrote destination port 443 for both
+  `lavender-switch-auth3` and `lavender-switch-lobby`, which suggests CTR might dial the lobby
+  on 443. The fact source serves CTR's lobby on 3074 only (the lobby is not TLS, so it cannot
+  share 443 behind an SNI router) and reports CTR working. We serve 3074 (`LOBBY_LISTEN`
+  accepts extra ports).
+- **Which key the CTR client uses** for the lobby (plain lobby key or the RSA-wrapped one). Both
+  are tried.
+- **Client-to-server 0x85 layout** was assumed to mirror the server-to-client one; it works in
+  practice but was never read in the binary.
+- **Friend ids on a console.** The fact source saw console friends identified by device or
+  network service account ids and emulator friends by emulator PIDs. On OpenPak the friend list
+  comes from nx-baas, whose friend id is the network service account id. We key on it; a PID
+  match is kept as a fallback.
+- **Config.txt keys beyond those documented**, the blacklist `0`/`1` meaning, `ParagonCap`, and
+  whether `SeasonOnly "0"` is safe are open.
+- **Seasons.txt comment lines.** The fact source writes two `#` comment lines first; we omit
+  them. Assumed harmless, not tested on a game.
+- **Quick-match refusal** when one attribute differs (flag 1 vs 0): the last filter value is
+  compared with the last attribute (section 6); which setting it is was not traced.
+- **Race rewards** are keyed by the game's track-name hash; the hash function is not known, only
+  the table.

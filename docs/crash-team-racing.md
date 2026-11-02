@@ -27,7 +27,7 @@ applies.
 
 ## The study's unknowns, answered
 
-| Unknown | Answer (source in `provenance.md`) |
+| Unknown | Answer (source in `protocol.md` section 10) |
 | --- | --- |
 | U1 what is inside the TLS | auth3 is HTTPS with a JSON body; the lobby is *not* TLS: a raw TCP stream (hello, then length-prefixed frames, then an AES/HMAC channel keyed by the ticket). `docs/protocol.md` §2-3. |
 | U2 what auth3 wants | The NSA id_token inside `extra_data`; the reply is a 128-byte ticket readable in the clear (magic `DE AD BD EF`). No key baked into the client is needed for the lobby. CTR additionally checks an `X-Signature` on the reply, which passes once the client carries OpenPak's key (`tools/ctr-key-patch`). |
@@ -48,7 +48,7 @@ applies.
 ## Open
 
 - The lobby port: the citron hook rewrites port 443 for the lobby host as well as auth3, but
-  the lobby is plain TCP and the fact source serves it on 3074. See `provenance.md`.
+  the lobby is plain TCP and the fact source serves it on 3074. See `protocol.md` section 10.
 - The `X-Signature` key: solved by [`tools/ctr-key-patch`](../tools/ctr-key-patch), a
   data-only swap of the embedded modulus, found and verified in OpenPak's own dump of the final
   update. Not yet run.

@@ -42,10 +42,7 @@ The full variable list, ports and production steps are in [docs/deploy.md](docs/
 ## Docs
 
 - [protocol.md](docs/protocol.md): hosts, auth3, lobby, NAT and remote task formats
-- [evidence.md](docs/evidence.md): titles served and their ids
 - [deploy.md](docs/deploy.md): environment, ports, DNS, Traefik, quadlet, firewall, run and test
-- [notes.md](docs/notes.md): design rationale, provenance, client notice
-- [provenance.md](docs/provenance.md): where each protocol fact came from
 - [crash-team-racing.md](docs/crash-team-racing.md): Crash Team Racing feasibility study
 
 ## Licence
