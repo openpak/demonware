@@ -8,7 +8,7 @@ one process for every title.
 
 ## Harbor client notice
 
-> **Current Switch client (2026-10-13): Harbor**, at
+> **Current Switch client: Harbor**, at
 > `~/REPOS/Openpak/emulators/harbor`. Harbor is an independent
 > OpenPak project based on Eden. Citron, Ryujinx (desktop and Android), and
 > the former OpenPak Eden checkouts have been removed. References to those
@@ -29,12 +29,6 @@ The games dial the lobby on TCP 3074 and their NAT probes on UDP 3074, fixed in 
 both resolve to the same OpenPak address. Only one process can own those ports, and a lobby
 connection only says which game it is after its ticket is read. So the title comes from the
 ticket (auth3 stamps it in), and `DEMONWARE_TITLES` only chooses which games auth3 admits.
-
-## Not done
-
-Not done, for either title: server-reported presence (the console reports its own through
-nx-baas; there is no game-server presence intake), leaderboards, hero storage, mail, Challenge
-Rifts, season rotation, search filters for Diablo III.
 
 ## Disclaimer
 
