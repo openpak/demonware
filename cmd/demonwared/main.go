@@ -23,6 +23,7 @@ import (
 	"github.com/openpak/demonware"
 	"github.com/openpak/demonware/account"
 	"github.com/openpak/demonware/auth"
+	"github.com/openpak/demonware/internal/httplog"
 	"github.com/openpak/demonware/lobby"
 	"github.com/openpak/demonware/nat"
 	"github.com/openpak/demonware/play"
@@ -57,6 +58,7 @@ func main() {
 		level = slog.LevelDebug
 	}
 	log := slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{Level: level}))
+	slog.SetDefault(log)
 	if err := run(log); err != nil {
 		log.Error("demonwared", "err", redact.Err(err))
 		os.Exit(1)
@@ -228,7 +230,7 @@ func run(log *slog.Logger) error {
 		authLn = auth.ProxyListener{Listener: authLn}
 	}
 	authSrv := &http.Server{
-		Handler: authSvc,
+		Handler: httplog.Middleware(authSvc),
 		// The games' HTTP client is an old embedded curl.
 		TLSConfig:         &tls.Config{Certificates: []tls.Certificate{cert}, MinVersion: tls.VersionTLS10},
 		ReadHeaderTimeout: 15 * time.Second,

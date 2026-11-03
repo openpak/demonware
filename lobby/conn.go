@@ -329,7 +329,9 @@ func (c *Conn) task(p []byte) error {
 		}
 		req.Task = task
 		if body == nil {
+			start := time.Now()
 			resp := c.srv.Handle(c, req)
+			c.log.Info("lobby task", "service", req.Service, "task", req.Task, "ms", time.Since(start).Milliseconds())
 			body, then = resp.Body, resp.Then
 			if body == nil {
 				body = wire.Empty(task)
