@@ -18,6 +18,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/jackc/pgx/v5/pgxpool"
+
 	"github.com/openpak/demonware/account"
 )
 
@@ -51,7 +53,8 @@ type Store struct {
 	now  func() time.Time
 
 	mu   sync.Mutex
-	byID map[string]*Session
+	byID map[string]*Session // a cache when db is set; the only copy otherwise (tests)
+	db   *pgxpool.Pool       // the permanent store; nil keeps the JSON file / memory
 }
 
 // Open loads the sessions file at path (created on first write). An empty path keeps
@@ -103,6 +106,9 @@ func (s *Store) Issue(p *account.Player, title uint32) (*Session, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	s.byID[sess.id()] = sess
+	if s.db != nil {
+		return sess, s.dbSave(sess)
+	}
 	return sess, s.saveLocked()
 }
 
@@ -114,6 +120,12 @@ func (s *Store) Find(t []byte) *Session {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	v := s.byID[hex.EncodeToString(t[33:49])]
+	if v == nil && s.db != nil {
+		// Not in the cache (a restart, or another process issued it): the store has the truth.
+		if v = s.dbLoad(hex.EncodeToString(t[33:49])); v != nil {
+			s.byID[v.id()] = v
+		}
+	}
 	if v == nil || !s.now().Before(v.Expires) || string(v.Ticket) != string(t) {
 		return nil
 	}
@@ -128,6 +140,10 @@ func (s *Store) Drop(pid uint64) {
 		if v.Player.PID == pid {
 			delete(s.byID, id)
 		}
+	}
+	if s.db != nil {
+		s.dbDrop(pid)
+		return
 	}
 	_ = s.saveLocked()
 }

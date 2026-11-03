@@ -505,7 +505,7 @@ Both titles:
 - **Lobby**: hello, ticket-signed handshake, AES/HMAC channel, keepalives, FIFO task replies.
   Only a ticket this server issued and has not expired opens a session: no all-zero key, no
   key taken from an unknown ticket. Sessions last `DEMONWARE_SESSION_TTL` and survive a restart
-  (`$DEMONWARE_DATA/sessions.json`). A banned account is disconnected within a minute.
+  (Postgres, `DEMONWARE_DATABASE_URL`; the JSON file `$DEMONWARE_DATA/sessions.json` when unset). A banned account is disconnected within a minute.
 - **NAT**: IP and NAT discovery on UDP 3074; introductions between connected players only.
 - **Shared tasks**: server time (12/6), friend names (12/9, friends online in the same game),
   user data (29/1, 29/4), rich presence (68/3/4/5/7; a player sets only their own), A/B

@@ -2,6 +2,10 @@
 
 `git log` stays the source of truth; this file is the readable summary.
 
+## v0.3.0 — 2026-11-03
+
+- **Tickets live in Postgres** (`DEMONWARE_DATABASE_URL`, pool of 3). The in-memory map is only a cache; `Find` falls back to the table, so a restart loses no ticket. The old `sessions.json` is imported once. Restart test: `TEST_DATABASE_URL`.
+
 ## v0.2.1 — 2026-11-03
 
 - Docs: why this host sends no rewards session events (joins are never observed by the server).

@@ -4,6 +4,7 @@
 package main
 
 import (
+	"context"
 	"crypto/tls"
 	"encoding/json"
 	"errors"
@@ -106,7 +107,14 @@ func run(log *slog.Logger) error {
 	}
 	sort.Strings(names)
 
-	sessions, err := session.Open(filepath.Join(data, "sessions.json"), ttl)
+	// DEMONWARE_DATABASE_URL: tickets live in Postgres, so a restart loses none. Unset keeps the
+	// JSON file (local runs only).
+	var sessions *session.Store
+	if dbURL := os.Getenv("DEMONWARE_DATABASE_URL"); dbURL != "" {
+		sessions, err = session.OpenDB(context.Background(), dbURL, filepath.Join(data, "sessions.json"), ttl)
+	} else {
+		sessions, err = session.Open(filepath.Join(data, "sessions.json"), ttl)
+	}
 	if err != nil {
 		return fmt.Errorf("sessions: %w", err)
 	}

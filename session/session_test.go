@@ -2,7 +2,9 @@ package session
 
 import (
 	"bytes"
+	"context"
 	"encoding/binary"
+	"os"
 	"path/filepath"
 	"testing"
 	"time"
@@ -83,5 +85,59 @@ func TestExpiryAndPersistence(t *testing.T) {
 	again.Drop(player.PID)
 	if again.Find(sess.Ticket) != nil {
 		t.Fatal("dropped session accepted")
+	}
+}
+
+// TestTicketsSurviveRestartInPostgres needs a throwaway Postgres (TEST_DATABASE_URL); skipped without one.
+func TestTicketsSurviveRestartInPostgres(t *testing.T) {
+	url := os.Getenv("TEST_DATABASE_URL")
+	if url == "" {
+		t.Skip("TEST_DATABASE_URL not set")
+	}
+	ctx := context.Background()
+	a, err := OpenDB(ctx, url, "", time.Hour)
+	if err != nil {
+		t.Fatal(err)
+	}
+	sess, err := a.Issue(player, 5745)
+	if err != nil {
+		t.Fatal(err)
+	}
+	a.Close() // the process ends; nothing in memory survives
+
+	b, err := OpenDB(ctx, url, "", time.Hour)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer b.Close()
+	got := b.Find(sess.Ticket)
+	if got == nil || got.Player.PID != player.PID || got.Title != 5745 || got.Player.BaasUserID != player.BaasUserID {
+		t.Fatal("ticket lost across a restart")
+	}
+	forged := append([]byte(nil), sess.Ticket...)
+	copy(forged[97:121], make([]byte, 24))
+	if b.Find(forged) != nil {
+		t.Fatal("forged ticket accepted from the store")
+	}
+	b.Drop(player.PID)
+	c, _ := OpenDB(ctx, url, "", time.Hour)
+	defer c.Close()
+	if c.Find(sess.Ticket) != nil {
+		t.Fatal("dropped ticket survived a restart")
+	}
+
+	// The legacy JSON file is imported once.
+	path := filepath.Join(t.TempDir(), "sessions.json")
+	f, _ := Open(path, time.Hour)
+	old, _ := f.Issue(player, TitleCTR)
+	d, err := OpenDB(ctx, url, path, time.Hour)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer d.Close()
+	e, _ := OpenDB(ctx, url, "", time.Hour)
+	defer e.Close()
+	if e.Find(old.Ticket) == nil {
+		t.Fatal("legacy session not imported")
 	}
 }

@@ -6,6 +6,7 @@
 | --- | --- | --- |
 | `DEMONWARE_TITLES` | `diablo-3,crash-team-racing` | games auth3 admits |
 | `DEMONWARE_PUBLIC_IP` | (required) | IPv4 consoles reach this server on; announced in NAT replies and relay slots |
+| `DEMONWARE_DATABASE_URL` | (required in production) | Postgres (pool of 3) holding the issued tickets, so a restart loses none; a legacy `sessions.json` is imported once and renamed. Unset keeps the JSON file (local runs only). On the box the unit reaches Postgres at `127.0.0.1:19432` |
 | `AUTH_LISTEN` | `:22610` | auth3, TLS terminated here (Traefik passes 443 through by SNI) |
 | `CERT_FILE`, `KEY_FILE` | `demonware.pem`, `demonware.key` | certificate for the auth3 names, from the OpenPak CA |
 | `DEMONWARE_PROXY_PROTOCOL` | off | `1`: every auth connection starts with a PROXY v1 header (Traefik `proxyProtocol: {version: 1}`) |
@@ -39,7 +40,7 @@ down, has broken seasonal heroes on a console's save**: pick one and keep it.
 
 ## Rewards sessions: not sent
 
-This host sends no `game_sessions.*` events (Crash Team Racing Nitro-Fueled, Diablo III), on purpose.
+This host sends no `game_sessions.*` events (so `REWARDS_EVENTS_*` stay unset) (Crash Team Racing Nitro-Fueled, Diablo III), on purpose.
 The matchmaking tables (service 21 and 138, `play/games.go`) hold the host's game, its id and a
 player count that the host client reports itself. A joiner is never registered: a search returns
 games, the join then happens peer to peer (NAT introduction or optional relay) and the server is told
