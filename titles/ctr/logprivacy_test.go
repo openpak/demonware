@@ -37,7 +37,7 @@ func TestLogsCarryNoPersonalData(t *testing.T) {
 	var out bytes.Buffer
 	log := slog.New(slog.NewTextHandler(&out, &slog.HandlerOptions{Level: slog.LevelDebug}))
 	lob := &lobby.Server{Log: log}
-	_, tt, err := New(t.TempDir(), 100, log)
+	_, tt, err := New(t.TempDir(), 100, nil, log)
 	if err != nil {
 		t.Fatal(err)
 	}

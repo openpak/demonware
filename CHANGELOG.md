@@ -2,6 +2,11 @@
 
 `git log` stays the source of truth; this file is the readable summary.
 
+## v0.4.0 — 2026-11-03
+
+- **CTR wallets live in Postgres** (`ctr_wallets`, one row per account; Wumpa Coins, owned items, receipts). The old `ctr-wallets/<pid>.json` files are imported once at start (existing rows win) and left in place.
+- The service now refuses to start without `DEMONWARE_DATABASE_URL` (local runs: `DEMONWARE_ALLOW_FILE_STORE=1`). `diablo3.json` is publisher configuration, not player state, and stays a file.
+
 ## v0.3.0 — 2026-11-03
 
 - **Tickets live in Postgres** (`DEMONWARE_DATABASE_URL`, pool of 3). The in-memory map is only a cache; `Find` falls back to the table, so a restart loses no ticket. The old `sessions.json` is imported once. Restart test: `TEST_DATABASE_URL`.

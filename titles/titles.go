@@ -6,6 +6,8 @@ import (
 	"log/slog"
 	"path/filepath"
 
+	"github.com/jackc/pgx/v5/pgxpool"
+
 	"github.com/openpak/demonware"
 	"github.com/openpak/demonware/titles/ctr"
 	"github.com/openpak/demonware/titles/diablo3"
@@ -14,8 +16,9 @@ import (
 // Env is what a title may need from the deployment.
 type Env struct {
 	DataDir    string
-	D3Settings string // Diablo III publisher settings file
-	CTRStart   int64  // Wumpa Coins a new CTR wallet opens with
+	D3Settings string        // Diablo III publisher settings file
+	CTRStart   int64         // Wumpa Coins a new CTR wallet opens with
+	DB         *pgxpool.Pool // nil keeps CTR wallets in files (local runs)
 	Log        *slog.Logger
 }
 
@@ -25,7 +28,7 @@ var All = map[string]func(Env) (*demonware.Title, error){
 		return diablo3.New(e.D3Settings, e.Log.With("game", "diablo-3")), nil
 	},
 	"crash-team-racing": func(e Env) (*demonware.Title, error) {
-		t, _, err := ctr.New(filepath.Join(e.DataDir, "ctr-wallets"), e.CTRStart, e.Log.With("game", "crash-team-racing"))
+		t, _, err := ctr.New(filepath.Join(e.DataDir, "ctr-wallets"), e.CTRStart, e.DB, e.Log.With("game", "crash-team-racing"))
 		return t, err
 	},
 }

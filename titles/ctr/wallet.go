@@ -11,6 +11,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/jackc/pgx/v5/pgxpool"
+
 	"github.com/openpak/demonware/redact"
 	"github.com/openpak/demonware/session"
 )
@@ -41,6 +43,8 @@ type Wallets struct {
 	Dir   string
 	Start int64 // Wumpa Coins a new wallet opens with
 
+	DB *pgxpool.Pool // the permanent store; nil keeps one JSON file per account
+
 	mu sync.Mutex
 }
 
@@ -55,7 +59,13 @@ func (s *Wallets) read(pid uint64) (*wallet, error) {
 		return nil, errors.New("no account")
 	}
 	w := &wallet{}
-	raw, err := os.ReadFile(s.path(pid))
+	var raw []byte
+	var err error
+	if s.DB != nil {
+		raw, err = s.dbRead(pid)
+	} else {
+		raw, err = os.ReadFile(s.path(pid))
+	}
 	switch {
 	case errors.Is(err, os.ErrNotExist):
 		w.Balance = map[uint64]int64{coins: s.Start}
@@ -79,6 +89,9 @@ func (s *Wallets) write(pid uint64, w *wallet) error {
 	raw, err := json.Marshal(w)
 	if err != nil {
 		return err
+	}
+	if s.DB != nil {
+		return s.dbWrite(pid, raw)
 	}
 	return session.WriteFileAtomic(s.path(pid), raw)
 }

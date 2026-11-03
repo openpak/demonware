@@ -86,9 +86,23 @@ func run(log *slog.Logger) error {
 		return errors.New("NX_INTERNAL_KEY is required (or DEMONWARE_REQUIRE_ACCOUNT=0 for a local test)")
 	}
 
+	// DEMONWARE_DATABASE_URL: tickets and CTR wallets live in Postgres, so a restart loses none. Unset is an
+	// error unless DEMONWARE_ALLOW_FILE_STORE=1 (local runs only).
+	var sessions *session.Store
+	if dbURL := os.Getenv("DEMONWARE_DATABASE_URL"); dbURL != "" {
+		sessions, err = session.OpenDB(context.Background(), dbURL, filepath.Join(data, "sessions.json"), ttl)
+	} else if os.Getenv("DEMONWARE_ALLOW_FILE_STORE") == "1" {
+		log.Warn("DEMONWARE_DATABASE_URL unset: tickets and wallets use files (DEMONWARE_ALLOW_FILE_STORE=1)")
+		sessions, err = session.Open(filepath.Join(data, "sessions.json"), ttl)
+	} else {
+		return errors.New("DEMONWARE_DATABASE_URL is required (DEMONWARE_ALLOW_FILE_STORE=1 for a local run)")
+	}
+	if err != nil {
+		return fmt.Errorf("sessions: %w", err)
+	}
 	// Titles.
 	tenv := titles.Env{DataDir: data, D3Settings: env("DEMONWARE_D3_SETTINGS", filepath.Join(data, "diablo3.json")),
-		CTRStart: start, Log: log}
+		CTRStart: start, DB: sessions.Pool(), Log: log}
 	byID := map[uint32]*demonware.Title{}
 	served := map[uint32]bool{}
 	var names []string
@@ -107,17 +121,6 @@ func run(log *slog.Logger) error {
 	}
 	sort.Strings(names)
 
-	// DEMONWARE_DATABASE_URL: tickets live in Postgres, so a restart loses none. Unset keeps the
-	// JSON file (local runs only).
-	var sessions *session.Store
-	if dbURL := os.Getenv("DEMONWARE_DATABASE_URL"); dbURL != "" {
-		sessions, err = session.OpenDB(context.Background(), dbURL, filepath.Join(data, "sessions.json"), ttl)
-	} else {
-		sessions, err = session.Open(filepath.Join(data, "sessions.json"), ttl)
-	}
-	if err != nil {
-		return fmt.Errorf("sessions: %w", err)
-	}
 	accounts := account.New(env("NX_INTERNAL_URL", "http://127.0.0.1:20070"), internalKey)
 
 	// Lobby and the shared services.

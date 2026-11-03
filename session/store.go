@@ -81,6 +81,9 @@ func OpenDB(ctx context.Context, url, legacyFile string, ttl time.Duration) (*St
 	return s, nil
 }
 
+// Pool is the shared Postgres pool, nil when tickets are in a file.
+func (s *Store) Pool() *pgxpool.Pool { return s.db }
+
 // Close releases the pool.
 func (s *Store) Close() {
 	if s.db != nil {

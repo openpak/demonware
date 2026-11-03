@@ -5,11 +5,14 @@
 package ctr
 
 import (
+	"context"
+	"fmt"
 	"log/slog"
 	"os"
 	"strconv"
 	"time"
 
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/openpak/demonware"
 	"github.com/openpak/demonware/lobby"
 	"github.com/openpak/demonware/redact"
@@ -36,11 +39,19 @@ type Title struct {
 }
 
 // New opens the wallets under dir. start is a new wallet's Wumpa Coins.
-func New(dir string, start int64, log *slog.Logger) (*demonware.Title, *Title, error) {
+func New(dir string, start int64, db *pgxpool.Pool, log *slog.Logger) (*demonware.Title, *Title, error) {
 	if err := os.MkdirAll(dir, 0o700); err != nil {
 		return nil, nil, err
 	}
-	t := &Title{Wallets: &Wallets{Dir: dir, Start: start}, mm: newMatcher(), log: log, now: time.Now}
+	w := &Wallets{Dir: dir, Start: start, DB: db}
+	if db != nil {
+		n, err := w.openDB(context.Background())
+		if err != nil {
+			return nil, nil, fmt.Errorf("wallet store: %w", err)
+		}
+		log.Info("ctr wallets in Postgres", "imported_from_files", n)
+	}
+	t := &Title{Wallets: w, mm: newMatcher(), log: log, now: time.Now}
 	return &demonware.Title{
 		Slug: "crash-team-racing", ID: 5775, Name: "Crash Team Racing Nitro-Fueled", AppID: "0100F9F00C696000",
 		AuthHosts:  []string{"lavender-switch-auth3.prod.demonware.net"},
