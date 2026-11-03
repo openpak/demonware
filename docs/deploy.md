@@ -37,6 +37,17 @@ Diablo III settings file (every field optional):
 Dates need a two-digit day and are clamped to 1 Jan 2038. **Changing the served season, up or
 down, has broken seasonal heroes on a console's save**: pick one and keep it.
 
+## Rewards sessions: not sent
+
+This host sends no `game_sessions.*` events (Crash Team Racing Nitro-Fueled, Diablo III), on purpose.
+The matchmaking tables (service 21 and 138, `play/games.go`) hold the host's game, its id and a
+player count that the host client reports itself. A joiner is never registered: a search returns
+games, the join then happens peer to peer (NAT introduction or optional relay) and the server is told
+nothing, so it cannot tell who is in a room. CTR's async lobbies (`titles/ctr`) are likewise documents
+the clients sync. Without observed membership there is no second mapped player, so nothing is sent.
+Diablo III also plays on a host client, not on a server here. Revisit when the lobby learns
+joins (for example a title that reports them). Do not set `REWARDS_EVENTS_*` for this unit.
+
 ## Ports
 
 Block 22610-22619 in [`ports.md`](https://docs.openpak.org/contributors/ports/):

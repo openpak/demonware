@@ -2,6 +2,10 @@
 
 `git log` stays the source of truth; this file is the readable summary.
 
+## v0.2.1 — 2026-11-03
+
+- Docs: why this host sends no rewards session events (joins are never observed by the server).
+
 ## v0.1.5 — 2026-10-10
 
 - CTR async matchmaking logs each step at info level: pushes sent (event only), lobby document
