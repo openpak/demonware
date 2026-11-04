@@ -48,3 +48,7 @@ The full variable list, ports and production steps are in [docs/deploy.md](docs/
 ## Licence
 
 AGPL-3.0-only. See [LICENSE](LICENSE).
+
+## Not supported
+
+- Crash Team Racing lobby merges (push 2008), and async-matchmaking and Pit Stop tasks beyond those in docs/protocol.md section 8 (openpak/prds#117).

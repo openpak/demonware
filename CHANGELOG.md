@@ -2,6 +2,10 @@
 
 `git log` stays the source of truth; this file is the readable summary.
 
+## v0.5.1 - 2026-11-04
+
+- Docs: unsupported methods listed so the titles page promises nothing it does not do (openpak/prds#113).
+
 ## v0.5.0 — 2026-11-03
 - Per-request logging: one slog line per auth HTTP request (method, path, status, ms) via internal/httplog and one 'lobby task' line per lobby task (service, task, ms). Query strings, headers and bodies are never logged; slog default now set to the daemon logger.
 
