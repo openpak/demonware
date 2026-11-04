@@ -9,11 +9,13 @@ package account
 
 import (
 	"bytes"
+	"context"
 	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
 	"sync"
@@ -152,4 +154,38 @@ func openpakClaim(tok string) string {
 		return ""
 	}
 	return c.OpenPak
+}
+
+// PIDForUser asks nx-baas for the PID of a network service account id (0 when it has none).
+func (c *Client) PIDForUser(ctx context.Context, sub string) (uint64, error) {
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, c.URL+"/internal/identity/users/"+url.PathEscape(sub), nil)
+	if err != nil {
+		return 0, err
+	}
+	req.Header.Set("X-Internal-Key", c.Key)
+	resp, err := c.HTTP.Do(req)
+	if err != nil {
+		return 0, fmt.Errorf("nx-baas: %w", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode == http.StatusNotFound {
+		return 0, nil
+	}
+	if resp.StatusCode != http.StatusOK {
+		return 0, fmt.Errorf("nx-baas: %s", resp.Status)
+	}
+	var u struct {
+		PID uint64 `json:"pid"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&u); err != nil {
+		return 0, fmt.Errorf("nx-baas: %w", err)
+	}
+	return u.PID, nil
+}
+
+// Forget drops the cached "active" answer for pid.
+func (c *Client) Forget(pid uint64) {
+	c.mu.Lock()
+	delete(c.active, pid)
+	c.mu.Unlock()
 }

@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 // Wallets live in Postgres, one row per OpenPak account. The old ctr-wallets/<pid>.json files are
@@ -64,4 +65,27 @@ func (s *Wallets) dbWrite(pid uint64, raw []byte) error {
 	_, err := s.DB.Exec(ctx, `INSERT INTO ctr_wallets (pid, data) VALUES ($1, $2)
 		ON CONFLICT (pid) DO UPDATE SET data = EXCLUDED.data, updated_at = now()`, int64(pid), string(raw))
 	return err
+}
+
+// EraseWallets deletes the wallets of pids from the database (db non-nil) or from dir, and
+// reports how many existed.
+func EraseWallets(ctx context.Context, db *pgxpool.Pool, dir string, pids []uint64) (int, error) {
+	n := 0
+	if db != nil {
+		ip := make([]int64, 0, len(pids))
+		for _, p := range pids {
+			ip = append(ip, int64(p))
+		}
+		tag, err := db.Exec(ctx, `DELETE FROM ctr_wallets WHERE pid = ANY($1)`, ip)
+		return int(tag.RowsAffected()), err
+	}
+	for _, p := range pids {
+		err := os.Remove(filepath.Join(dir, strconv.FormatUint(p, 10)+".json"))
+		if err == nil {
+			n++
+		} else if !errors.Is(err, os.ErrNotExist) {
+			return n, err
+		}
+	}
+	return n, nil
 }

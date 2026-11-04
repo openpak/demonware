@@ -100,6 +100,15 @@ Without the `stun.*` names the game probes Activision and only offers local game
   Ryujinx, Citron and Eden apply it built in. Deploy the matching private key as
   `DEMONWARE_CTR_SIGNING_KEY`; the lobby then also accepts a key wrapped with it.
 
+## Account erasure
+
+`DELETE /internal/accounts/{account_id}/data` on the health listener (`HEALTH_LISTEN`, default `:22611`;
+call `http://openpak-demonware:22611`), header `Authorization: Bearer $ACCOUNT_ERASE_KEY` (unset: 503).
+Needs `ACCOUNT_ERASE_KEY`, `ACCOUNT_INTERNAL_KEY` and optionally `ACCOUNT_GRPC_ADDR`. It deletes the
+account's tickets (`sessions`) and CTR wallets (`ctr_wallets` or the wallet files). Players are found by
+the account's switch link subject (sessions) and by PID (sessions, nx-baas). Nothing authored is kept.
+Diablo III stores no player data.
+
 ## Run locally
 
 ```sh

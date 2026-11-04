@@ -8,6 +8,7 @@
 package session
 
 import (
+	"context"
 	"crypto/rand"
 	"encoding/binary"
 	"encoding/hex"
@@ -187,4 +188,73 @@ func WriteFileAtomic(path string, data []byte) error {
 		return err
 	}
 	return os.Rename(f.Name(), path)
+}
+
+// PIDsFor returns the PIDs of every session (live or stored) whose player has one of the given
+// network service account ids.
+func (s *Store) PIDsFor(ctx context.Context, subs []string) ([]uint64, error) {
+	set := map[uint64]bool{}
+	s.mu.Lock()
+	for _, v := range s.byID {
+		for _, sub := range subs {
+			if v.Player.BaasUserID == sub {
+				set[v.Player.PID] = true
+			}
+		}
+	}
+	s.mu.Unlock()
+	if s.db != nil {
+		rows, err := s.db.Query(ctx, `SELECT DISTINCT pid FROM sessions WHERE player::jsonb->>'baas_user_id' = ANY($1)`, subs)
+		if err != nil {
+			return nil, err
+		}
+		defer rows.Close()
+		for rows.Next() {
+			var pid int64
+			if err := rows.Scan(&pid); err != nil {
+				return nil, err
+			}
+			set[uint64(pid)] = true
+		}
+		if err := rows.Err(); err != nil {
+			return nil, err
+		}
+	}
+	out := make([]uint64, 0, len(set))
+	for p := range set {
+		out = append(out, p)
+	}
+	return out, nil
+}
+
+// Erase deletes every session of the given PIDs or network service account ids and reports how
+// many it removed (stored rows when there is a database, otherwise cached/file entries).
+func (s *Store) Erase(ctx context.Context, subs []string, pids []uint64) (int, error) {
+	isSub := map[string]bool{}
+	for _, x := range subs {
+		isSub[x] = true
+	}
+	isPID := map[uint64]bool{}
+	ip := make([]int64, 0, len(pids))
+	for _, p := range pids {
+		isPID[p] = true
+		ip = append(ip, int64(p))
+	}
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	mem := 0
+	for id, v := range s.byID {
+		if isSub[v.Player.BaasUserID] || isPID[v.Player.PID] {
+			delete(s.byID, id)
+			mem++
+		}
+	}
+	if s.db != nil {
+		tag, err := s.db.Exec(ctx, `DELETE FROM sessions WHERE pid = ANY($1) OR player::jsonb->>'baas_user_id' = ANY($2)`, ip, subs)
+		return int(tag.RowsAffected()), err
+	}
+	if mem > 0 {
+		return mem, s.saveLocked()
+	}
+	return 0, nil
 }

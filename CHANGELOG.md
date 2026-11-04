@@ -2,6 +2,11 @@
 
 `git log` stays the source of truth; this file is the readable summary.
 
+## v0.6.0 — 2026-11-04
+
+- **Account erasure (openpak/prds#120).** `DELETE /internal/accounts/{account_id}/data` on the health listener (`:22611`, container network only) with `Authorization: Bearer $ACCOUNT_ERASE_KEY` (unset: 503) deletes every stored ticket (`sessions`) and CTR wallet (`ctr_wallets`) of the account and answers `{"service":"demonware","rows":N}`. The account's switch subjects come from the core (`ACCOUNT_GRPC_ADDR`, default `openpak-account:20001`, `ACCOUNT_INTERNAL_KEY`); PIDs from the stored sessions and from nx-baas. Idempotent; logs one `account erased` line. No `account_deleted` consumer (the service has none).
+- Kept: nothing per player. Diablo III is publisher settings only; the lobby, NAT and relay hold only transient state.
+
 ## v0.5.1 - 2026-11-04
 
 - Docs: unsupported methods listed so the titles page promises nothing it does not do (openpak/prds#113).

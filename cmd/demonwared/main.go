@@ -23,6 +23,7 @@ import (
 	"github.com/openpak/demonware"
 	"github.com/openpak/demonware/account"
 	"github.com/openpak/demonware/auth"
+	"github.com/openpak/demonware/internal/erase"
 	"github.com/openpak/demonware/internal/httplog"
 	"github.com/openpak/demonware/lobby"
 	"github.com/openpak/demonware/nat"
@@ -255,6 +256,17 @@ func run(log *slog.Logger) error {
 			"nat_probes": natSrv.Probes.Load(), "nat_intros": natSrv.Intros.Load(),
 		})
 	})
+	eraser := &erase.Eraser{Sessions: sessions, WalletDir: filepath.Join(data, "ctr-wallets"),
+		PIDOf: accounts.PIDForUser, Forget: accounts.Forget, Log: log}
+	eraseKey := os.Getenv("ACCOUNT_ERASE_KEY")
+	if eraseKey != "" {
+		if l, err := erase.NewCoreLinks(env("ACCOUNT_GRPC_ADDR", "openpak-account:20001"), os.Getenv("ACCOUNT_INTERNAL_KEY")); err != nil {
+			log.Error("erase endpoint cannot reach the account core", "err", err)
+		} else {
+			eraser.Links = l
+		}
+	}
+	mux.HandleFunc("DELETE /internal/accounts/{account_id}/data", eraser.Handler(eraseKey))
 	addr := env("HEALTH_LISTEN", ":22611")
 	log.Info("health listening", "addr", addr)
 	return http.ListenAndServe(addr, mux)
