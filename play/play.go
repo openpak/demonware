@@ -8,6 +8,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/jackc/pgx/v5/pgxpool"
+
 	"github.com/openpak/demonware/lobby"
 	"github.com/openpak/demonware/nat"
 	"github.com/openpak/demonware/wire"
@@ -30,6 +32,9 @@ type Shared struct {
 	Relay *nat.Relay
 	Log   *slog.Logger
 	Now   func() time.Time
+
+	// DB keeps user data (service 29) permanently; nil keeps it in memory (local runs only).
+	DB *pgxpool.Pool
 
 	// Matchers decide, per title, which open games a search may return (service 21 find).
 	// A title without one gets every open game.
@@ -178,27 +183,31 @@ func (s *Shared) userDataTask(c *lobby.Conn, r *lobby.Request) []byte {
 		if err != nil || len(data) > 64<<10 {
 			return wire.Fail(wire.Failed)
 		}
-		s.mu.Lock()
-		s.userData[dataKey{c.Title(), c.OnlineID(), ctx}] = data
-		s.mu.Unlock()
+		if err := s.putUserData(dataKey{c.Title(), c.OnlineID(), ctx}, data); err != nil {
+			s.Log.Error("user data store failed", "err", err)
+			return wire.Fail(wire.Failed)
+		}
 		return wire.Empty(r.Task)
 	}
 	if r.Args.Next() == wire.TBool {
 		_, _ = r.Args.Bool()
 	}
 	ids := r.Args.U64List(512)
-	s.mu.Lock()
 	type hit struct {
 		id   uint64
 		data []byte
 	}
 	var hits []hit
 	for _, id := range ids {
-		if d, ok := s.userData[dataKey{c.Title(), id, ctx}]; ok {
+		d, ok, err := s.getUserData(dataKey{c.Title(), id, ctx})
+		if err != nil {
+			s.Log.Error("user data read failed", "err", err)
+			return wire.Fail(wire.Failed)
+		}
+		if ok {
 			hits = append(hits, hit{id, d})
 		}
 	}
-	s.mu.Unlock()
 	return wire.Rows(r.Task, func(w *wire.Writer) uint32 {
 		for _, h := range hits {
 			w.U64(h.id).Blob(h.data)

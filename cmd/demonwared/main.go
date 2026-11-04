@@ -140,6 +140,12 @@ func run(log *slog.Logger) error {
 	}
 	relay := relayFromEnv(publicIP, log)
 	shared := play.New(lob, relay, log.With("part", "play"))
+	if pool := sessions.Pool(); pool != nil {
+		if err := play.OpenUserData(context.Background(), pool); err != nil {
+			return fmt.Errorf("user data store: %w", err)
+		}
+		shared.DB = pool
+	}
 	shared.Matchers = map[uint32]play.Matcher{}
 	for id, t := range byID {
 		if t.Match != nil {

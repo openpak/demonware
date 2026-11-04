@@ -2,6 +2,10 @@
 
 `git log` stays the source of truth; this file is the readable summary.
 
+## v0.7.0 — 2026-11-04
+
+- User data (service 29, `Shared.userData`) lives in Postgres (`dw_user_data`, keyed by title, online id and context) instead of memory; a restart loses none. Account erasure deletes it too. A failed read or write answers the task as failed. Without a database (local `DEMONWARE_ALLOW_FILE_STORE=1` runs only) it stays in memory. CTR wallets already require the database in production (JSON files only under `DEMONWARE_ALLOW_FILE_STORE=1`). Presence stays live state. (openpak/prds#85)
+
 ## v0.6.0 — 2026-11-04
 
 - **Account erasure (openpak/prds#120).** `DELETE /internal/accounts/{account_id}/data` on the health listener (`:22611`, container network only) with `Authorization: Bearer $ACCOUNT_ERASE_KEY` (unset: 503) deletes every stored ticket (`sessions`) and CTR wallet (`ctr_wallets`) of the account and answers `{"service":"demonware","rows":N}`. The account's switch subjects come from the core (`ACCOUNT_GRPC_ADDR`, default `openpak-account:20001`, `ACCOUNT_INTERNAL_KEY`); PIDs from the stored sessions and from nx-baas. Idempotent; logs one `account erased` line. No `account_deleted` consumer (the service has none).

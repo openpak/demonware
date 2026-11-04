@@ -1,7 +1,11 @@
 package play
 
 import (
+	"context"
+	"os"
+
 	"bytes"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"log/slog"
 	"strconv"
 	"testing"
@@ -314,5 +318,45 @@ func TestFindUsesTitleMatcher(t *testing.T) {
 	}
 	if rank, _ := r.U8(); rank != 1 {
 		t.Fatalf("best-ranked game is not first (rank %d)", rank)
+	}
+}
+
+// TestUserDataSurvivesRestart needs a scratch Postgres (TEST_DATABASE_URL); skipped otherwise.
+func TestUserDataSurvivesRestart(t *testing.T) {
+	url := os.Getenv("TEST_DATABASE_URL")
+	if url == "" {
+		t.Skip("TEST_DATABASE_URL not set")
+	}
+	ctx := context.Background()
+	open := func() *pgxpool.Pool {
+		p, err := pgxpool.New(ctx, url)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := OpenUserData(ctx, p); err != nil {
+			t.Fatal(err)
+		}
+		return p
+	}
+	pool := open()
+	_, _ = pool.Exec(ctx, `DELETE FROM dw_user_data WHERE pid = 4242`)
+	a := &Shared{DB: pool, Log: slog.New(slog.DiscardHandler)}
+	k := dataKey{title: 7, id: 4242, ctx: "profile"}
+	if err := a.putUserData(k, []byte("hello")); err != nil {
+		t.Fatal(err)
+	}
+	pool.Close()
+	pool = open() // restart: new pool, new Shared, nothing in memory
+	defer pool.Close()
+	b := &Shared{DB: pool, Log: slog.New(slog.DiscardHandler)}
+	d, ok, err := b.getUserData(k)
+	if err != nil || !ok || string(d) != "hello" {
+		t.Fatalf("after restart: %q %v %v", d, ok, err)
+	}
+	if n, err := EraseUserData(ctx, pool, []uint64{4242}); err != nil || n != 1 {
+		t.Fatalf("erase: %d %v", n, err)
+	}
+	if _, ok, _ := b.getUserData(k); ok {
+		t.Fatal("data survived erasure")
 	}
 }

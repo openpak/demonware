@@ -21,6 +21,8 @@ import (
 
 	accountv1 "github.com/openpak/account-api/openpak/account/v1"
 
+	"github.com/openpak/demonware/account"
+	"github.com/openpak/demonware/play"
 	"github.com/openpak/demonware/session"
 	"github.com/openpak/demonware/titles/ctr"
 )
@@ -110,6 +112,18 @@ func (e *Eraser) Erase(ctx context.Context, accountID string) (int, error) {
 	if err != nil {
 		return 0, err
 	}
+	// User data is keyed by the online id, the network service account id as a number.
+	var online []uint64
+	for _, sub := range subs {
+		if id := account.NSAID(sub); id != 0 {
+			online = append(online, id)
+		}
+	}
+	u, err := play.EraseUserData(ctx, e.Sessions.Pool(), online)
+	if err != nil {
+		return rows, err
+	}
+	rows += u
 	n, err := e.Sessions.Erase(ctx, subs, pids)
 	rows += n
 	if err != nil {
