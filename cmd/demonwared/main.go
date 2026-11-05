@@ -28,10 +28,12 @@ import (
 	"github.com/openpak/demonware/lobby"
 	"github.com/openpak/demonware/nat"
 	"github.com/openpak/demonware/play"
+	"github.com/openpak/demonware/ps3"
 	"github.com/openpak/demonware/redact"
 	"github.com/openpak/demonware/session"
 	"github.com/openpak/demonware/titles"
 	"github.com/openpak/demonware/wire"
+	emit "github.com/openpak/rewards-emit"
 )
 
 func env(k, d string) string {
@@ -173,10 +175,22 @@ func run(log *slog.Logger) error {
 			t.Closed(c)
 		}
 	})
+	// PlayStation 3 (Call of Duty: Modern Warfare 3): same port, told apart by the first bytes.
+	var ps3srv *ps3.Server
+	var ps3store *ps3.Store
+	if keyPath := os.Getenv("DEMONWARE_PS3_TICKET_KEY"); keyPath != "" {
+		ps3srv, ps3store, err = startPS3(keyPath, sessions, publicIP, requireAccount, log)
+		if err != nil {
+			return fmt.Errorf("ps3: %w", err)
+		}
+	}
 	for _, addr := range strings.Split(env("LOBBY_LISTEN", ":3074"), ",") {
 		ln, err := net.Listen("tcp", strings.TrimSpace(addr))
 		if err != nil {
 			return fmt.Errorf("lobby: %w", err)
+		}
+		if ps3srv != nil {
+			ln = ps3.Split(ln, ps3srv.Handle)
 		}
 		log.Info("lobby listening", "addr", ln.Addr().String())
 		go func() { log.Error("lobby stopped", "err", redact.Err(lob.Serve(ln))) }()
@@ -260,10 +274,11 @@ func run(log *slog.Logger) error {
 			"logins": authSvc.Logins.Load(), "auth_refused": authSvc.Refusals.Load(),
 			"lobby_refused": lob.Refused.Load(), "tasks": lob.Tasks.Load(),
 			"nat_probes": natSrv.Probes.Load(), "nat_intros": natSrv.Intros.Load(),
+			"ps3": ps3health(ps3srv, ps3store),
 		})
 	})
 	eraser := &erase.Eraser{Sessions: sessions, WalletDir: filepath.Join(data, "ctr-wallets"),
-		PIDOf: accounts.PIDForUser, Forget: accounts.Forget, Log: log}
+		PIDOf: accounts.PIDForUser, Forget: accounts.Forget, PS3: ps3store, Log: log}
 	eraseKey := os.Getenv("ACCOUNT_ERASE_KEY")
 	if eraseKey != "" {
 		if l, err := erase.NewCoreLinks(env("ACCOUNT_GRPC_ADDR", "openpak-account:20001"), os.Getenv("ACCOUNT_INTERNAL_KEY")); err != nil {
@@ -304,4 +319,47 @@ func relayFromEnv(ip net.IP, log *slog.Logger) *nat.Relay {
 	log.Info("relay enabled", "ports", ports, "everyone", all, "players", len(allow))
 	return &nat.Relay{IP: ip, Low: low, High: high, Log: log.With("part", "relay"),
 		Allow: func(id uint64) bool { return all || allow[id] }}
+}
+
+// startPS3 builds the PlayStation 3 server. The ticket key (DEMONWARE_PS3_TICKET_KEY) is the
+// Ed25519 key np-account signs NP tickets with (the public half is all that is used);
+// DEMONWARE_PS3_SECRET_FILE holds 32+ random bytes that key the lobby session keys.
+func startPS3(keyPath string, sessions *session.Store, publicIP net.IP, requireAccount bool, log *slog.Logger) (*ps3.Server, *ps3.Store, error) {
+	pub, err := ps3.LoadPublicKey(keyPath)
+	if err != nil {
+		return nil, nil, fmt.Errorf("DEMONWARE_PS3_TICKET_KEY: %w", err)
+	}
+	secret, err := os.ReadFile(os.Getenv("DEMONWARE_PS3_SECRET_FILE"))
+	if err != nil {
+		return nil, nil, fmt.Errorf("DEMONWARE_PS3_SECRET_FILE: %w", err)
+	}
+	store, err := ps3.NewStore(context.Background(), sessions.Pool())
+	if err != nil {
+		return nil, nil, fmt.Errorf("store: %w", err)
+	}
+	cfg := ps3.Config{Store: store, PublicKey: pub, Secret: secret, PublicIP: publicIP, Log: log}
+	if requireAccount {
+		accts, err := ps3.NewCoreAccounts(env("ACCOUNT_GRPC_ADDR", "openpak-account:20001"), os.Getenv("ACCOUNT_INTERNAL_KEY"))
+		if err != nil {
+			return nil, nil, err
+		}
+		cfg.Accounts = accts
+	}
+	if rw := emit.FromEnv("demonware-ps3"); rw != nil {
+		cfg.Rewards = ps3.NewEmitRewards(context.Background(), rw, "game_sessions.call-of-duty-modern-warfare-3")
+	}
+	srv, err := ps3.New(cfg)
+	if err != nil {
+		return nil, nil, err
+	}
+	log.Info("ps3 enabled: Modern Warfare 3 on the shared lobby port", "rewards", cfg.Rewards != nil)
+	return srv, store, nil
+}
+
+func ps3health(s *ps3.Server, st *ps3.Store) any {
+	if s == nil {
+		return nil
+	}
+	return map[string]any{"online": s.Online(), "logins": s.Logins.Load(), "refused": s.Refused.Load(),
+		"tasks": s.Tasks.Load(), "games": st.Games(context.Background())}
 }

@@ -23,6 +23,7 @@ import (
 
 	"github.com/openpak/demonware/account"
 	"github.com/openpak/demonware/play"
+	"github.com/openpak/demonware/ps3"
 	"github.com/openpak/demonware/session"
 	"github.com/openpak/demonware/titles/ctr"
 )
@@ -75,6 +76,7 @@ type Eraser struct {
 	WalletDir string                                                // CTR wallet files when there is no database
 	PIDOf     func(ctx context.Context, sub string) (uint64, error) // nx-baas lookup, optional
 	Forget    func(pid uint64)                                      // drops cached identity, optional
+	PS3       *ps3.Store                                            // PlayStation 3 tickets, files and games, optional
 	Log       *slog.Logger
 }
 
@@ -83,13 +85,22 @@ func (e *Eraser) Erase(ctx context.Context, accountID string) (int, error) {
 	if e.Links == nil {
 		return 0, errors.New("account core not configured")
 	}
+	// PlayStation 3 rows are keyed by the account id itself, so they need no link lookup.
+	ps3Rows := 0
+	if e.PS3 != nil {
+		n, err := e.PS3.Erase(ctx, accountID)
+		if err != nil {
+			return n, err
+		}
+		ps3Rows = n
+	}
 	subs, err := e.Links.SwitchSubjects(ctx, accountID)
 	if err != nil {
-		return 0, err
+		return ps3Rows, err
 	}
 	if len(subs) == 0 {
-		e.log(accountID, 0)
-		return 0, nil
+		e.log(accountID, ps3Rows)
+		return ps3Rows, nil
 	}
 	pids, err := e.Sessions.PIDsFor(ctx, subs)
 	if err != nil {
@@ -134,6 +145,7 @@ func (e *Eraser) Erase(ctx context.Context, accountID string) (int, error) {
 			e.Forget(p)
 		}
 	}
+	rows += ps3Rows
 	e.log(accountID, rows)
 	return rows, nil
 }

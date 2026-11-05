@@ -24,6 +24,8 @@
 | `DEMONWARE_RELAY_PORTS` | unset | e.g. `22612-22619`: enables the CTR/D3 UDP relay |
 | `DEMONWARE_RELAY_FOR` | empty | `*` or a comma list of online ids that get relay offers |
 | `LOG_LEVEL` | info | `debug` logs every task |
+| `DEMONWARE_PS3_TICKET_KEY` | unset | Ed25519 PEM np-account signs NP tickets with; setting it enables PlayStation 3 on the lobby port ([ps3.md](ps3.md)) |
+| `DEMONWARE_PS3_SECRET_FILE` | unset | 32+ random bytes that key the PS3 lobby session keys (required with the above) |
 
 ## Diablo III publisher settings
 
