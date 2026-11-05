@@ -16,12 +16,14 @@ import (
 
 // Async matchmaking (service 145): the server groups searches into lobbies, picks a host,
 // and tells the host and guests through pushes; the race itself is peer to peer
-// (docs/protocol.md §8). Lobby merges (event 2008) are not implemented.
+// (docs/protocol.md §8). Lobby merges (event 2008) are written from the client's handler and
+// switched on with DEMONWARE_CTR_LOBBY_MERGE=1; a two-player test has not run (openpak/prds#117).
 
 const (
 	evJoin   = 2001
 	evCreate = 2005
 	evUpdate = 2006
+	evMerge  = 2008
 )
 
 // Player states in a host doc.
@@ -53,7 +55,8 @@ type room struct {
 	searches    []*search // host's included
 	doc         map[string]any
 	capacity    int
-	told        map[uint64]bool // searches already sent 2001 (or 2005)
+	told        map[uint64]bool   // searches already sent 2001 (or 2005)
+	merged      map[uint64]uint64 // search id -> lobby it came from, until told 2008
 }
 
 type notice struct {
@@ -80,6 +83,7 @@ type matcher struct {
 	waiting []*search
 	rooms   map[uint64]*room
 	now     func() time.Time
+	merge   bool // lobby merges (2008) enabled
 }
 
 func newMatcher() *matcher {
@@ -401,6 +405,11 @@ func (m *matcher) sync(c *lobby.Conn, id, version uint64, raw string) (bool, str
 	for _, s := range r.searches {
 		if !r.told[s.id] {
 			r.told[s.id] = true
+			if from, ok := r.merged[s.id]; ok {
+				delete(r.merged, s.id)
+				out = append(out, r.tellMerge(s, from, now))
+				continue
+			}
 			out = append(out, r.tell(s, evJoin, now))
 		}
 	}
@@ -423,6 +432,7 @@ func (m *matcher) sync(c *lobby.Conn, id, version uint64, raw string) (bool, str
 			out = append(out, r.tell(r.host, evUpdate, now))
 		}
 	}
+	out = append(out, m.mergeLocked(r, now)...)
 	return true, "", out
 }
 
@@ -500,3 +510,46 @@ func (m *matcher) counts() (waiting, rooms int) {
 
 // searchReply is 145/18's result.
 func searchReply(id uint64) string { return `{"mm_id":` + strconv.FormatUint(id, 10) + `}` }
+
+// tellMerge is 2008 for a member of lobby from, once the destination lobby r lists it. Event 2008
+// carries the member's search id, the lobby it is in and the lobby to join, then the destination's
+// documents. The client (msgMergeIntoLobby in the v983040 main) logs the three ids, checks that
+// the second is the lobby it is in, and then joins the third exactly as it joins on 2001.
+func (r *room) tellMerge(to *search, from uint64, now time.Time) notice {
+	h, b := r.render(now)
+	return notice{to.conn, evMerge, []uint64{to.id, from, r.id}, h, b}
+}
+
+// mergeLocked folds the lobby r (after its host synced) into a fuller open lobby with the same
+// filter when every seat of r fits there, so players stranded in a half-empty lobby are not
+// left racing alone. The destination host is asked for a new doc (2006); r's members are told to
+// move (2008) once that doc lists them. Switched off unless m.merge.
+func (m *matcher) mergeLocked(r *room, now time.Time) []notice {
+	if !m.merge || !r.open() || len(r.searches) == 0 {
+		return nil
+	}
+	var dest *room
+	for _, o := range m.rooms {
+		if o == r || !o.open() || o.host.filter != r.host.filter || o.seated() < r.seated() ||
+			o.seated()+r.seated() > min(o.capacity, r.capacity) {
+			continue
+		}
+		if dest == nil || o.seated() > dest.seated() || (o.seated() == dest.seated() && o.id < dest.id) {
+			dest = o
+		}
+	}
+	if dest == nil || (dest.seated() == r.seated() && dest.id > r.id) {
+		return nil
+	}
+	if dest.merged == nil {
+		dest.merged = map[uint64]uint64{}
+	}
+	for _, s := range r.searches {
+		dest.forget(s.members)
+		dest.searches = append(dest.searches, s)
+		dest.merged[s.id] = r.id
+	}
+	delete(m.rooms, r.id)
+	dest.bump(now)
+	return []notice{dest.tell(dest.host, evUpdate, now)}
+}

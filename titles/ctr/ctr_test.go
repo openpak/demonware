@@ -335,3 +335,62 @@ func TestPartySearch(t *testing.T) {
 		t.Fatal("a party of two did not get a lobby")
 	}
 }
+
+func TestMarketingAndObjectStore(t *testing.T) {
+	_, tt, err := New(t.TempDir(), 100, nil, slog.New(slog.DiscardHandler))
+	if err != nil {
+		t.Fatal(err)
+	}
+	lob := &lobby.Server{Log: slog.New(slog.DiscardHandler)}
+	c := lob.Fake(&session.Session{Title: 5775, Expires: time.Now().Add(time.Hour), Player: account.Player{PID: 1}}, "203.0.113.5")
+	for _, tc := range []struct{ svc, task byte }{{104, 5}, {104, 4}, {104, 6}, {193, 8}, {193, 16}, {193, 2}} {
+		req := request(tc.svc, tc.task, func(w *wire.Writer) { w.Struct(wire.PB{}.Str(1, "lavender").Str(2, "ctx")) })
+		got, ok := tt.Handle(c, req)
+		if !ok || len(got.Body) == 0 {
+			t.Fatalf("svc %d task %d unanswered", tc.svc, tc.task)
+		}
+	}
+	if n := requestedNames(wire.PB{}.Str(1, "lavender").Bytes(2, wire.PB{}.Str(1, "cfg.json"))); n != "lavender,cfg.json" {
+		t.Fatal(n)
+	}
+}
+
+// Lobby merge (2008): a lobby left with one racer folds into a fuller open lobby. Written from the
+// client's handler; no two-player run on hardware yet (openpak/prds#117).
+func TestLobbyMerge(t *testing.T) {
+	for _, on := range []bool{false, true} {
+		f := &mmFixture{lob: &lobby.Server{Log: slog.New(slog.DiscardHandler)}, m: newMatcher()}
+		f.m.merge = on
+		a, b, c, d := f.player(t, 1), f.player(t, 2), f.player(t, 3), f.player(t, 4)
+		f.search(t, a, []uint64{1}, 2, 4, "race")
+		_, ns := f.search(t, b, []uint64{2}, 2, 4, "race")
+		lobbyA, vA := ns[0].ids[1], ns[0].ids[2]
+		f.m.sync(a, lobbyA, vA, hostDoc(false, map[uint64]int{1: 1, 2: 2}, vA)) // A closes
+		f.search(t, c, []uint64{3}, 2, 4, "race")
+		sd, ns := f.search(t, d, []uint64{4}, 2, 4, "race")
+		lobbyB, vB := ns[0].ids[1], ns[0].ids[2]
+		_ = sd
+		f.m.sync(c, lobbyB, vB, hostDoc(true, map[uint64]int{3: 1, 4: 2}, vB)) // B open with two
+		// A reopens after player 2 timed out: one racer left.
+		_, _, ns = f.m.sync(a, lobbyA, vA, hostDoc(true, map[uint64]int{1: 1, 2: 3}, vA))
+		if !on {
+			if len(ns) != 0 || f.m.rooms[lobbyA] == nil {
+				t.Fatalf("merge ran while switched off: %+v", ns)
+			}
+			continue
+		}
+		if len(ns) != 1 || ns[0].event != evUpdate || ns[0].to != c || f.m.rooms[lobbyA] != nil {
+			t.Fatalf("no merge request to the destination host: %+v", ns)
+		}
+		// The destination host publishes a doc that lists the newcomer; the newcomer is told 2008.
+		rb := f.m.rooms[lobbyB]
+		ok, _, ns := f.m.sync(c, lobbyB, rb.version, hostDoc(true, map[uint64]int{3: 1, 4: 2, 1: 2}, rb.version))
+		if !ok || len(ns) != 1 || ns[0].event != evMerge || ns[0].to != a ||
+			ns[0].ids[1] != lobbyA || ns[0].ids[2] != lobbyB || ns[0].host == "" {
+			t.Fatalf("merge not announced: %v %+v", ok, ns)
+		}
+		if h, _, ok := f.m.docsFor(a, lobbyB); !ok || h == "" {
+			t.Fatal("merged player cannot read the new lobby")
+		}
+	}
+}

@@ -20,6 +20,7 @@
 | `DEMONWARE_SESSION_TTL` | `24h` | ticket lifetime |
 | `DEMONWARE_D3_SETTINGS` | `$DEMONWARE_DATA/diablo3.json` | Diablo III publisher settings (see below) |
 | `DEMONWARE_CTR_START_BALANCE` | `0` | Wumpa Coins a new CTR wallet opens with |
+| `DEMONWARE_CTR_LOBBY_MERGE` | unset | `1` enables CTR lobby merges (push 2008); untested with two players |
 | `DEMONWARE_CTR_SIGNING_KEY` | unset | RSA-2048 PEM key that signs CTR auth replies |
 | `DEMONWARE_RELAY_PORTS` | unset | e.g. `22612-22619`: enables the CTR/D3 UDP relay |
 | `DEMONWARE_RELAY_FOR` | empty | `*` or a comma list of online ids that get relay offers |

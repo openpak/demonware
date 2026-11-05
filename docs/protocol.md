@@ -416,7 +416,7 @@ Pushes (inner `0x02`, `08 u32 event`, then `0A u64` ids, then `10 host doc, 10 b
 | 2005 create lobby | search id, lobby id, version | sent to the chosen host |
 | 2006 update lobby | lobby id, version | asks the host to publish a new host doc (not an ack) |
 | 2001 join lobby | search id, lobby id | sent to a guest once the host has synced |
-| 2008 merge into lobby | search id, current lobby id, destination lobby id | |
+| 2008 merge into lobby | search id, current lobby id, destination lobby id | sent to a member of the current lobby; docs are the destination's. The client logs the three ids, requires the second to be the lobby it is in, then joins the third exactly as on 2001. Enabled with `DEMONWARE_CTR_LOBBY_MERGE=1`; the trigger (a lobby left with seats that fit a fuller open lobby of the same filter) is ours, not observed. **Needs a two-player test.** |
 
 The host echoes the `update_id` of the doc it composed; a sync is accepted only when that
 equals the server's current version, and the version changes only when membership changes.
@@ -479,6 +479,26 @@ Achievement state: `1 name, 2 kind, 3 progress, 4 target, 5 status (2 active, 3 
   (`data/race-rewards.tsv`). Mode 15: amount x min(laps, 8) / 3. Online races: x5 while the
   player's online racing time that UTC day is under 1800 s. Weekend (Friday 17:00 to Monday
   08:00 UTC): x2. Golden Wumpa: +200 after multipliers.
+
+### Marketing comms (bdMarketingComms, service 104) and ObjectStore (bdObjectStore, service 193)
+
+Identified from the v983040 main: the service and task numbers are the immediate arguments of
+`initTaskBuffer` / `startStructTask` inside the named client methods.
+
+| svc/task | client method | answer |
+| --- | --- | --- |
+| 104/1, 104/5 | `getMessages(location, ...)`, typed args `str, str, u32, u32, u32` | zero rows: OpenPak has no promo campaigns |
+| 104/4 | `reportFullMessagesViewed` | none, nothing stored |
+| 104/6, 104/7 | `getMessages`, `reportMessagesViewed` (struct) | empty struct |
+| 193/8 | `getPublisherObject` (struct; three at login) | empty struct (no publisher object published) |
+| 193/16 | `getPublisherObjects` / `...Metadatas` (struct, 339-byte request) | empty struct |
+| 193/other | all struct tasks (user object upload/list/delete, summaries, votes...) | empty struct, nothing stored |
+
+The game's replies for 193 are an HTTP-header array plus a JSON body (`bdObjectStore*Response`);
+their content is unknown, so no object is invented. The names a request asks for are logged
+(`ctr: publisher objects requested`) so one can be published from evidence. Neither service is a
+money path; the Pit Stop (service 80) uses Wumpa Coins only, kept as game data in `ctr_wallets`
+(Postgres, covered by account erasure) and is not connected to Rewards.
 
 ### Not answered by anything above
 

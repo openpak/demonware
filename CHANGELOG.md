@@ -2,6 +2,12 @@
 
 `git log` stays the source of truth; this file is the readable summary.
 
+## v0.8.2 — 2026-11-05
+
+- CTR (openpak/prds#117), from the 2026-11-05 hardware capture: the two tasks answered with a placeholder were service 104 task 5 (`bdMarketingComms.getMessages`, in-game promo messages) and service 193 task 16 (`bdObjectStore.getPublisherObjects`; task 8 `getPublisherObject` too). Both services are now named handlers: marketing answers zero messages, object store answers struct-shaped empty replies (it was a rows-shaped reply for struct tasks) and logs the object names asked for. Nothing is stored or sold.
+- Lobby merge (push 2008) written from the client handler `msgMergeIntoLobby`; off unless `DEMONWARE_CTR_LOBBY_MERGE=1`; needs a two-player test.
+- Wumpa Coins and Pit Stop purchases stay game data in `ctr_wallets` (Postgres, erased with the account), not connected to Rewards.
+
 ## v0.8.1 — 2026-11-05
 
 - PS3 rewards events use the np link subject (the online id) in namespace `np`, which the rewards core resolves (it was the account id). The cookie field the ticket carries now comes from np-common v0.3.0 / np-account v0.4.0 (13th field of the ticket body). Docs: Pier install steps for Modern Warfare 3. Rewards core v0.17.0 has the metric `game_sessions.call-of-duty-modern-warfare-3`.

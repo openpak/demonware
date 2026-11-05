@@ -52,6 +52,7 @@ func New(dir string, start int64, db *pgxpool.Pool, log *slog.Logger) (*demonwar
 		log.Info("ctr wallets in Postgres", "imported_from_files", n)
 	}
 	t := &Title{Wallets: w, mm: newMatcher(), log: log, now: time.Now}
+	t.mm.merge = os.Getenv("DEMONWARE_CTR_LOBBY_MERGE") == "1"
 	return &demonware.Title{
 		Slug: "crash-team-racing", ID: 5775, Name: "Crash Team Racing Nitro-Fueled", AppID: "0100F9F00C696000",
 		AuthHosts:  []string{"lavender-switch-auth3.prod.demonware.net"},
@@ -75,6 +76,10 @@ func (t *Title) Handle(c *lobby.Conn, r *lobby.Request) (lobby.Response, bool) {
 		return t.market(c, r), true
 	case svcAchievements:
 		return t.achievements(c, r), true
+	case svcMarketing:
+		return t.marketing(c, r), true
+	case svcObjectStore:
+		return t.objectStore(c, r), true
 	}
 	return lobby.Response{}, false
 }
