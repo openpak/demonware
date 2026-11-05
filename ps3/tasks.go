@@ -212,7 +212,7 @@ func (s *Server) task(sess *Session, svc byte, msg []byte, log *slog.Logger) []b
 			return reply(task, 1)
 		}
 		if s.cfg.Rewards != nil {
-			s.cfg.Rewards.Hosted(sess.Title, id, sess.AccountID)
+			s.cfg.Rewards.Hosted(sess.Title, id, sess.OnlineID)
 		}
 		log.Info("game opened")
 		return reply(task, 0, (&wire.Writer{}).Blob(id).B)
@@ -220,7 +220,7 @@ func (s *Server) task(sess *Session, svc byte, msg []byte, log *slog.Logger) []b
 		for _, id := range bl {
 			if n, _ := st.DeleteGames(ctx, sess.PID, id); n > 0 {
 				if s.cfg.Rewards != nil {
-					s.cfg.Rewards.Ended(id, sess.AccountID)
+					s.cfg.Rewards.Ended(id, sess.OnlineID)
 				}
 				log.Info("game closed")
 			}

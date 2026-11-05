@@ -36,9 +36,9 @@ var ErrBanned = errors.New("account banned")
 
 // Rewards receives the game sessions the lobby can prove.
 type Rewards interface {
-	Hosted(title uint32, game []byte, accountID string) // a host opened a game
-	Ended(game []byte, accountID string)                // the host closed it
-	Left(accountID string)                              // the player's lobby connection closed
+	Hosted(title uint32, game []byte, onlineID string) // a host opened a game (the np link subject)
+	Ended(game []byte, accountID string)               // the host closed it
+	Left(accountID string)                             // the player's lobby connection closed
 }
 
 // Config is what the PS3 server needs.
@@ -321,7 +321,7 @@ func (s *Server) lobby(nc net.Conn, br *bufio.Reader, log *slog.Logger) {
 			n, _ := s.cfg.Store.DeleteGames(ctx, sess.PID, nil)
 			cancel()
 			if s.cfg.Rewards != nil {
-				s.cfg.Rewards.Left(sess.AccountID)
+				s.cfg.Rewards.Left(sess.OnlineID)
 			}
 			log.Info("lobby closed", "player", tag, "games_removed", n)
 		}

@@ -18,7 +18,7 @@ import (
 // the OpenPak extension 0x3012 = "OPKT1" + JSON claims + an Ed25519 signature over the
 // envelope and the claims. The signature is what proves the player; Demonware only needs the
 // public key. Everything about the issuing side is in that package; this file mirrors its
-// Verify and tolerates a longer body (the game's request cookie), see docs/ps3.md.
+// Verify, including the request cookie np-common v0.3.0 appends (docs/ps3.md).
 
 // ErrTicket is any ticket that does not verify.
 var ErrTicket = errors.New("invalid or expired NP ticket")
@@ -141,8 +141,8 @@ func ParseTicket(blob []byte, pub ed25519.PublicKey, now time.Time) (*NPTicket, 
 	top, _ := elems(blob[start+4 : end])
 	fields, _ := elems(top[0].val)
 	for idx, f := range fields {
-		// fields 0..8 are nonce, issuer, issued, expires, account, online id, region, domain, service id.
-		if idx >= 9 && len(f.val) == 24 {
+		// fields 0..11 are the firmware's twelve; np-common v0.3.0 appends the cookie as the 13th.
+		if idx >= 12 && len(f.val) == 24 {
 			t.Cookie = append([]byte(nil), f.val...)
 			break
 		}

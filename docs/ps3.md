@@ -64,10 +64,9 @@ the connection id (message 4) and from then on every client frame is `01 | u32 s
    `mw2-stun.{us,eu}.demonware.net` and the `*.ps3.iw4.iwnet.infinityward.com` set (mw2-ps3-server `dnsserver.py`). MW3's are **[I]** the same pattern
    with their own prefix and are not in the sources I could read. They come from the MW3 `default_mp.self` strings and the first capture; they go into the one
    signed network list on the `ps3` platform as **exact names**.
-2. **Whether np-account's ticket can serve MW3.** The game puts a 24-byte cookie in its ticket request and Demonware uses it as the 3DES key. np-account's ticket has no
-   cookie today (`np-common/ticket`), so auth is refused with `ticket carries no 24-byte cookie`. np-account has to (a) take the cookie from the game's ticket
-   request, (b) add it as a 24-byte field after the service id, and (c) let `Verify` accept a longer body (the envelope is now measured, not a fixed 272 bytes).
-   This is a separate change in `np-account`/`np-common` (card to open). The first Pier run captures what the firmware sends (`NP_CAPTURE_DIR`).
+2. **Whether the firmware sends the cookie where np-account looks.** np-common v0.3.0 and np-account v0.4.0 now carry a `cookie` form field of `/nav/auth` (24 raw bytes or 48 hex
+   digits) into the ticket as a 13th field after the firmware's twelve, inside the signed envelope, and `Verify` measures the envelope. The **field name is a guess**: the first game ticket
+   request on Pier shows it, because np-account logs the form field names (never values) of every `/nav/auth`. Until a cookie arrives, auth is refused with `ticket carries no 24-byte cookie`.
 3. **Find results.** The search arguments are logged by shape; the result layout (`bdMatchMakingInfo` for service 21) is not known, so finding another
    host's game is not served yet. Private matches use the NP party/invite path and peer to peer, which the lobby does not need.
 4. **Joins.** Joining is peer to peer, so the lobby cannot see who joins a game. Rewards sessions therefore see one player per room and emit nothing
@@ -75,8 +74,8 @@ the connection id (message 4) and from then on every client frame is `01 | u32 s
 5. **NAT type.** MW3 asks the server to answer from another IP and port; with one public IP it will show a moderate NAT, not open.
 6. **The post-2018 account bug** (a 2011 binary bug, `setsid/mw3-ps3-psn-fix`) is triggered by what Demonware sent for new accounts. With our own ids it
    may never fire; the Pier and PS3 runs below test it. If it does fire, the only fix is a game patch, which needs the owner's exception (plan, decision 3).
-7. **Rewards metric.** `game_sessions.call-of-duty-modern-warfare-3` and the `np` identity namespace must exist in the rewards core; until they do, events
-   would be dropped (none are emitted yet anyway).
+7. **Rewards.** The metric `game_sessions.call-of-duty-modern-warfare-3` exists (rewards v0.17.0, migration 0015); events use namespace `np` with the online id as subject (the np link
+   subject). None are emitted yet (one player per room).
 
 ## Configuration (all unset = PS3 off, the Switch behaviour is unchanged)
 
@@ -104,6 +103,25 @@ derived from the account id (`ps3.PID`, the same function as np-common's `online
 
 Agents run Pier themselves (rules in the plan, "Pier testing"): load below 8, no Harbor, Wharf or other Pier instance running (`pgrep -a -f 'harbor|wharf|pier|rpcs3'`),
 one emulator test at a time, `scratch/pier/run-pier.sh`, profile in `~/.config/pier`. **Pier needs MW3 installed**; it is not on the HDD yet (Terraria, Skate 3 and Minecraft are).
+
+### Installing MW3 into Pier (owner steps)
+Pier on this PC (a fork of RPCS3 that boots the real 4.93 firmware):
+- Launcher: the desktop entry **Pier** (`~/.local/share/applications/pier-openpak.desktop`), which runs `/home/tobagin/REPOS/Openpak/scratch/pier/run-pier.sh`. The binary is
+  `/home/tobagin/REPOS/Openpak/scratch/pier/build/bin/rpcs3` (`emulators/pier` links to the checkout `scratch/pier/src`).
+- Profile and virtual HDD: `~/.config/pier` (games in `~/.config/pier/dev_hdd0/game/<TITLEID>/`, firmware in `dev_flash`), cache in `~/.cache/pier`, run logs in `scratch/pier/logs/`.
+- Close Harbor, Wharf and any other emulator first; tell the agent when MW3 is in place and the agent runs the tests when the machine is quiet.
+
+Install the disc game (your own disc), either way:
+1. **Folder copy, as Terraria was done:** copy the disc's `PS3_GAME` folder contents (`PARAM.SFO`, `ICON0.PNG`, `LICDIR`, `PS3LOGO.DAT`, `TROPDIR`, `USRDIR` and the rest) to
+   `~/.config/pier/dev_hdd0/game/<TITLEID>/`. The title id is in the disc's `PS3_GAME/PARAM.SFO` (`TITLE_ID`); the tested builds are **BLES01428** (EU) and BLJM60422 (JP).
+2. **Image:** if you have a decrypted `.iso`, run `python3 /home/tobagin/REPOS/Openpak/scratch/pier/disc-to-hdd.py GAME.iso`; it extracts `PS3_GAME` into the same place. An encrypted
+   Redump image needs its disc key applied first.
+3. **Update:** install **title update 1.24** (the latest; the protocol notes are for 1.24) from your console or PSN backup: start `scratch/pier/run-pier.sh --gui` and use **File > Install Packages/Raps/Edats**
+   on the update `.pkg`. I have not run this on Pier yet; if the update does not merge, copy the update's files over `USRDIR` instead.
+4. Put a copy of `USRDIR/default_mp.self` (the multiplayer binary, as it is on the disc) in `/home/tobagin/REPOS/Openpak/scratch/ps3/games/<TITLEID>/` for me to decrypt and read the hostnames. The agent decrypts it; a separate decrypted copy is not needed from you.
+
+Check that Pier boots it: start **Pier**, wait for the XMB, sign in, open **Game**, start **Call of Duty: Modern Warfare 3**. Success = the game's own main menu with **Campaign, Spec Ops, Multiplayer** (the Multiplayer entry
+asks about online; before the server and the cookie change are live it ends with an error, which is expected). If it stops earlier, send `scratch/pier/logs/` (newest file) to the agent.
 
 ### M0: discovery (no MW3 server needed)
 1. Owner supplies MW3 (see the plan, "Dumps needed"). Agent installs it into Pier, and the decrypted `default_mp.self` goes to `scratch/ps3/games/<TITLEID>/`.

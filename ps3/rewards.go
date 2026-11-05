@@ -16,7 +16,7 @@ import (
 type EmitRewards struct {
 	reg    emit.Registry
 	mu     sync.Mutex
-	hosted map[string][]string // account id -> room ids
+	hosted map[string][]string // online id -> room ids
 }
 
 // NewEmitRewards starts the session watcher on rw's clock until ctx ends. metric is the rewards
@@ -29,32 +29,32 @@ func NewEmitRewards(ctx context.Context, rw *emit.Client, metric string) *EmitRe
 	return r
 }
 
-func id(accountID string) emit.Identity { return emit.Identity{Namespace: "np", Subject: accountID} }
+func id(onlineID string) emit.Identity { return emit.Identity{Namespace: "np", Subject: onlineID} }
 
-func (r *EmitRewards) Hosted(title uint32, game []byte, accountID string) {
+func (r *EmitRewards) Hosted(title uint32, game []byte, onlineID string) {
 	room := string(hexOf(game))
 	r.mu.Lock()
-	r.hosted[accountID] = append(r.hosted[accountID], room)
+	r.hosted[onlineID] = append(r.hosted[onlineID], room)
 	r.mu.Unlock()
-	r.reg.Join(room, id(accountID))
+	r.reg.Join(room, id(onlineID))
 }
 
 // Join records a second player in a room (not called yet, see the type comment).
-func (r *EmitRewards) Join(game []byte, accountID string) {
-	r.reg.Join(string(hexOf(game)), id(accountID))
+func (r *EmitRewards) Join(game []byte, onlineID string) {
+	r.reg.Join(string(hexOf(game)), id(onlineID))
 }
 
-func (r *EmitRewards) Ended(game []byte, accountID string) {
-	r.reg.Leave(string(hexOf(game)), id(accountID))
+func (r *EmitRewards) Ended(game []byte, onlineID string) {
+	r.reg.Leave(string(hexOf(game)), id(onlineID))
 }
 
-func (r *EmitRewards) Left(accountID string) {
+func (r *EmitRewards) Left(onlineID string) {
 	r.mu.Lock()
-	rooms := r.hosted[accountID]
-	delete(r.hosted, accountID)
+	rooms := r.hosted[onlineID]
+	delete(r.hosted, onlineID)
 	r.mu.Unlock()
 	for _, room := range rooms {
-		r.reg.Leave(room, id(accountID))
+		r.reg.Leave(room, id(onlineID))
 	}
 }
 

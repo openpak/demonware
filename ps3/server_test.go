@@ -19,7 +19,7 @@ import (
 )
 
 // issue mirrors np-common ticket.Issue (envelope, extension, signature); cookie, when set, is an
-// extra 24-byte field after the service id, which is what np-account has to add.
+// extra 24-byte field after the twelve firmware fields (np-common v0.3.0).
 func issue(t *testing.T, priv ed25519.PrivateKey, id Identity, cookie []byte) []byte {
 	t.Helper()
 	elem := func(tag uint16, v []byte) []byte {
@@ -44,9 +44,9 @@ func issue(t *testing.T, priv ed25519.PrivateKey, id Identity, cookie []byte) []
 	var body []byte
 	for i, v := range vals {
 		body = append(body, elem(tags[i], v)...)
-		if i == 8 && cookie != nil {
-			body = append(body, elem(8, cookie)...)
-		}
+	}
+	if cookie != nil { // np-common v0.3.0 puts it after the twelve firmware fields
+		body = append(body, elem(8, cookie)...)
 	}
 	out := append([]byte{0x40, 0, 0, 0}, elem(0x3000, body)...)
 	out = append(out, elem(0x3010, nil)...)
@@ -319,7 +319,7 @@ func TestMW3AuthLobbyStorageAndGames(t *testing.T) {
 	}
 	time.Sleep(50 * time.Millisecond)
 	rw.mu.Lock()
-	if len(rw.log) < 3 || rw.log[len(rw.log)-1] != "left "+id.AccountID {
+	if len(rw.log) < 3 || rw.log[len(rw.log)-1] != "left "+id.OnlineID {
 		t.Fatalf("rewards calls: %v", rw.log)
 	}
 	rw.mu.Unlock()

@@ -2,6 +2,10 @@
 
 `git log` stays the source of truth; this file is the readable summary.
 
+## v0.8.1 — 2026-11-05
+
+- PS3 rewards events use the np link subject (the online id) in namespace `np`, which the rewards core resolves (it was the account id). The cookie field the ticket carries now comes from np-common v0.3.0 / np-account v0.4.0 (13th field of the ticket body). Docs: Pier install steps for Modern Warfare 3. Rewards core v0.17.0 has the metric `game_sessions.call-of-duty-modern-warfare-3`.
+
 ## v0.8.0 — 2026-11-05
 
 - **PlayStation 3: Call of Duty: Modern Warfare 3 (openpak/prds#132).** New package `ps3` and `docs/ps3.md`. Off unless `DEMONWARE_PS3_TICKET_KEY` is set, so the Switch behaviour is unchanged. Sony-NP-ticket auth (np-account's Ed25519-signed ticket, checked against the account core), the Tiger/3DES lobby, MW3 tasks (publisher files, user files, stats rows, time, matchmaking create/delete, bandwidth test) and a protocol-sniffing listener that shares TCP 3074 with the Switch lobby. State in Postgres (`dw_ps3_sessions` holds only ticket hashes, `dw_ps3_files`, `dw_ps3_games`); requests logged by shape, no secrets; account erasure covers the new tables; host sessions go to rewards-emit. Protocol notes and the Tiger tables come from elliot1377/mw2-ps3-server (MIT).
